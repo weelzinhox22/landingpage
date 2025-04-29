@@ -162,47 +162,66 @@ const HeroSection = () => {
         </div>
       </div>
       
-      <div className="container mx-auto px-4 z-10">
+      <div className="container mx-auto px-4 z-20 relative">
         <div className="flex flex-col md:flex-row items-center justify-between">
-          {/* Hero Content */}
-          <div className="md:w-1/2 mb-12 md:mb-0">
-            <motion.h1 
-              className="hero-title text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              Transforme seu <span className="text-primary">Negócio Digital</span> com Tecnologia de Ponta
-            </motion.h1>
-            <motion.p 
-              className="hero-description text-lg md:text-xl text-gray-300 mb-8 max-w-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              Desenvolvemos soluções digitais customizadas que impulsionam resultados reais para sua empresa.
-            </motion.p>
-            <motion.div 
-              className="hero-buttons flex flex-col sm:flex-row gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <Link href="/contact">
-                <Button size="lg" className="bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-lg">
-                  Solicitar Orçamento
-                </Button>
-              </Link>
-              <Link href="/services">
-                <Button size="lg" variant="outline" className="border-white text-white rounded-lg font-medium hover:bg-white/20 transition-all backdrop-blur-sm">
-                  Conheça Nossos Serviços
-                </Button>
-              </Link>
-            </motion.div>
+          {/* Hero Content - com posicionamento absoluto para garantir que sempre apareça */}
+          <div className="md:w-1/2 mb-12 md:mb-0 z-30 relative">
+            <div className="bg-black/30 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-white/10 shadow-xl">
+              <motion.h1 
+                className="hero-title text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                Transforme seu <span className="text-primary bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Negócio Digital</span> com Tecnologia de Ponta
+              </motion.h1>
+              <motion.p 
+                className="hero-description text-lg md:text-xl text-gray-300 mb-8 max-w-lg"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                Desenvolvemos soluções digitais customizadas que impulsionam resultados reais para sua empresa.
+              </motion.p>
+              <motion.div 
+                className="hero-buttons flex flex-col sm:flex-row gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                <Link href="/contact">
+                  <Button 
+                    size="lg" 
+                    className="bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-colors shadow-lg relative overflow-hidden group"
+                  >
+                    <span className="relative z-10">Solicitar Orçamento</span>
+                    <span className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                  </Button>
+                </Link>
+                <Link href="/services">
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
+                    className="border-white text-white rounded-lg font-medium hover:bg-white/20 transition-all backdrop-blur-sm"
+                  >
+                    Conheça Nossos Serviços
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </Button>
+                </Link>
+              </motion.div>
+            </div>
           </div>
           
-          {/* Hero 3D Image */}
-          <div ref={containerRef} className="md:w-1/2 flex justify-center perspective-[1000px]">
+          {/* Hero 3D Device Mockup */}
+          <div ref={containerRef} className="md:w-1/2 flex justify-center perspective-[1200px]">
             <motion.div 
               ref={imageRef}
               className="relative"
@@ -214,82 +233,129 @@ const HeroSection = () => {
               initial={{ opacity: 0, z: -50 }}
               animate={{ opacity: 1, z: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
+              whileInView={{ opacity: 1, z: 0 }}
+              viewport={{ once: true }}
             >
+              {/* Device Frame */}
               <div className="relative transform-gpu" style={{ transform: 'translateZ(20px)' }}>
-                <img 
-                  src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&auto=format&fit=crop&w=700&q=80" 
-                  alt="Tecnologia digital avançada" 
-                  className="rounded-xl shadow-2xl max-w-full md:max-w-md lg:max-w-lg object-cover h-auto z-10 relative border-2 border-white/20 backdrop-blur-sm"
-                />
+                {/* Moldura do dispositivo */}
+                <div className="relative rounded-xl overflow-hidden shadow-2xl max-w-full md:max-w-md lg:max-w-lg border-[12px] border-gray-900 bg-gray-800">
+                  {/* Tela */}
+                  <div className="aspect-[9/16] w-full relative overflow-hidden">
+                    {/* Gradiente na tela para efeito visual */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/10 to-accent/20"></div>
+                    
+                    {/* Conteúdo do mockup */}
+                    <div className="relative h-full w-full flex flex-col">
+                      {/* Barra de status */}
+                      <div className="flex justify-between items-center p-2 bg-gray-900">
+                        <div className="text-white text-xs">9:41</div>
+                        <div className="flex space-x-1">
+                          <div className="h-2 w-2 rounded-full bg-white"></div>
+                          <div className="h-2 w-2 rounded-full bg-white"></div>
+                          <div className="h-2 w-2 rounded-full bg-white"></div>
+                        </div>
+                      </div>
+                      
+                      {/* UI da App */}
+                      <div className="flex-1 bg-gray-800 relative overflow-hidden">
+                        {/* Elementos de UI */}
+                        <img 
+                          src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=700&q=80" 
+                          alt="Dashboard de aplicativo" 
+                          className="w-full h-full object-cover"
+                        />
+                        
+                        {/* Overlay de UI */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                          <div className="bg-white/10 backdrop-blur-lg rounded-lg p-3">
+                            <div className="w-36 h-2 bg-white/70 rounded-full mb-2"></div>
+                            <div className="w-24 h-2 bg-white/50 rounded-full"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 
-                {/* 3D Floating Elements */}
+                {/* 3D Floating Elements - Mais modernos e relacionados a tecnologia */}
                 <motion.div 
                   className="absolute -bottom-6 -right-6 w-24 h-24 bg-secondary rounded-xl shadow-2xl flex items-center justify-center z-30"
                   initial={{ scale: 0, rotate: -20 }}
                   animate={{ scale: 1, rotate: 0 }}
-                  transition={{ 
-                    duration: 0.7, 
-                    delay: 0.8,
-                    type: "spring",
-                    stiffness: 200
-                  }}
+                  transition={{ duration: 0.7, delay: 0.8, type: "spring", stiffness: 200 }}
                   style={{ transform: 'translateZ(40px)' }}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                  </svg>
+                  <div className="bg-white/10 backdrop-blur-md w-full h-full rounded-xl p-3">
+                    <div className="bg-white/20 w-full h-3 rounded-full mb-2"></div>
+                    <div className="bg-white/20 w-3/4 h-3 rounded-full mb-2"></div>
+                    <div className="bg-white/20 w-1/2 h-3 rounded-full"></div>
+                    <div className="absolute right-2 bottom-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      </svg>
+                    </div>
+                  </div>
                 </motion.div>
                 
                 <motion.div 
-                  className="absolute -top-6 -left-6 w-20 h-20 bg-primary rounded-xl shadow-2xl flex items-center justify-center z-30"
+                  className="absolute -top-8 -left-8 w-20 h-20 bg-primary rounded-xl shadow-2xl overflow-hidden z-30"
                   initial={{ scale: 0, rotate: 20 }}
                   animate={{ scale: 1, rotate: 0 }}
-                  transition={{ 
-                    duration: 0.7, 
-                    delay: 1.2,
-                    type: "spring",
-                    stiffness: 200
-                  }}
+                  transition={{ duration: 0.7, delay: 1.2, type: "spring", stiffness: 200 }}
                   style={{ transform: 'translateZ(50px)' }}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-accent"></div>
+                  <div className="relative z-10 h-full w-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </div>
                 </motion.div>
                 
                 <motion.div 
-                  className="absolute top-1/2 -right-12 w-16 h-16 bg-accent rounded-xl shadow-2xl flex items-center justify-center z-20"
+                  className="absolute top-1/3 -right-10 w-16 h-16 bg-accent/80 backdrop-blur-sm rounded-full shadow-2xl flex items-center justify-center z-20 overflow-hidden"
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  transition={{ 
-                    duration: 0.7, 
-                    delay: 1.5,
-                    type: "spring",
-                    stiffness: 150
-                  }}
+                  transition={{ duration: 0.7, delay: 1.5, type: "spring", stiffness: 150 }}
                   style={{ transform: 'translateZ(30px)' }}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
-                  </svg>
+                  <div className="relative z-10 flex items-center justify-center w-full h-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                    </svg>
+                  </div>
                 </motion.div>
                 
                 <motion.div 
-                  className="absolute -bottom-12 left-12 w-14 h-14 bg-white/10 backdrop-blur-md rounded-xl shadow-xl flex items-center justify-center z-20"
+                  className="absolute -bottom-10 left-8 w-14 h-14 bg-white/10 backdrop-blur-md rounded-full shadow-xl flex items-center justify-center z-20 p-1"
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 0.9 }}
-                  transition={{ 
-                    duration: 0.7, 
-                    delay: 1.8,
-                    type: "spring", 
-                    stiffness: 150
-                  }}
+                  transition={{ duration: 0.7, delay: 1.8, type: "spring", stiffness: 150 }}
                   style={{ transform: 'translateZ(35px)' }}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
+                  <div className="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full w-full h-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                  </div>
                 </motion.div>
+                
+                {/* Círculos decorativos de partículas */}
+                <motion.div 
+                  className="absolute -bottom-4 -left-20 w-6 h-6 bg-primary/50 rounded-full blur-sm"
+                  animate={{ y: [0, -10, 0], opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  style={{ transform: 'translateZ(10px)' }}
+                ></motion.div>
+                
+                <motion.div 
+                  className="absolute top-10 -right-16 w-4 h-4 bg-secondary/50 rounded-full blur-sm"
+                  animate={{ y: [0, 10, 0], opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  style={{ transform: 'translateZ(5px)' }}
+                ></motion.div>
               </div>
             </motion.div>
           </div>

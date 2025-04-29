@@ -329,12 +329,12 @@ const PortfolioSection = () => {
       </div>
       
       {/* Custom CSS for 3D effects */}
-      <style jsx>{`
+      <style dangerouslySetInnerHTML={{__html: `
         .transform-gpu {
           transform: translateZ(0);
           will-change: transform;
         }
-      `}</style>
+      `}} />
     </section>
   );
 };

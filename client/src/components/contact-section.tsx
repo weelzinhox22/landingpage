@@ -221,8 +221,14 @@ const ContactSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="contact-form bg-white p-8 md:p-10 rounded-xl shadow-xl border border-gray-100">
-              <h3 className="text-2xl font-bold mb-6 text-foreground">Envie uma mensagem</h3>
+            <div className="contact-form bg-white p-8 md:p-10 rounded-xl shadow-xl border border-gray-100 relative overflow-hidden">
+              {/* Elementos decorativos para o formulário */}
+              <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/5 rounded-full blur-2xl"></div>
+              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-secondary/5 rounded-full blur-2xl"></div>
+              
+              <div className="relative z-10">
+                <h3 className="text-2xl font-bold mb-2 text-foreground">Envie uma mensagem</h3>
+                <p className="text-muted-foreground mb-6">Estamos prontos para transformar sua visão em realidade.</p>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -358,6 +364,7 @@ const ContactSection = () => {
                   </Button>
                 </div>
               </form>
+              </div>
             </div>
           </motion.div>
           
