@@ -101,14 +101,14 @@ const HeroSection = () => {
       className="relative min-h-screen flex items-center overflow-hidden pt-24 pb-12"
       onMouseMove={!isMobile ? handleMouseMove : undefined}
     >
-      {/* Hero Background */}
-      <div className="absolute inset-0 bg-cover bg-center" style={{ 
-        backgroundImage: `url('https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')`,
-        filter: 'blur(8px) brightness(0.3)'
-      }}></div>
+      {/* Hero Background - usando gradiente moderno em vez de imagem para maior estabilidade */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
       
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/70 to-primary/30"></div>
+      {/* Hero Patterns - padrão sutil para textura */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+      
+      {/* Gradient Overlay - com cores da marca */}
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/10"></div>
       
       {/* Animated Shapes */}
       <div className="absolute inset-0 overflow-hidden">
@@ -137,30 +137,43 @@ const HeroSection = () => {
         <div className="flex flex-col md:flex-row items-center justify-between">
           {/* Hero Content - com posicionamento absoluto para garantir que sempre apareça */}
           <div className="md:w-1/2 mb-12 md:mb-0 z-30 relative">
-            <div className="bg-black/50 backdrop-blur-md p-6 md:p-8 rounded-lg border border-white/20 shadow-2xl">
-              {/* Fixed and simplified content to avoid disappearing */}
-              <div className="static text-box">
+            <div className="bg-gradient-to-br from-slate-900/80 to-slate-900/90 backdrop-blur-xl p-8 md:p-10 rounded-2xl border border-slate-700/50 shadow-[0_0_45px_-15px_rgba(124,58,237,0.25)]">
+              {/* Conteúdo com design moderno e estável */}
+              <div className="relative">
+                {/* Badge de destaque */}
+                <div className="inline-block py-1 px-3 bg-primary/20 backdrop-blur-sm rounded-full text-sm font-medium mb-6 text-primary border border-primary/30">
+                  SOLUÇÕES INOVADORAS
+                </div>
+                
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
-                  Transforme seu <span className="text-primary bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Negócio Digital</span> com Tecnologia de Ponta
+                  Transforme seu <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-400 to-secondary">Negócio Digital</span> com Tecnologia de Ponta
                 </h1>
-                <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-lg">
-                  Desenvolvemos soluções digitais customizadas que impulsionam resultados reais para sua empresa.
+                
+                <div className="h-1 w-20 bg-gradient-to-r from-primary to-secondary rounded-full mb-8"></div>
+                
+                <p className="text-lg md:text-xl text-gray-300 mb-10 max-w-xl">
+                  Desenvolvemos soluções digitais customizadas que impulsionam resultados reais para sua empresa, com foco em performance e experiência do usuário.
                 </p>
+                
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <a href="/contact" className="inline-block">
-                    <button className="px-6 py-3 bg-primary text-white rounded-lg font-medium shadow-lg hover:bg-primary/90 transition-colors">
+                  <Link href="/contact">
+                    <Button className="px-6 py-6 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-xl font-semibold shadow-lg text-base transition-all">
                       Solicitar Orçamento
-                    </button>
-                  </a>
-                  <a href="/services" className="inline-block">
-                    <button className="px-6 py-3 border border-white text-white rounded-lg font-medium hover:bg-white/20 transition-all backdrop-blur-sm flex items-center">
-                      Conheça Nossos Serviços
+                    </Button>
+                  </Link>
+                  <Link href="/services">
+                    <Button variant="outline" className="px-6 py-6 border-2 border-white/30 text-white rounded-xl font-semibold hover:bg-white/10 transition-all backdrop-blur-sm flex items-center text-base">
+                      Nossos Serviços
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                       </svg>
-                    </button>
-                  </a>
+                    </Button>
+                  </Link>
                 </div>
+                
+                {/* Elemento decorativo */}
+                <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-primary/5 rounded-full blur-xl"></div>
+                <div className="absolute -top-4 -left-4 w-32 h-32 bg-secondary/5 rounded-full blur-xl"></div>
               </div>
             </div>
           </div>

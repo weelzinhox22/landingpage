@@ -43,7 +43,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 ${isScrolled ? 'bg-white bg-opacity-90 backdrop-blur-md shadow-sm' : 'bg-transparent'} transition-all duration-300`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 ${isScrolled ? 'bg-white bg-opacity-95 backdrop-blur-md shadow-sm' : 'bg-white bg-opacity-80 backdrop-blur-sm'} transition-all duration-300`}>
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           {/* Logo */}
