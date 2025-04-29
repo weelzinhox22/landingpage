@@ -49,15 +49,15 @@ const FAQSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} id="faq" className="py-20 relative bg-gradient-to-br from-blue-50 to-slate-50 overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-slate-100"></div>
+    <section ref={sectionRef} id="faq" className="py-20 relative bg-white overflow-hidden">
+      {/* Background Elements - simplificado e com maior opacidade */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-blue-50/50"></div>
       
-      {/* Static Decorative Elements */}
+      {/* Static Decorative Elements com maior opacidade */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-20 w-64 h-64 bg-primary/10 rounded-full"></div>
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-secondary/10 rounded-full"></div>
-        <div className="absolute bottom-1/3 left-1/3 w-48 h-48 bg-accent/10 rounded-full"></div>
+        <div className="absolute top-20 left-20 w-64 h-64 bg-primary/5 rounded-full"></div>
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-secondary/5 rounded-full"></div>
+        <div className="absolute bottom-1/3 left-1/3 w-48 h-48 bg-accent/5 rounded-full"></div>
       </div>
       
       {/* Main Content with Strong Contrast */}
