@@ -138,38 +138,29 @@ const HeroSection = () => {
           {/* Hero Content - com posicionamento absoluto para garantir que sempre apareça */}
           <div className="md:w-1/2 mb-12 md:mb-0 z-30 relative">
             <div className="bg-black/50 backdrop-blur-md p-6 md:p-8 rounded-lg border border-white/20 shadow-2xl">
-              <h1 
-                className="hero-title text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white"
-              >
-                Transforme seu <span className="text-primary bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Negócio Digital</span> com Tecnologia de Ponta
-              </h1>
-              <p 
-                className="hero-description text-lg md:text-xl text-gray-300 mb-8 max-w-lg"
-              >
-                Desenvolvemos soluções digitais customizadas que impulsionam resultados reais para sua empresa.
-              </p>
-              <div className="hero-buttons flex flex-col sm:flex-row gap-4">
-                <Link href="/contact">
-                  <Button 
-                    size="lg" 
-                    className="bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-colors shadow-lg relative overflow-hidden group"
-                  >
-                    <span className="relative z-10">Solicitar Orçamento</span>
-                    <span className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  </Button>
-                </Link>
-                <Link href="/services">
-                  <Button 
-                    size="lg" 
-                    variant="outline" 
-                    className="border-white text-white rounded-lg font-medium hover:bg-white/20 transition-all backdrop-blur-sm"
-                  >
-                    Conheça Nossos Serviços
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                  </Button>
-                </Link>
+              {/* Fixed and simplified content to avoid disappearing */}
+              <div className="static text-box">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
+                  Transforme seu <span className="text-primary bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Negócio Digital</span> com Tecnologia de Ponta
+                </h1>
+                <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-lg">
+                  Desenvolvemos soluções digitais customizadas que impulsionam resultados reais para sua empresa.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a href="/contact" className="inline-block">
+                    <button className="px-6 py-3 bg-primary text-white rounded-lg font-medium shadow-lg hover:bg-primary/90 transition-colors">
+                      Solicitar Orçamento
+                    </button>
+                  </a>
+                  <a href="/services" className="inline-block">
+                    <button className="px-6 py-3 border border-white text-white rounded-lg font-medium hover:bg-white/20 transition-all backdrop-blur-sm flex items-center">
+                      Conheça Nossos Serviços
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </button>
+                  </a>
+                </div>
               </div>
             </div>
           </div>

@@ -119,12 +119,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ima
               initial="initial"
               animate={isHovered ? "hover" : "initial"}
             >
-              {/* Renderiza o ícone FontAwesome correto baseado no nome do ícone */}
-              {icon === 'fas fa-laptop-code' && <FontAwesomeIcon icon={faLaptopCode} className="h-6 w-6" />}
-              {icon === 'fas fa-shopping-cart' && <FontAwesomeIcon icon={faShoppingCart} className="h-6 w-6" />}
-              {icon === 'fas fa-mobile-alt' && <FontAwesomeIcon icon={faMobileAlt} className="h-6 w-6" />}
-              {icon === 'fas fa-bullhorn' && <FontAwesomeIcon icon={faBullhorn} className="h-6 w-6" />}
-              {icon === 'fas fa-cogs' && <FontAwesomeIcon icon={faCogs} className="h-6 w-6" />}
+              {/* Renderiza o ícone FontAwesome correto baseado no nome do ícone simplificado */}
+              {icon === 'laptop' && <FontAwesomeIcon icon={faLaptopCode} className="h-6 w-6" />}
+              {icon === 'cart' && <FontAwesomeIcon icon={faShoppingCart} className="h-6 w-6" />}
+              {icon === 'mobile' && <FontAwesomeIcon icon={faMobileAlt} className="h-6 w-6" />}
+              {icon === 'bullhorn' && <FontAwesomeIcon icon={faBullhorn} className="h-6 w-6" />}
+              {icon === 'cogs' && <FontAwesomeIcon icon={faCogs} className="h-6 w-6" />}
             </motion.div>
             <h3 className="font-bold text-xl">{title}</h3>
           </div>
@@ -221,7 +221,7 @@ const ServicesSection = () => {
     {
       title: "Criação de Sites",
       description: "Websites responsivos e otimizados para mecanismos de busca, garantindo maior visibilidade e conversão.",
-      icon: "fas fa-laptop-code",
+      icon: "laptop",
       image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
       color: "bg-primary",
       category: "Websites"
@@ -229,7 +229,7 @@ const ServicesSection = () => {
     {
       title: "Lojas Virtuais",
       description: "E-commerces completos e integrados com sistemas de pagamento, aumentando suas vendas online.",
-      icon: "fas fa-shopping-cart",
+      icon: "cart",
       image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
       color: "bg-secondary",
       category: "E-commerce"
@@ -237,7 +237,7 @@ const ServicesSection = () => {
     {
       title: "Aplicativos",
       description: "Desenvolvimento de apps nativos para Android e iOS que oferecem experiências excepcionais.",
-      icon: "fas fa-mobile-alt",
+      icon: "mobile",
       image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
       color: "bg-accent",
       category: "Aplicativos"
@@ -245,7 +245,7 @@ const ServicesSection = () => {
     {
       title: "Marketing Digital",
       description: "Estratégias de marketing que aumentam sua presença online e atraem clientes qualificados.",
-      icon: "fas fa-bullhorn",
+      icon: "bullhorn",
       image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
       color: "bg-primary-light",
       category: "Marketing"
@@ -253,7 +253,7 @@ const ServicesSection = () => {
     {
       title: "Sistemas Personalizados",
       description: "Soluções sob medida para otimizar processos e melhorar a gestão do seu negócio.",
-      icon: "fas fa-cogs",
+      icon: "cogs",
       image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
       color: "bg-secondary-dark",
       category: "Websites"
