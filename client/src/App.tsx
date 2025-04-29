@@ -33,7 +33,9 @@ function Router() {
         <Route path="/pricing" component={Pricing} />
         <Route path="/contact" component={Contact} />
         <Route path="/login" component={Login} />
-        <Route path="/project-detail" component={ProjectDetail} />
+        <Route path="/project-detail">
+          <ProjectDetail />
+        </Route>
         <Route component={NotFound} />
       </Switch>
     </AnimatePresence>

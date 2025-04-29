@@ -237,6 +237,7 @@ const ProjectDetailPage = () => {
   // Animations using GSAP
   useGSAP(() => {
     if (headerRef.current && contentRef.current && project) {
+      // Fix para o erro de TypeScript
       const tl = gsap.timeline();
       
       tl.from('.project-title', { 
