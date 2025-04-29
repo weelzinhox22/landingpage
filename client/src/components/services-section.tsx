@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import gsap from 'gsap';
 import { Link } from 'wouter';
-import { useHorizontalScroll } from '@/hooks/use-horizontal-scroll';
 
 interface ServiceCardProps {
   title: string;
@@ -17,13 +17,13 @@ interface ServiceCardProps {
 const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, image, color, delay }) => {
   return (
     <motion.div 
-      className="service-scroll-item w-[280px] sm:w-[320px] md:w-[360px] flex-shrink-0 mx-3 snap-start"
+      className="h-full"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: delay * 0.1 }}
     >
-      <div className="h-full bg-white rounded-xl overflow-hidden shadow-lg transition-all hover:-translate-y-2 duration-300">
+      <div className="h-full bg-white rounded-xl overflow-hidden shadow-lg transition-all hover:-translate-y-2 hover:shadow-xl duration-300">
         <div className={`p-1 ${color}`}>
           <img 
             src={image} 
@@ -42,12 +42,15 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ima
             {description}
           </p>
           <Link href="/contact">
-            <a className={`text-${color.split('-')[1]} font-medium flex items-center hover:underline`}>
+            <Button 
+              variant="ghost" 
+              className={`px-0 hover:bg-transparent text-${color.replace('bg-', '')} hover:text-${color.replace('bg-', '')}/80`}
+            >
               <span>Saiba mais</span>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
-            </a>
+            </Button>
           </Link>
         </div>
       </div>
@@ -57,9 +60,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ima
 
 const ServicesSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const scrollContainerRef = useHorizontalScroll();
   const [activeFilter, setActiveFilter] = useState('Todos');
-
   const filters = ['Todos', 'Websites', 'E-commerce', 'Aplicativos', 'Marketing'];
 
   useEffect(() => {
@@ -117,18 +118,6 @@ const ServicesSection = () => {
     }
   }, []);
 
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -330, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 330, behavior: 'smooth' });
-    }
-  };
-
   const services = [
     {
       title: "Criação de Sites",
@@ -179,7 +168,7 @@ const ServicesSection = () => {
   return (
     <section ref={sectionRef} id="servicos" className="py-20 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full gradient-bg"></div>
+      <div className="absolute top-0 left-0 w-full h-full bg-gray-50"></div>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
@@ -208,44 +197,52 @@ const ServicesSection = () => {
           ))}
         </div>
         
-        {/* Horizontal Scrolling Services */}
-        <div 
-          ref={scrollContainerRef}
-          className="service-scroll-container pb-6 -mx-4 px-4 snap-x"
-        >
-          {filteredServices.map((service, index) => (
-            <ServiceCard
-              key={index}
-              title={service.title}
-              description={service.description}
-              icon={service.icon}
-              image={service.image}
-              color={service.color}
-              delay={index}
-            />
-          ))}
+        {/* Services Carousel */}
+        <div className="relative mx-auto max-w-7xl px-8">
+          <Carousel className="w-full" 
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+          >
+            <CarouselContent className="-ml-4">
+              {filteredServices.map((service, index) => (
+                <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                  <div className="p-1">
+                    <ServiceCard
+                      title={service.title}
+                      description={service.description}
+                      icon={service.icon}
+                      image={service.image}
+                      color={service.color}
+                      delay={index}
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="absolute -left-4 top-1/2 transform -translate-y-1/2">
+              <CarouselPrevious className="h-12 w-12 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white" />
+            </div>
+            <div className="absolute -right-4 top-1/2 transform -translate-y-1/2">
+              <CarouselNext className="h-12 w-12 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white" />
+            </div>
+          </Carousel>
         </div>
         
-        {/* Scroll Controls */}
-        <div className="flex justify-center mt-8 gap-3">
-          <Button
-            variant="outline"
-            onClick={scrollLeft}
-            className="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors p-0"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </Button>
-          <Button
-            variant="outline"
-            onClick={scrollRight}
-            className="w-12 h-12 rounded-full bg-white shadow-md flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors p-0"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Button>
+        {/* View All Services CTA */}
+        <div className="flex justify-center mt-12">
+          <Link href="/services">
+            <Button 
+              variant="outline" 
+              className="border-primary text-primary hover:bg-primary hover:text-white px-6 py-2 rounded-full"
+            >
+              Ver Todos os Serviços
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
