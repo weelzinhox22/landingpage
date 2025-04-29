@@ -36,12 +36,12 @@ const PricingPlan: React.FC<PricingPlanProps> = ({
       transition={{ duration: 0.5, delay: delay * 0.1 }}
     >
       {isPopular && (
-        <div className="bg-primary text-white text-center py-2 font-medium">
+        <div className="bg-primary text-white text-center py-2 font-semibold shadow-sm z-10">
           Mais Popular
         </div>
       )}
       {special && (
-        <div className="absolute -right-2 -top-2 bg-secondary text-white text-xs py-1 px-3 rounded-full transform rotate-12 font-bold">
+        <div className="absolute -right-2 -top-2 bg-gradient-to-r from-secondary to-primary text-white text-xs py-1 px-3 rounded-full transform rotate-12 font-bold shadow-lg z-20">
           {special}
         </div>
       )}

@@ -20,69 +20,92 @@ const TechCard = ({
   delayFactor?: number;
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
 
   const handleFlip = () => {
-    if (!isAnimating) {
-      setIsAnimating(true);
-      setIsFlipped(!isFlipped);
-      setTimeout(() => {
-        setIsAnimating(false);
-      }, 500);
-    }
+    setIsFlipped(!isFlipped);
   };
 
+  // Descrições personalizadas para cada tecnologia
+  const descriptions: {[key: string]: string} = {
+    'React': 'Biblioteca JavaScript para interfaces de usuário rápidas e responsivas.',
+    'Node.js': 'Ambiente JavaScript para backend eficiente e escalável.',
+    'Vue.js': 'Framework progressivo para interfaces de usuário dinâmicas.',
+    'Angular': 'Framework completo para aplicações web robustas.',
+    'AWS': 'Plataforma de nuvem com serviços para aplicações modernas.',
+    'GitHub': 'Controle de versão e colaboração para desenvolvimento.',
+    'Docker': 'Containerização para deploy consistente de aplicações.',
+    'Figma': 'Ferramenta de design de interfaces e prototipagem.'
+  };
+
+  const description = descriptions[name] || 'Tecnologia utilizada em projetos avançados para máximo desempenho.';
+
   return (
-    <motion.div
-      className="perspective-1000 relative" 
-      initial={{ opacity: 0, scale: 0.8, y: 50 }}
-      whileInView={{ opacity: 1, scale: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ 
-        duration: 0.5, 
-        delay: index * delayFactor,
-        type: "spring",
-        stiffness: 100
+    <div
+      className="tech-card-container perspective-1000 relative" 
+      style={{
+        perspective: '1000px',
+        minHeight: '180px',
+        cursor: 'pointer',
+        transformStyle: 'preserve-3d'
       }}
-      style={{ transformStyle: "preserve-3d" }}
     >
-      <div className="relative w-full h-full" style={{ transformStyle: "preserve-3d", transition: "transform 0.6s" }}>
-        <motion.div
-          className={`tech-card cursor-pointer w-full h-full backface-hidden`}
-          onClick={handleFlip}
-          animate={{ rotateY: isFlipped ? 180 : 0 }}
-          transition={{ duration: 0.5 }}
-          whileHover={{ scale: 1.05 }}
-          style={{ transformStyle: "preserve-3d" }}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 30 }}
+        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ 
+          duration: 0.5, 
+          delay: index * delayFactor,
+          type: "spring",
+          stiffness: 100
+        }}
+        className="tech-card-flipper w-full h-full"
+        style={{ 
+          transformStyle: 'preserve-3d',
+          transition: 'transform 0.6s ease',
+          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+        }}
+        onClick={handleFlip}
+        whileHover={{ scale: 1.03 }}
+      >
+        {/* Frente do Card */}
+        <div 
+          className={`card-face-front flex flex-col items-center justify-center bg-gradient-to-br ${color} rounded-2xl p-6 shadow-xl border border-white/10 absolute w-full h-full`}
+          style={{ 
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            transformStyle: 'preserve-3d',
+            transform: 'rotateY(0deg)'
+          }}
         >
-          <div 
-            className={`card-face front flex flex-col items-center justify-center bg-gradient-to-br ${color} rounded-2xl p-6 shadow-xl border border-white/10 backdrop-filter backdrop-blur-sm overflow-hidden relative h-full`}
-            style={{ backfaceVisibility: "hidden" }}
-          >
-            <div className="tech-icon text-5xl mb-4 z-10">
-              <div className="text-3xl font-bold text-white">{name.charAt(0)}</div>
-            </div>
-            <h3 className="text-white font-bold text-xl z-10">{name}</h3>
-            
-            {/* Decorative elements */}
-            <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/10 rounded-full"></div>
-            <div className="absolute -top-5 -left-5 w-20 h-20 bg-white/5 rounded-full"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-20 bg-white/10 rounded-full filter blur-xl"></div>
+          <div className="tech-icon text-5xl mb-4 z-10">
+            <div className="text-3xl font-bold text-white">{name.charAt(0)}</div>
           </div>
+          <h3 className="text-white font-bold text-xl z-10">{name}</h3>
           
-          <div 
-            className={`card-face back flex flex-col items-center justify-center bg-gray-800 rounded-2xl p-6 shadow-xl border border-white/10 backdrop-filter backdrop-blur-sm absolute inset-0`}
-            style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-          >
-            <h3 className="text-white font-bold text-lg mb-3">{name}</h3>
-            <p className="text-gray-300 text-sm text-center">
-              Tecnologia utilizada em projetos avançados para máximo desempenho.
-            </p>
-            <div className="mt-4 text-xs text-primary">Clique para virar</div>
-          </div>
-        </motion.div>
-      </div>
-    </motion.div>
+          {/* Decorative elements */}
+          <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/10 rounded-full"></div>
+          <div className="absolute -top-5 -left-5 w-20 h-20 bg-white/5 rounded-full"></div>
+        </div>
+        
+        {/* Verso do Card */}
+        <div 
+          className={`card-face-back flex flex-col items-center justify-center bg-gray-800 rounded-2xl p-6 shadow-xl border border-white/10 absolute w-full h-full`}
+          style={{ 
+            backfaceVisibility: 'hidden', 
+            WebkitBackfaceVisibility: 'hidden',
+            transformStyle: 'preserve-3d',
+            transform: 'rotateY(180deg)'
+          }}
+        >
+          <h3 className="text-white font-bold text-lg mb-3">{name}</h3>
+          <p className="text-gray-300 text-sm text-center">
+            {description}
+          </p>
+          <div className="mt-4 text-xs text-primary font-medium">Clique para voltar</div>
+        </div>
+      </motion.div>
+    </div>
   );
 };
 
@@ -318,53 +341,80 @@ const TechParallaxSection = () => {
           ))}
         </div>
         
-        {/* Features section */}
+        {/* Features section - Estilizado */}
         <motion.div 
-          className="mt-24 bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-8 md:p-12 relative overflow-hidden"
+          className="mt-24 bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-primary/30 rounded-2xl p-8 md:p-12 relative overflow-hidden shadow-2xl"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 z-0"></div>
+          {/* Background Elements */}
+          <div className="absolute inset-0 bg-grid-pattern opacity-10 z-0"></div>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full filter blur-[80px] z-0"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/20 rounded-full filter blur-[80px] z-0"></div>
           
           <div className="relative z-10">
-            <h3 className="text-2xl md:text-3xl font-bold mb-8 text-center">Por que nossas tecnologias se destacam</h3>
+            {/* Title with glowing effect */}
+            <div className="text-center mb-12">
+              <div className="inline-block py-1 px-4 bg-primary/20 backdrop-blur-sm rounded-full text-sm font-medium mb-4 border border-primary/30">
+                DIFERENCIAIS
+              </div>
+              <h3 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-primary-100 to-white">
+                Por que nossas tecnologias se destacam
+              </h3>
+              <div className="h-1 w-20 bg-gradient-to-r from-primary to-secondary mx-auto mt-6 rounded-full"></div>
+            </div>
             
+            {/* Feature Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 {
                   title: "Desempenho Excepcional", 
                   description: "Nossas soluções garantem velocidade e resposta instantânea, melhorando a experiência do usuário.",
-                  delay: 0.1
+                  delay: 0.1,
+                  icon: "⚡",
+                  color: "from-cyan-500 to-blue-600"
                 },
                 {
                   title: "Escalabilidade Garantida", 
                   description: "Arquitetura que suporta crescimento, de startups a grandes empresas.",
-                  delay: 0.3
+                  delay: 0.3,
+                  icon: "📈",
+                  color: "from-green-500 to-emerald-600"
                 },
                 {
                   title: "Segurança Avançada", 
                   description: "Implementamos as melhores práticas de segurança para proteger seus dados e usuários.",
-                  delay: 0.5
+                  delay: 0.5,
+                  icon: "🔒",
+                  color: "from-purple-500 to-indigo-600"
                 },
               ].map((item, i) => (
                 <motion.div 
                   key={i}
-                  className="relative"
+                  className="feature-card group"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.7 + item.delay }}
+                  whileHover={{ y: -10, transition: { duration: 0.2 } }}
                 >
-                  <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm border border-white/10 h-full">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-4 shadow-lg">
-                      <span className="text-white font-bold text-xl">{i + 1}</span>
+                  <div className="bg-white/10 backdrop-blur-lg rounded-xl p-8 border border-white/20 h-full shadow-lg relative overflow-hidden group-hover:border-primary/50 transition-all">
+                    <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+                    
+                    {/* Icon with styled container */}
+                    <div className={`w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center mb-6 shadow-lg text-2xl transform group-hover:rotate-12 transition-transform`}>
+                      <span className="">{item.icon}</span>
                     </div>
-                    <h4 className="text-xl font-bold mb-3">{item.title}</h4>
-                    <p className="text-gray-300">{item.description}</p>
+                    
+                    <h4 className="text-2xl font-bold mb-4 text-white">{item.title}</h4>
+                    <p className="text-gray-300 text-lg">{item.description}</p>
+                    
+                    {/* Decorative Elements */}
+                    <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-white/5 rounded-full opacity-30 group-hover:opacity-60 transition-opacity"></div>
+                    <div className="absolute top-8 right-8 w-4 h-4 bg-white/20 rounded-full opacity-30 group-hover:opacity-60 transition-opacity"></div>
                   </div>
-                  <div className="absolute -bottom-2 -right-2 w-20 h-20 bg-white/5 rounded-full"></div>
                 </motion.div>
               ))}
             </div>

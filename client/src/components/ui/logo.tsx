@@ -24,21 +24,39 @@ const Logo: React.FC<LogoProps> = ({
     <div className={cn("flex items-center", className)}>
       <div className={cn(
         monochrome ? "text-white" : "text-primary", 
-        sizeClasses[size]
+        sizeClasses[size],
+        "font-bold tracking-tighter leading-none relative"
       )}>
-        <span className={cn(
-          "logo-text relative",
-          monochrome && "!bg-clip-text !text-white !bg-none"
-        )}>
-          <span className="absolute opacity-80" style={{ transform: "translateX(-3px)" }}>V</span>
-          <span>W</span>
-        </span>
+        {/* Logo VW com overlap */}
+        <div className="relative inline-flex overflow-visible">
+          {/* V */}
+          <span 
+            className={cn(
+              "logo-letter-v",
+              monochrome ? "text-white" : "text-primary-600"
+            )}
+            style={{ marginRight: "-0.1em" }}
+          >
+            V
+          </span>
+          
+          {/* W */}
+          <span 
+            className={cn(
+              "logo-letter-w relative",
+              monochrome ? "text-white" : "text-primary"
+            )}
+          >
+            W
+          </span>
+        </div>
       </div>
       <div className={cn(
         "font-bold tracking-tight", 
         sizeClasses[size] === 'text-2xl' ? 'text-lg' : sizeClasses[size] === 'text-3xl' ? 'text-xl' : 'text-2xl',
         monochrome ? "text-white" : "text-foreground",
-        textClassName
+        textClassName,
+        "ml-1"
       )}>
         Tech
       </div>
