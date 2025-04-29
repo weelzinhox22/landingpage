@@ -221,11 +221,33 @@ const ProjectDetailPage = () => {
     const params = new URLSearchParams(location.split('?')[1]);
     const serviceParam = params.get('service');
     
+    // Verifica se o serviço está em serviceProjects
     if (serviceParam && serviceProjects[serviceParam]) {
       setService(serviceParam);
       setProject(serviceProjects[serviceParam]);
       document.title = `${serviceParam} | VW Tech`;
-    } else {
+    } 
+    // Verifica se o serviço corresponde a um item de portfólio
+    else if (serviceParam && ['Website Corporativo', 'E-commerce de Moda', 'Aplicativo de Delivery', 
+      'Sistema de Gestão', 'Marketplace Regional', 'Landing Page de Conversão'].includes(serviceParam)) {
+      // Mapeamento dos itens de portfólio para serviços
+      const portfolioToServiceMap: Record<string, string> = {
+        'Website Corporativo': 'Criação de Sites',
+        'E-commerce de Moda': 'Lojas Virtuais',
+        'Aplicativo de Delivery': 'Aplicativos',
+        'Sistema de Gestão': 'Sistemas Personalizados',
+        'Marketplace Regional': 'Lojas Virtuais',
+        'Landing Page de Conversão': 'Marketing Digital'
+      };
+      
+      const mappedService = portfolioToServiceMap[serviceParam];
+      if (mappedService && serviceProjects[mappedService]) {
+        setService(serviceParam);
+        setProject(serviceProjects[mappedService]);
+        document.title = `${serviceParam} | VW Tech`;
+      }
+    } 
+    else {
       // Fallback para o primeiro serviço se nenhum for encontrado
       const firstService = Object.keys(serviceProjects)[0];
       setService(firstService);
@@ -236,8 +258,8 @@ const ProjectDetailPage = () => {
 
   // Animations using GSAP
   useGSAP(() => {
+    // Verifica se as referências e o projeto existem
     if (headerRef.current && contentRef.current && project) {
-      // Fix para o erro de TypeScript
       const tl = gsap.timeline();
       
       tl.from('.project-title', { 
@@ -323,7 +345,7 @@ const ProjectDetailPage = () => {
         ease: "power3.out"
       });
     }
-  }, [project]);
+  }, { dependencies: [project] });
 
   if (!project) {
     return (

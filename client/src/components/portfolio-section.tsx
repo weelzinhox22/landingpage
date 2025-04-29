@@ -112,7 +112,7 @@ const PortfolioItem: React.FC<PortfolioItemProps> = ({
             >
               {description}
             </motion.p>
-            <Link href={`/project/${title.toLowerCase().replace(/\s+/g, '-')}`}>
+            <Link href={`/project-detail?service=${encodeURIComponent(title)}`}>
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
