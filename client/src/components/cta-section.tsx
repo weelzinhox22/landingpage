@@ -72,7 +72,7 @@ const CTASection = () => {
               </Button>
             </Link>
             <Link href="/portfolio">
-              <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10 transition-all px-8 py-6 text-lg font-semibold rounded-lg">
+              <Button size="lg" className="border-2 border-primary bg-transparent text-primary hover:bg-primary/10 transition-all px-8 py-6 text-lg font-semibold rounded-lg">
                 Ver mais projetos
               </Button>
             </Link>

@@ -162,7 +162,7 @@ const HeroSection = () => {
                     </Button>
                   </Link>
                   <Link href="/services">
-                    <Button variant="outline" className="px-6 py-6 border-2 border-white/30 text-white rounded-xl font-semibold hover:bg-white/10 transition-all backdrop-blur-sm flex items-center text-base">
+                    <Button className="px-6 py-6 border-2 border-primary bg-transparent text-primary rounded-xl font-semibold hover:bg-primary/10 transition-all backdrop-blur-sm flex items-center text-base">
                       Nossos Serviços
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
