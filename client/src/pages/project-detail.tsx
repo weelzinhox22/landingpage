@@ -140,6 +140,40 @@ const ProjectDetailPage = () => {
         'https://images.unsplash.com/photo-1601972599720-36938d4ecd31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
       ],
+      // Protótipo de projeto com visualizações
+      prototype: {
+        title: 'Express Food Delivery',
+        description: 'Aplicativo de delivery para iOS e Android com rastreamento em tempo real',
+        views: [
+          {
+            name: 'Home',
+            image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+            description: 'Tela inicial com restaurantes próximos e categorias populares'
+          },
+          {
+            name: 'Restaurante',
+            image: 'https://images.unsplash.com/photo-1601972599720-36938d4ecd31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+            description: 'Página do restaurante com menu, avaliações e informações'
+          },
+          {
+            name: 'Carrinho',
+            image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+            description: 'Carrinho de compras com opções de pagamento e endereço'
+          },
+          {
+            name: 'Rastreamento',
+            image: 'https://images.unsplash.com/photo-1605152276897-4f618f831968?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+            description: 'Rastreamento em tempo real do pedido com mapa interativo'
+          }
+        ],
+        features: [
+          'Rastreamento em tempo real via GPS',
+          'Múltiplos métodos de pagamento',
+          'Sistema de avaliação para entregadores e restaurantes',
+          'Notificações push em tempo real',
+          'Chat integrado com entregador'
+        ]
+      },
       testimonial: {
         quote: 'O aplicativo transformou completamente nosso negócio. O sistema de rastreamento em tempo real não só melhorou nossa eficiência operacional, mas também a satisfação dos clientes.',
         author: 'Lucas Vieira',
@@ -370,6 +404,64 @@ const ProjectDetailPage = () => {
                   ))}
                 </ul>
               </div>
+              
+              {/* Seção de Protótipo */}
+              {'prototype' in project && (
+                <div className="content-section bg-gradient-to-br from-gray-50 to-white p-8 rounded-xl border border-gray-100 shadow-md mb-10">
+                  <h2 className="text-2xl font-bold mb-4">Protótipo do Projeto</h2>
+                  <p className="text-muted-foreground mb-8">{project.prototype?.description}</p>
+                  
+                  <div className="space-y-8">
+                    {/* Visualizações do Protótipo */}
+                    <div>
+                      <h3 className="text-xl font-semibold mb-4">Visualizações</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {project.prototype?.views.map((view: any, index: number) => (
+                          <div 
+                            key={index}
+                            className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100"
+                          >
+                            <div className="relative">
+                              <img 
+                                src={view.image} 
+                                alt={view.name} 
+                                className="w-full h-48 object-cover"
+                              />
+                              <div className="absolute top-2 left-2 bg-black/70 px-3 py-1 rounded-full">
+                                <span className="text-white text-xs font-semibold">{view.name}</span>
+                              </div>
+                            </div>
+                            <div className="p-4">
+                              <p className="text-sm text-muted-foreground">{view.description}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Funcionalidades */}
+                    <div>
+                      <h3 className="text-xl font-semibold mb-4">Funcionalidades</h3>
+                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {project.prototype?.features.map((feature: string, index: number) => (
+                          <li key={index} className="flex items-start">
+                            <svg 
+                              xmlns="http://www.w3.org/2000/svg" 
+                              className="h-5 w-5 text-primary mr-2 mt-0.5 flex-shrink-0" 
+                              fill="none" 
+                              viewBox="0 0 24 24" 
+                              stroke="currentColor"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span className="text-sm">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
               
               {/* Gallery */}
               <div className="gallery-section mb-10">
