@@ -34,35 +34,6 @@ const HeroSection = () => {
       const ctx = gsap.context(() => {
         const tl = gsap.timeline();
         
-        tl.from('.hero-title', { 
-          opacity: 0, 
-          y: 50, 
-          duration: 0.8, 
-          ease: 'power3.out'
-        })
-        .from('.hero-description', { 
-          opacity: 0, 
-          y: 30, 
-          duration: 0.8, 
-          ease: 'power3.out' 
-        }, '-=0.4')
-        .from('.hero-buttons', { 
-          opacity: 0, 
-          y: 30, 
-          duration: 0.8, 
-          ease: 'power3.out' 
-        }, '-=0.4');
-        
-        if (imageRef.current) {
-          gsap.from(imageRef.current, {
-            opacity: 0,
-            x: 100,
-            duration: 1,
-            ease: 'power3.out',
-            delay: 0.3
-          });
-        }
-        
         // Create parallax effect for floating elements
         gsap.to('.hero-shape-1', {
           y: -50,
@@ -166,35 +137,18 @@ const HeroSection = () => {
         <div className="flex flex-col md:flex-row items-center justify-between">
           {/* Hero Content - com posicionamento absoluto para garantir que sempre apareça */}
           <div className="md:w-1/2 mb-12 md:mb-0 z-30 relative">
-            <div className="bg-black/30 backdrop-blur-sm p-6 md:p-8 rounded-lg border border-white/10 shadow-xl">
-              <motion.h1 
+            <div className="bg-black/50 backdrop-blur-md p-6 md:p-8 rounded-lg border border-white/20 shadow-2xl">
+              <h1 
                 className="hero-title text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
               >
                 Transforme seu <span className="text-primary bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Negócio Digital</span> com Tecnologia de Ponta
-              </motion.h1>
-              <motion.p 
+              </h1>
+              <p 
                 className="hero-description text-lg md:text-xl text-gray-300 mb-8 max-w-lg"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
               >
                 Desenvolvemos soluções digitais customizadas que impulsionam resultados reais para sua empresa.
-              </motion.p>
-              <motion.div 
-                className="hero-buttons flex flex-col sm:flex-row gap-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
+              </p>
+              <div className="hero-buttons flex flex-col sm:flex-row gap-4">
                 <Link href="/contact">
                   <Button 
                     size="lg" 
@@ -216,7 +170,7 @@ const HeroSection = () => {
                     </svg>
                   </Button>
                 </Link>
-              </motion.div>
+              </div>
             </div>
           </div>
           

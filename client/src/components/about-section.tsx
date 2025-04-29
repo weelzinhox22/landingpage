@@ -169,7 +169,7 @@ const AboutSection = () => {
               Uma startup que nasceu da visão de dois amigos apaixonados por tecnologia 
             </h3>
             <p className="text-muted-foreground mb-4">
-              A VW Tech começou em 2018 quando Vítor e Wagner, dois amigos com ideias inovadoras e uma paixão compartilhada por tecnologia, decidiram unir forças para criar soluções digitais que realmente fizessem a diferença no mercado.
+              A VW Tech começou em 2018 quando Vinícius e Wesley, dois amigos com ideias inovadoras e uma paixão compartilhada por tecnologia, decidiram unir forças para criar soluções digitais que realmente fizessem a diferença no mercado.
             </p>
             <p className="text-muted-foreground mb-6">
               Desde o início, nossa missão foi clara: democratizar o acesso à tecnologia de ponta e transformar a maneira como as empresas interagem com o mundo digital. Começamos em um pequeno escritório, com grandes sonhos e uma determinação inabalável.
@@ -236,7 +236,7 @@ const AboutSection = () => {
               >
                 <div className="md:w-1/2 md:pr-16 md:text-right mb-6 md:mb-0">
                   <h4 className="text-xl font-bold mb-2">2018 - Fundação</h4>
-                  <p className="text-muted-foreground">Vítor e Wagner iniciam a VW Tech em um pequeno escritório compartilhado, com o primeiro cliente sendo uma startup local de e-commerce.</p>
+                  <p className="text-muted-foreground">Vinícius e Wesley iniciam a VW Tech em um pequeno escritório compartilhado, com o primeiro cliente sendo uma startup local de e-commerce.</p>
                 </div>
                 <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white z-10">
                   <span className="font-bold">1</span>
