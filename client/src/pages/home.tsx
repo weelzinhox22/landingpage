@@ -8,6 +8,7 @@ import TestimonialsSection from '@/components/testimonials-section';
 import FAQSection from '@/components/faq-section';
 import CTASection from '@/components/cta-section';
 import ContactSection from '@/components/contact-section';
+import TechParallaxSection from '@/components/tech-parallax-section';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -33,6 +34,7 @@ const HomePage = () => {
       <HeroSection />
       <AboutSection />
       <ServicesSection />
+      <TechParallaxSection />
       <PortfolioSection />
       <PricingSection />
       <TestimonialsSection />

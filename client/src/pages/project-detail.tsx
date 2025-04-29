@@ -32,6 +32,34 @@ const ProjectDetailPage = () => {
         'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
       ],
+      // Protótipo de projeto com visualizações
+      prototype: {
+        title: 'Tech Solutions Website',
+        description: 'Website corporativo com foco em UX e performance',
+        views: [
+          {
+            name: 'Home',
+            image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+            description: 'Página inicial com hero section e destaque para principais serviços'
+          },
+          {
+            name: 'Sobre',
+            image: 'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+            description: 'Página sobre a empresa com infográficos interativos e linha do tempo'
+          },
+          {
+            name: 'Serviços',
+            image: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+            description: 'Seção de serviços com cards interativos e CTA para cada serviço'
+          }
+        ],
+        features: [
+          'Carregamento progressivo para melhor performance',
+          'Design responsivo para todas as telas',
+          'Integração com Google Analytics e Tag Manager',
+          'Sistema de blog com taxonomia personalizada'
+        ]
+      },
       testimonial: {
         quote: 'A equipe da VW Tech entendeu nossa visão desde o primeiro dia. O resultado foi um site que não só tem uma aparência incrível, mas também trouxe resultados tangíveis para nosso negócio.',
         author: 'Ricardo Mendes',
@@ -48,6 +76,40 @@ const ProjectDetailPage = () => {
       client: 'Fashion Forward',
       services: ['E-commerce', 'Web Design', 'Integrações de API', 'Gestão de Pagamentos'],
       technologies: ['Shopify', 'React', 'Node.js', 'MySQL', 'AWS'],
+      // Protótipo de projeto com visualizações
+      prototype: {
+        title: 'Fashion Forward Store',
+        description: 'E-commerce de moda com sistema integrado de gestão',
+        views: [
+          {
+            name: 'Home',
+            image: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+            description: 'Página inicial com carrossel de produtos em destaque e navegação por categorias'
+          },
+          {
+            name: 'Categoria',
+            image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+            description: 'Página de categoria com filtros avançados e visualização por grid/lista'
+          },
+          {
+            name: 'Produto',
+            image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+            description: 'Página de produto com zoom, múltiplas imagens e recomendações relacionadas'
+          },
+          {
+            name: 'Carrinho',
+            image: 'https://images.unsplash.com/photo-1580813089778-69e992256a5d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+            description: 'Carrinho de compras com processo de checkout simplificado em uma página'
+          }
+        ],
+        features: [
+          'Integração com múltiplos gateways de pagamento',
+          'Sistema de gerenciamento de estoque em tempo real',
+          'Recomendações de produtos por IA',
+          'Checkout simplificado com análise de abandono',
+          'Rastreamento de pedidos integrado'
+        ]
+      },
       results: ['Aumento de 180% nas vendas online', 'Redução de 25% no tempo de checkout', 'Aumento de 40% no valor médio do pedido'],
       mainImage: 'https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
       images: [

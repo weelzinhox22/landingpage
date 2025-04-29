@@ -244,7 +244,7 @@ const ServicesSection = () => {
     {
       title: "Marketing Digital",
       description: "Estratégias de marketing que aumentam sua presença online e atraem clientes qualificados.",
-      icon: "bullhorn",
+      icon: "fas fa-bullhorn",
       image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
       color: "bg-primary-light",
       category: "Marketing"
@@ -252,7 +252,7 @@ const ServicesSection = () => {
     {
       title: "Sistemas Personalizados",
       description: "Soluções sob medida para otimizar processos e melhorar a gestão do seu negócio.",
-      icon: "cogs",
+      icon: "fas fa-cogs",
       image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
       color: "bg-secondary-dark",
       category: "Websites"
