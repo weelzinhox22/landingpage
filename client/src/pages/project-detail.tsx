@@ -1,331 +1,333 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { useParams, Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { Helmet } from 'react-helmet';
 import gsap from 'gsap';
 import { useGSAP } from '@/hooks/use-gsap';
 
+interface ServiceProject {
+  title: string;
+  description: string;
+  features: string[];
+  technologies: string[];
+  screenshots: {
+    title: string;
+    description: string;
+    image: string;
+  }[];
+  benefits: string[];
+  color: string;
+}
+
+// Define projetos específicos para cada serviço
+const serviceProjects: Record<string, ServiceProject> = {
+  "Criação de Sites": {
+    title: "Website Responsivo",
+    description: "Desenvolvimento de website com design moderno e totalmente responsivo, construído com as mais recentes tecnologias web para garantir desempenho e compatibilidade em todos os dispositivos. O projeto inclui otimização para SEO, integração com redes sociais e sistema de gerenciamento de conteúdo.",
+    features: [
+      "Design responsivo para todas as telas",
+      "Otimização para motores de busca (SEO)",
+      "Carregamento rápido e progressivo",
+      "Integração com Google Analytics",
+      "Painel administrativo personalizado"
+    ],
+    technologies: ["React", "Next.js", "TailwindCSS", "Node.js", "GraphQL"],
+    screenshots: [
+      {
+        title: "Página Inicial",
+        description: "Design moderno com seções interativas e call-to-action estratégicos",
+        image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        title: "Página Sobre",
+        description: "Apresentação da empresa com recursos visuais e linha do tempo",
+        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        title: "Blog",
+        description: "Sistema de blog com categorias, tags e comentários",
+        image: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    benefits: [
+      "Aumento da presença digital",
+      "Melhor experiência do usuário",
+      "Maior conversão de visitantes em clientes",
+      "Facilidade de atualização de conteúdo",
+      "Dados estatísticos sobre visitantes"
+    ],
+    color: "bg-primary"
+  },
+  "Lojas Virtuais": {
+    title: "E-commerce Completo",
+    description: "Desenvolvimento de loja virtual completa com foco em experiência de compra, velocidade e gestão eficiente. O projeto inclui integrações com métodos de pagamento, sistema de estoque, cupons de desconto e estratégias de upsell/cross-sell para maximizar o valor médio do pedido.",
+    features: [
+      "Catálogo de produtos com filtragem avançada",
+      "Carrinho de compras otimizado para conversão",
+      "Integração com múltiplos meios de pagamento",
+      "Sistema de gerenciamento de estoque",
+      "Área do cliente com histórico de pedidos"
+    ],
+    technologies: ["React", "Node.js", "MongoDB", "Redux", "Stripe API"],
+    screenshots: [
+      {
+        title: "Página Inicial",
+        description: "Vitrine de produtos em destaque e navegação intuitiva",
+        image: "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        title: "Página de Produto",
+        description: "Visualização detalhada com zoom, variações e recomendações",
+        image: "https://images.unsplash.com/photo-1560243563-062bfc001d68?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        title: "Checkout",
+        description: "Processo de compra simplificado em uma única página",
+        image: "https://images.unsplash.com/photo-1561069934-eee225952461?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    benefits: [
+      "Aumento das vendas online",
+      "Melhor gestão de estoque e pedidos",
+      "Redução do abandono de carrinho",
+      "Aumento do ticket médio",
+      "Análise de comportamento do cliente"
+    ],
+    color: "bg-secondary"
+  },
+  "Aplicativos": {
+    title: "Aplicativo Mobile Multiplataforma",
+    description: "Desenvolvimento de aplicativo nativo para iOS e Android com experiência de usuário fluida e performance excepcional. O projeto inclui recursos offline, notificações push e integrações com APIs externas para proporcionar uma solução completa e escalável.",
+    features: [
+      "Interface nativa para iOS e Android",
+      "Sincronização de dados em tempo real",
+      "Suporte a modo offline",
+      "Notificações push personalizadas",
+      "Login social e autenticação segura"
+    ],
+    technologies: ["React Native", "Firebase", "Redux", "TypeScript", "Node.js"],
+    screenshots: [
+      {
+        title: "Tela Inicial",
+        description: "Dashboard personalizado com ações rápidas",
+        image: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        title: "Perfil de Usuário",
+        description: "Área de usuário com preferências e histórico",
+        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        title: "Recursos Interativos",
+        description: "Funcionalidades específicas como mapas e gráficos",
+        image: "https://images.unsplash.com/photo-1601972599720-36938d4ecd31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    benefits: [
+      "Presença nos principais marketplaces de apps",
+      "Engajamento contínuo com usuários",
+      "Coleta de dados e métricas valiosas",
+      "Funcionamento offline para usuários sem conexão",
+      "Interatividade e recursos exclusivos para mobile"
+    ],
+    color: "bg-accent"
+  },
+  "Marketing Digital": {
+    title: "Estratégia Completa de Marketing Digital",
+    description: "Desenvolvimento e implementação de estratégia completa de marketing digital para aumentar visibilidade, gerar leads qualificados e converter em vendas. O projeto inclui SEO, marketing de conteúdo, mídias sociais, email marketing e campanhas de mídia paga.",
+    features: [
+      "Análise de concorrência e público-alvo",
+      "Otimização para motores de busca (SEO)",
+      "Gestão de redes sociais e conteúdo",
+      "Campanhas de mídia paga (Google Ads, Meta)",
+      "Automação de email marketing"
+    ],
+    technologies: ["Google Analytics", "SEMrush", "HubSpot", "Meta Business Suite", "MailChimp"],
+    screenshots: [
+      {
+        title: "Dashboard de Resultados",
+        description: "Painel com métricas e KPIs de desempenho",
+        image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        title: "Planejamento de Conteúdo",
+        description: "Calendário editorial e estratégia de distribuição",
+        image: "https://images.unsplash.com/photo-1432888622747-4a4d58e83b64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        title: "Campanhas de Anúncios",
+        description: "Estrutura de campanhas segmentadas por público",
+        image: "https://images.unsplash.com/photo-1533750349088-cd871a92f312?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    benefits: [
+      "Aumento do tráfego qualificado",
+      "Melhoria no posicionamento nos buscadores",
+      "Geração de leads com maior potencial de conversão",
+      "Construção de autoridade no mercado",
+      "ROI mensurável e escalável"
+    ],
+    color: "bg-primary-light"
+  },
+  "Sistemas Personalizados": {
+    title: "Sistema de Gestão Empresarial",
+    description: "Desenvolvimento de sistema personalizado para otimização de processos internos e gestão eficiente de recursos. O projeto inclui análise de requisitos, modelagem de dados, desenvolvimento de módulos específicos e integração com sistemas existentes.",
+    features: [
+      "Módulos personalizados para cada departamento",
+      "Fluxos de trabalho automatizados",
+      "Relatórios e dashboards gerenciais",
+      "Controle de acesso por níveis de permissão",
+      "Integração com sistemas legados"
+    ],
+    technologies: ["Vue.js", "Laravel", "PostgreSQL", "Docker", "AWS"],
+    screenshots: [
+      {
+        title: "Dashboard Gerencial",
+        description: "Visão consolidada de indicadores e alertas",
+        image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        title: "Gestão de Projetos",
+        description: "Módulo de acompanhamento de projetos e recursos",
+        image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        title: "Relatórios Avançados",
+        description: "Sistema de relatórios personalizáveis com exportação",
+        image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    benefits: [
+      "Redução de processos manuais e erros",
+      "Aumento da produtividade da equipe",
+      "Centralização de informações empresariais",
+      "Tomada de decisão baseada em dados",
+      "Escalabilidade para crescimento do negócio"
+    ],
+    color: "bg-secondary-dark"
+  }
+};
+
 const ProjectDetailPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const [project, setProject] = useState<any>(null);
+  const [location] = useLocation();
+  const [service, setService] = useState<string | null>(null);
+  const [project, setProject] = useState<ServiceProject | null>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.1], [1, 0.95]);
   
-  // Hardcoded project data based on the URL slug
-  const projectsData = [
-    {
-      id: 'website-corporativo',
-      title: 'Website Corporativo',
-      subtitle: 'Desenvolvimento de site institucional moderno',
-      description: 'Criamos um site institucional responsivo e otimizado para SEO, com design moderno e focado na experiência do usuário. O projeto incluiu desenvolvimento de identidade visual, estratégia de conteúdo e integração com ferramentas de analytics.',
-      client: 'Tech Solutions Inc.',
-      services: ['Desenvolvimento Web', 'Design UX/UI', 'SEO', 'Branding Digital'],
-      technologies: ['React', 'Next.js', 'TailwindCSS', 'Node.js', 'MongoDB'],
-      results: ['Aumento de 210% no tráfego orgânico', '+45% no tempo médio de sessão', 'Redução de 35% na taxa de rejeição'],
-      mainImage: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-      ],
-      // Protótipo de projeto com visualizações
-      prototype: {
-        title: 'Tech Solutions Website',
-        description: 'Website corporativo com foco em UX e performance',
-        views: [
-          {
-            name: 'Home',
-            image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            description: 'Página inicial com hero section e destaque para principais serviços'
-          },
-          {
-            name: 'Sobre',
-            image: 'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            description: 'Página sobre a empresa com infográficos interativos e linha do tempo'
-          },
-          {
-            name: 'Serviços',
-            image: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            description: 'Seção de serviços com cards interativos e CTA para cada serviço'
-          }
-        ],
-        features: [
-          'Carregamento progressivo para melhor performance',
-          'Design responsivo para todas as telas',
-          'Integração com Google Analytics e Tag Manager',
-          'Sistema de blog com taxonomia personalizada'
-        ]
-      },
-      testimonial: {
-        quote: 'A equipe da VW Tech entendeu nossa visão desde o primeiro dia. O resultado foi um site que não só tem uma aparência incrível, mas também trouxe resultados tangíveis para nosso negócio.',
-        author: 'Ricardo Mendes',
-        role: 'CEO, Tech Solutions Inc.'
-      },
-      year: '2024',
-      ctaColor: 'bg-primary'
-    },
-    {
-      id: 'e-commerce-de-moda',
-      title: 'E-commerce de Moda',
-      subtitle: 'Loja virtual completa com gestão de estoque',
-      description: 'Desenvolvemos uma loja virtual completa para o segmento de moda, com foco em experiência de compra, velocidade e sistema integrado de gestão de estoque e pagamentos. O projeto incluiu personalização completa de tema, integração com gateways de pagamento e configuração de métricas para otimização de conversão.',
-      client: 'Fashion Forward',
-      services: ['E-commerce', 'Web Design', 'Integrações de API', 'Gestão de Pagamentos'],
-      technologies: ['Shopify', 'React', 'Node.js', 'MySQL', 'AWS'],
-      // Protótipo de projeto com visualizações
-      prototype: {
-        title: 'Fashion Forward Store',
-        description: 'E-commerce de moda com sistema integrado de gestão',
-        views: [
-          {
-            name: 'Home',
-            image: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            description: 'Página inicial com carrossel de produtos em destaque e navegação por categorias'
-          },
-          {
-            name: 'Categoria',
-            image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            description: 'Página de categoria com filtros avançados e visualização por grid/lista'
-          },
-          {
-            name: 'Produto',
-            image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            description: 'Página de produto com zoom, múltiplas imagens e recomendações relacionadas'
-          },
-          {
-            name: 'Carrinho',
-            image: 'https://images.unsplash.com/photo-1580813089778-69e992256a5d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            description: 'Carrinho de compras com processo de checkout simplificado em uma página'
-          }
-        ],
-        features: [
-          'Integração com múltiplos gateways de pagamento',
-          'Sistema de gerenciamento de estoque em tempo real',
-          'Recomendações de produtos por IA',
-          'Checkout simplificado com análise de abandono',
-          'Rastreamento de pedidos integrado'
-        ]
-      },
-      results: ['Aumento de 180% nas vendas online', 'Redução de 25% no tempo de checkout', 'Aumento de 40% no valor médio do pedido'],
-      mainImage: 'https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1560243563-062bfc001d68?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1561069934-eee225952461?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1516762689617-e1cffcef479d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-      ],
-      testimonial: {
-        quote: 'Nossa nova loja virtual não só é bonita, mas também extremamente funcional. Vimos um aumento imediato nas vendas desde o lançamento e o feedback dos clientes tem sido incrível.',
-        author: 'Amanda Torres',
-        role: 'Diretora de Marketing, Fashion Forward'
-      },
-      year: '2023',
-      ctaColor: 'bg-secondary'
-    },
-    {
-      id: 'aplicativo-de-delivery',
-      title: 'Aplicativo de Delivery',
-      subtitle: 'App para iOS e Android com rastreamento em tempo real',
-      description: 'Desenvolvemos um aplicativo de delivery completo para iOS e Android, com foco em usabilidade e recursos de rastreamento em tempo real. O projeto incluiu desenvolvimento de APIs robustas, sistema de notificações em tempo real e interface intuitiva para clientes e entregadores.',
-      client: 'Express Food',
-      services: ['Desenvolvimento de Aplicativo', 'UX/UI Design', 'Desenvolvimento de API', 'Integrações de Pagamento'],
-      technologies: ['React Native', 'Node.js', 'Firebase', 'MongoDB', 'Google Maps API'],
-      results: ['Mais de 50.000 downloads em 3 meses', 'Aumento de 150% no número de pedidos', 'Redução de 30% no tempo médio de entrega'],
-      mainImage: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1601972599720-36938d4ecd31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-      ],
-      // Protótipo de projeto com visualizações
-      prototype: {
-        title: 'Express Food Delivery',
-        description: 'Aplicativo de delivery para iOS e Android com rastreamento em tempo real',
-        views: [
-          {
-            name: 'Home',
-            image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            description: 'Tela inicial com restaurantes próximos e categorias populares'
-          },
-          {
-            name: 'Restaurante',
-            image: 'https://images.unsplash.com/photo-1601972599720-36938d4ecd31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            description: 'Página do restaurante com menu, avaliações e informações'
-          },
-          {
-            name: 'Carrinho',
-            image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            description: 'Carrinho de compras com opções de pagamento e endereço'
-          },
-          {
-            name: 'Rastreamento',
-            image: 'https://images.unsplash.com/photo-1605152276897-4f618f831968?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            description: 'Rastreamento em tempo real do pedido com mapa interativo'
-          }
-        ],
-        features: [
-          'Rastreamento em tempo real via GPS',
-          'Múltiplos métodos de pagamento',
-          'Sistema de avaliação para entregadores e restaurantes',
-          'Notificações push em tempo real',
-          'Chat integrado com entregador'
-        ]
-      },
-      testimonial: {
-        quote: 'O aplicativo transformou completamente nosso negócio. O sistema de rastreamento em tempo real não só melhorou nossa eficiência operacional, mas também a satisfação dos clientes.',
-        author: 'Lucas Vieira',
-        role: 'Fundador, Express Food'
-      },
-      year: '2023',
-      ctaColor: 'bg-accent'
-    },
-    {
-      id: 'sistema-de-gestão',
-      title: 'Sistema de Gestão',
-      subtitle: 'Software empresarial com módulos personalizados',
-      description: 'Desenvolvemos um sistema de gestão empresarial completo com módulos personalizados para atender às necessidades específicas do cliente. O projeto incluiu análise de processos, desenvolvimento de soluções customizadas e implementação de fluxos de trabalho otimizados.',
-      client: 'Business Solutions',
-      services: ['Desenvolvimento de Software', 'Análise de Processos', 'Integração de Sistemas', 'Consultoria'],
-      technologies: ['Vue.js', 'Laravel', 'PostgreSQL', 'Docker', 'AWS'],
-      results: ['Redução de 40% no tempo de processamento de pedidos', 'Economia de 35% em custos operacionais', 'Aumento de 25% na produtividade da equipe'],
-      mainImage: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-      ],
-      testimonial: {
-        quote: 'O sistema desenvolvido pela VW Tech não só atendeu como superou nossas expectativas. A atenção aos detalhes e o entendimento profundo de nossos processos resultaram em uma solução que realmente fez diferença em nossa operação.',
-        author: 'Renata Oliveira',
-        role: 'Diretora de Operações, Business Solutions'
-      },
-      year: '2023',
-      ctaColor: 'bg-primary-light'
-    },
-    {
-      id: 'marketplace-regional',
-      title: 'Marketplace Regional',
-      subtitle: 'Plataforma conectando vendedores locais a consumidores',
-      description: 'Desenvolvemos uma plataforma de marketplace focada em conectar vendedores locais a consumidores de forma intuitiva e eficiente. O projeto incluiu desenvolvimento de funcionalidades de busca avançada, sistema de avaliações e ferramentas para vendedores gerenciarem seus produtos e pedidos.',
-      client: 'Local Market',
-      services: ['Desenvolvimento Web', 'UX/UI Design', 'Desenvolvimento de API', 'Sistemas de Pagamento'],
-      technologies: ['React', 'Node.js', 'GraphQL', 'MongoDB', 'AWS'],
-      results: ['Mais de 500 vendedores cadastrados no primeiro mês', 'Crescimento de 200% em transações em 6 meses', 'Taxa de retenção de usuários de 65%'],
-      mainImage: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1516321165247-4aa89a48be28?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1553413077-190dd305871c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1524050946488-2a67bde8fa7c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-      ],
-      testimonial: {
-        quote: 'A plataforma transformou o comércio local em nossa região. Pequenos vendedores agora têm acesso a um mercado muito maior, e os consumidores adoram a facilidade de encontrar produtos locais de qualidade.',
-        author: 'Carlos Santos',
-        role: 'CEO, Local Market'
-      },
-      year: '2022',
-      ctaColor: 'bg-secondary-dark'
-    },
-    {
-      id: 'landing-page-de-conversão',
-      title: 'Landing Page de Conversão',
-      subtitle: 'Página otimizada para captura de leads',
-      description: 'Desenvolvemos uma landing page estrategicamente projetada para maximizar a conversão de visitantes em leads qualificados. O projeto incluiu testes A/B, otimização para SEO e integração com sistemas de automação de marketing para um funil de vendas eficiente.',
-      client: 'Growth Marketing',
-      services: ['Web Design', 'Otimização de Conversão', 'SEO', 'Automação de Marketing'],
-      technologies: ['HTML5', 'CSS3', 'JavaScript', 'HubSpot', 'Google Analytics'],
-      results: ['Taxa de conversão de 28% (15% acima da média do setor)', 'Redução de 45% no custo por lead', 'Aumento de 65% na qualidade dos leads'],
-      mainImage: 'https://images.unsplash.com/photo-1457305237443-44c3d5a30b89?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      images: [
-        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-      ],
-      testimonial: {
-        quote: 'Os resultados superaram todas as nossas expectativas. Não apenas tivemos um aumento significativo no número de leads, mas também vimos uma melhoria na qualidade, o que impactou diretamente nossa receita.',
-        author: 'Juliana Martins',
-        role: 'CMO, Growth Marketing'
-      },
-      year: '2022',
-      ctaColor: 'bg-accent'
-    }
-  ];
-
   useEffect(() => {
-    // Find the project that matches the URL parameter
-    const foundProject = projectsData.find(p => p.id === id);
-    if (foundProject) {
-      setProject(foundProject);
-      document.title = `${foundProject.title} | VW Tech`;
+    // Obter o serviço da query string
+    const params = new URLSearchParams(location.split('?')[1]);
+    const serviceParam = params.get('service');
+    
+    if (serviceParam && serviceProjects[serviceParam]) {
+      setService(serviceParam);
+      setProject(serviceProjects[serviceParam]);
+      document.title = `${serviceParam} | VW Tech`;
+    } else {
+      // Fallback para o primeiro serviço se nenhum for encontrado
+      const firstService = Object.keys(serviceProjects)[0];
+      setService(firstService);
+      setProject(serviceProjects[firstService]);
+      document.title = `${firstService} | VW Tech`;
     }
-  }, [id]);
+  }, [location]);
 
   // Animations using GSAP
   useGSAP(() => {
-    if (headerRef.current && contentRef.current) {
+    if (headerRef.current && contentRef.current && project) {
       const tl = gsap.timeline();
       
       tl.from('.project-title', { 
         y: 50, 
         opacity: 0, 
         duration: 0.8, 
-        ease: 'power3.out' 
-      });
-      
-      tl.from('.project-subtitle', { 
+        ease: "power3.out"
+      })
+      .from('.project-subtitle', { 
         y: 30, 
         opacity: 0, 
-        duration: 0.8, 
-        ease: 'power3.out' 
-      }, '-=0.6');
-      
-      tl.from('.project-image', { 
-        y: 30, 
+        duration: 0.6, 
+        ease: "power3.out" 
+      }, "-=0.4")
+      .from('.project-header-content', { 
+        y: 20, 
         opacity: 0, 
-        duration: 0.8, 
-        ease: 'power3.out' 
-      }, '-=0.6');
+        duration: 0.6, 
+        ease: "power3.out" 
+      }, "-=0.3");
       
-      gsap.from('.content-section', {
+      gsap.from('.section-title', {
         scrollTrigger: {
-          trigger: contentRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none'
-        },
-        y: 50,
-        opacity: 0,
-        stagger: 0.2,
-        duration: 0.8,
-        ease: 'power3.out'
-      });
-      
-      gsap.from('.gallery-image', {
-        scrollTrigger: {
-          trigger: '.gallery-section',
+          trigger: '.section-title',
           start: 'top 80%',
           toggleActions: 'play none none none'
         },
         y: 30,
         opacity: 0,
+        duration: 0.6,
         stagger: 0.2,
+        ease: "power3.out"
+      });
+      
+      gsap.from('.feature-item', {
+        scrollTrigger: {
+          trigger: '.features-section',
+          start: 'top 75%',
+          toggleActions: 'play none none none'
+        },
+        y: 20,
+        opacity: 0,
+        duration: 0.4,
+        stagger: 0.1,
+        ease: "power3.out"
+      });
+      
+      gsap.from('.tech-item', {
+        scrollTrigger: {
+          trigger: '.tech-section',
+          start: 'top 75%',
+          toggleActions: 'play none none none'
+        },
+        scale: 0.9,
+        opacity: 0,
+        duration: 0.3,
+        stagger: 0.1,
+        ease: "back.out(1.7)"
+      });
+      
+      gsap.from('.screenshot-item', {
+        scrollTrigger: {
+          trigger: '.screenshots-section',
+          start: 'top 70%',
+          toggleActions: 'play none none none'
+        },
+        y: 40,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.2,
+        ease: "power3.out"
+      });
+      
+      gsap.from('.cta-section', {
+        scrollTrigger: {
+          trigger: '.cta-section',
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        },
+        y: 30,
+        opacity: 0,
         duration: 0.8,
-        ease: 'power3.out'
+        ease: "power3.out"
       });
     }
-  }, [headerRef, contentRef, project]);
+  }, [project]);
 
   if (!project) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4">Projeto não encontrado</h1>
-          <p className="text-muted-foreground mb-6">O projeto que você está procurando não existe ou foi removido.</p>
-          <Link href="/portfolio">
-            <Button className="bg-primary text-white">Voltar para o portfólio</Button>
-          </Link>
-        </div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -333,233 +335,169 @@ const ProjectDetailPage = () => {
   return (
     <>
       <Helmet>
-        <title>{project.title} | VW Tech</title>
-        <meta name="description" content={project.description.substring(0, 160)} />
+        <title>{service} | VW Tech</title>
+        <meta name="description" content={project.description} />
       </Helmet>
       
-      <div className="bg-muted min-h-screen">
-        {/* Hero Header */}
-        <motion.div 
+      <div className="min-h-screen bg-white">
+        {/* Header */}
+        <div 
           ref={headerRef}
-          className="relative h-[70vh] bg-black"
-          style={{ opacity, scale }}
+          className={`relative ${project.color} text-white overflow-hidden`}
         >
-          <div 
-            className="absolute inset-0 bg-cover bg-center" 
-            style={{ 
-              backgroundImage: `url(${project.mainImage})`,
-              filter: 'brightness(0.5) blur(2px)',
-              transform: 'scale(1.05)'
-            }}
-          ></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+          {/* Decorative elements */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-black/10 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2"></div>
+          </div>
           
-          <div className="container mx-auto px-4 h-full relative z-10 flex flex-col justify-end pb-16">
-            <motion.h1 
-              className="project-title text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              {project.title}
-            </motion.h1>
-            <motion.p 
-              className="project-subtitle text-xl text-gray-200 max-w-2xl"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              {project.subtitle}
-            </motion.p>
+          <div className="container mx-auto px-4 py-20 md:py-32 relative z-10">
+            <div className="max-w-4xl mx-auto">
+              <Link href="/" className="inline-flex items-center text-white/80 hover:text-white mb-8 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Voltar
+              </Link>
+              
+              <h1 className="project-title text-4xl md:text-6xl font-bold mb-4">
+                {service}
+              </h1>
+              
+              <h2 className="project-subtitle text-xl md:text-2xl font-medium mb-8 text-white/90">
+                {project.title}
+              </h2>
+              
+              <div className="project-header-content bg-white/10 backdrop-blur-md rounded-xl p-6 md:p-8 shadow-xl">
+                <p className="text-lg md:text-xl leading-relaxed">
+                  {project.description}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div ref={contentRef} className="container mx-auto px-4 py-16">
+          {/* Principais características */}
+          <div className="features-section mb-20">
+            <h3 className="section-title text-3xl font-bold mb-8 text-gray-900">
+              Principais Características
+            </h3>
             
-            <div className="flex flex-wrap gap-3 mt-6">
-              {project.services.map((service, index) => (
-                <motion.span 
-                  key={index}
-                  className="bg-white/10 backdrop-blur-sm text-white text-sm px-3 py-1 rounded-full"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {project.features.map((feature, index) => (
+                <div 
+                  key={index} 
+                  className="feature-item bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-100"
                 >
-                  {service}
-                </motion.span>
+                  <div className="flex items-start">
+                    <div className={`${project.color} text-white rounded-full p-2 mr-4`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <p className="text-lg text-gray-800 font-medium">{feature}</p>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
-        </motion.div>
-        
-        {/* Project Content */}
-        <div ref={contentRef} className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Main Content */}
-            <div className="lg:col-span-2">
-              <div className="content-section bg-white rounded-xl p-8 shadow-md mb-10">
-                <h2 className="text-2xl font-bold mb-4">Sobre o Projeto</h2>
-                <p className="text-muted-foreground mb-6">{project.description}</p>
-                
-                <h3 className="text-xl font-semibold mb-3">Resultados Alcançados</h3>
-                <ul className="list-disc pl-5 mb-6 space-y-2">
-                  {project.results.map((result, index) => (
-                    <li key={index} className="text-muted-foreground">{result}</li>
-                  ))}
-                </ul>
-              </div>
-              
-              {/* Seção de Protótipo */}
-              {'prototype' in project && (
-                <div className="content-section bg-gradient-to-br from-gray-50 to-white p-8 rounded-xl border border-gray-100 shadow-md mb-10">
-                  <h2 className="text-2xl font-bold mb-4">Protótipo do Projeto</h2>
-                  <p className="text-muted-foreground mb-8">{project.prototype?.description}</p>
-                  
-                  <div className="space-y-8">
-                    {/* Visualizações do Protótipo */}
-                    <div>
-                      <h3 className="text-xl font-semibold mb-4">Visualizações</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {project.prototype?.views.map((view: any, index: number) => (
-                          <div 
-                            key={index}
-                            className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100"
-                          >
-                            <div className="relative">
-                              <img 
-                                src={view.image} 
-                                alt={view.name} 
-                                className="w-full h-48 object-cover"
-                              />
-                              <div className="absolute top-2 left-2 bg-black/70 px-3 py-1 rounded-full">
-                                <span className="text-white text-xs font-semibold">{view.name}</span>
-                              </div>
-                            </div>
-                            <div className="p-4">
-                              <p className="text-sm text-muted-foreground">{view.description}</p>
-                            </div>
-                          </div>
-                        ))}
+          
+          {/* Screenshots */}
+          <div className="screenshots-section mb-20">
+            <h3 className="section-title text-3xl font-bold mb-8 text-gray-900">
+              Visualizações do Projeto
+            </h3>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {project.screenshots.map((screenshot, index) => (
+                <div 
+                  key={index} 
+                  className="screenshot-item group overflow-hidden rounded-xl shadow-lg"
+                >
+                  <div className="relative">
+                    <div className="aspect-[4/3] overflow-hidden">
+                      <img 
+                        src={screenshot.image} 
+                        alt={screenshot.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-0 left-0 p-6 text-white">
+                        <h4 className="text-xl font-semibold mb-2">{screenshot.title}</h4>
+                        <p className="text-sm text-white/80">{screenshot.description}</p>
                       </div>
                     </div>
-                    
-                    {/* Funcionalidades */}
-                    <div>
-                      <h3 className="text-xl font-semibold mb-4">Funcionalidades</h3>
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {project.prototype?.features.map((feature: string, index: number) => (
-                          <li key={index} className="flex items-start">
-                            <svg 
-                              xmlns="http://www.w3.org/2000/svg" 
-                              className="h-5 w-5 text-primary mr-2 mt-0.5 flex-shrink-0" 
-                              fill="none" 
-                              viewBox="0 0 24 24" 
-                              stroke="currentColor"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                            <span className="text-sm">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                  </div>
+                  <div className="p-6 bg-white">
+                    <h4 className="text-xl font-semibold mb-2 text-gray-800">{screenshot.title}</h4>
+                    <p className="text-gray-600">{screenshot.description}</p>
                   </div>
                 </div>
-              )}
-              
-              {/* Gallery */}
-              <div className="gallery-section mb-10">
-                <h2 className="text-2xl font-bold mb-6">Galeria do Projeto</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {project.images.map((image, index) => (
-                    <motion.div 
-                      key={index} 
-                      className="gallery-image overflow-hidden rounded-xl shadow-md"
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <img 
-                        src={image} 
-                        alt={`${project.title} - Imagem ${index + 1}`} 
-                        className="w-full h-64 object-cover transition-transform hover:scale-105"
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Testimonial */}
-              <motion.div 
-                className="content-section bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-8 shadow-md mb-10"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="flex flex-col items-center text-center">
-                  <svg className="w-12 h-12 text-primary/30 mb-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                  </svg>
-                  <p className="text-lg italic mb-4">{project.testimonial.quote}</p>
-                  <div>
-                    <p className="font-semibold">{project.testimonial.author}</p>
-                    <p className="text-sm text-muted-foreground">{project.testimonial.role}</p>
-                  </div>
-                </div>
-              </motion.div>
+              ))}
             </div>
+          </div>
+          
+          {/* Tecnologias */}
+          <div className="tech-section mb-20">
+            <h3 className="section-title text-3xl font-bold mb-8 text-gray-900">
+              Tecnologias Utilizadas
+            </h3>
             
-            {/* Sidebar */}
-            <div className="lg:col-span-1">
-              <div className="content-section bg-white rounded-xl p-8 shadow-md mb-6 sticky top-24">
-                <h2 className="text-2xl font-bold mb-6">Detalhes do Projeto</h2>
-                
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-sm uppercase tracking-wider text-muted-foreground mb-2">Cliente</h3>
-                    <p className="font-medium">{project.client}</p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-sm uppercase tracking-wider text-muted-foreground mb-2">Ano</h3>
-                    <p className="font-medium">{project.year}</p>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-sm uppercase tracking-wider text-muted-foreground mb-2">Serviços</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {project.services.map((service, index) => (
-                        <span key={index} className="bg-muted text-xs px-2 py-1 rounded-md">
-                          {service}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h3 className="text-sm uppercase tracking-wider text-muted-foreground mb-2">Tecnologias</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {project.technologies.map((tech, index) => (
-                        <span key={index} className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-md">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="pt-4">
-                    <Link href="/contact">
-                      <Button className={`w-full ${project.ctaColor} text-white`}>
-                        Quero um projeto como este
-                      </Button>
-                    </Link>
-                  </div>
-                  
-                  <div>
-                    <Link href="/portfolio">
-                      <Button variant="outline" className="w-full">
-                        Ver mais projetos
-                      </Button>
-                    </Link>
-                  </div>
+            <div className="flex flex-wrap gap-4">
+              {project.technologies.map((tech, index) => (
+                <div 
+                  key={index} 
+                  className="tech-item px-6 py-3 bg-gray-100 rounded-full text-gray-800 font-medium hover:bg-gray-200 transition-colors"
+                >
+                  {tech}
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Benefícios */}
+          <div className="benefits-section mb-20">
+            <h3 className="section-title text-3xl font-bold mb-8 text-gray-900">
+              Benefícios
+            </h3>
+            
+            <div className="bg-gray-50 rounded-xl p-8">
+              <ul className="space-y-4">
+                {project.benefits.map((benefit, index) => (
+                  <li key={index} className="flex items-start">
+                    <div className={`${project.color} text-white rounded-full p-1 mr-4 mt-1`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <p className="text-lg text-gray-800">{benefit}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          
+          {/* CTA Section */}
+          <div className="cta-section bg-gray-50 rounded-xl p-8 md:p-12 text-center">
+            <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">
+              Pronto para impulsionar seu negócio?
+            </h3>
+            <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-8">
+              Entre em contato conosco hoje mesmo e descubra como podemos ajudar a transformar suas ideias em realidade.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/contact">
+                <Button className={`${project.color} hover:opacity-90 text-white px-8 py-3 rounded-lg text-lg font-medium shadow-lg`}>
+                  Solicitar Orçamento
+                </Button>
+              </Link>
+              <Link href="/portfolio">
+                <Button variant="outline" className="border-2 border-gray-300 hover:bg-gray-100 px-8 py-3 rounded-lg text-lg font-medium">
+                  Ver Outros Projetos
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

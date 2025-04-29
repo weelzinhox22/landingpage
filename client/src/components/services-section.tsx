@@ -4,14 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import gsap from 'gsap';
 import { Link } from 'wouter';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faLaptopCode, 
-  faShoppingCart, 
-  faMobileAlt, 
-  faBullhorn, 
-  faCogs 
-} from '@fortawesome/free-solid-svg-icons';
 
 interface ServiceCardProps {
   title: string;
@@ -119,10 +111,22 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ima
               initial="initial"
               animate={isHovered ? "hover" : "initial"}
             >
-              {/* Renderiza o ícone FontAwesome correto baseado no nome do ícone simplificado */}
-              {icon === 'laptop' && <FontAwesomeIcon icon={faLaptopCode} className="h-6 w-6" />}
-              {icon === 'cart' && <FontAwesomeIcon icon={faShoppingCart} className="h-6 w-6" />}
-              {icon === 'mobile' && <FontAwesomeIcon icon={faMobileAlt} className="h-6 w-6" />}
+              {/* Ícones SVG nativos para todos os serviços */}
+              {icon === 'laptop' && (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
+                </svg>
+              )}
+              {icon === 'cart' && (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                </svg>
+              )}
+              {icon === 'mobile' && (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                </svg>
+              )}
               {icon === 'bullhorn' && (
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 15.75v-3A8.967 8.967 0 0 1 17.214 8c-1.995-.55-4.122-.92-6.332-1.078C10.235 6.315 9.584 6 9 6H7.5C6.172 6 5.008 6.672 4.347 7.73m3.102 9.54a23.89 23.89 0 0 1 5.454 1.31A8.967 8.967 0 0 0 18 15.75v-3a8.967 8.967 0 0 0-.784-3.75l-.729.33-.73-.33" />
@@ -140,7 +144,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ima
           <p className="text-muted-foreground text-sm mb-6 line-clamp-3">
             {description}
           </p>
-          <Link href="/contact">
+          <Link href={`/project-detail?service=${encodeURIComponent(title)}`}>
             <Button 
               variant="ghost" 
               className={`px-0 hover:bg-transparent text-${color.replace('bg-', '')} hover:text-${color.replace('bg-', '')}/80 group`}
