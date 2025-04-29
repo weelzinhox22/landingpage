@@ -3,20 +3,22 @@ import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-mo
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faReact, 
-  faNodeJs, 
-  faVuejs, 
-  faAngular, 
-  faAws, 
-  faGithub, 
-  faDocker, 
-  faFigma 
-} from '@fortawesome/free-brands-svg-icons';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TechCard = ({ icon, name, color, index, delayFactor = 0.1 }) => {
+const TechCard = ({ 
+  icon, 
+  name, 
+  color, 
+  index, 
+  delayFactor = 0.1 
+}: {
+  icon: any;
+  name: string;
+  color: string;
+  index: number;
+  delayFactor?: number;
+}) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -58,7 +60,7 @@ const TechCard = ({ icon, name, color, index, delayFactor = 0.1 }) => {
             style={{ backfaceVisibility: "hidden" }}
           >
             <div className="tech-icon text-5xl mb-4 z-10">
-              <FontAwesomeIcon icon={icon} className="text-white" />
+              <div className="text-3xl font-bold text-white">{name.charAt(0)}</div>
             </div>
             <h3 className="text-white font-bold text-xl z-10">{name}</h3>
             
@@ -84,14 +86,30 @@ const TechCard = ({ icon, name, color, index, delayFactor = 0.1 }) => {
   );
 };
 
-const FloatingTechIcon = ({ icon, delay, duration, x, y, scale, pulse }) => {
+// Simple function to create decorative elements
+type FloatingElementProps = {
+  delay: number;
+  duration: number;
+  x: string | number; 
+  y: string | number;
+  size: number;
+  color: string;
+};
+
+const FloatingElement = ({ delay, duration, x, y, size, color }: FloatingElementProps) => {
   return (
     <motion.div
-      className="absolute z-10 text-white/30"
-      style={{ x, y, scale }}
+      className={`absolute z-10 rounded-full ${color}`}
+      style={{ 
+        x, 
+        y, 
+        width: size, 
+        height: size,
+        filter: 'blur(8px)'
+      }}
       animate={{
-        y: [y, y - 20, y],
-        opacity: pulse ? [0.3, 0.7, 0.3] : 0.3,
+        y: [y, typeof y === 'string' ? y : Number(y) - 20, y],
+        opacity: [0.3, 0.7, 0.3],
       }}
       transition={{
         duration,
@@ -99,9 +117,7 @@ const FloatingTechIcon = ({ icon, delay, duration, x, y, scale, pulse }) => {
         repeat: Infinity,
         ease: "easeInOut"
       }}
-    >
-      <FontAwesomeIcon icon={icon} />
-    </motion.div>
+    />
   );
 };
 
@@ -114,7 +130,7 @@ const TechParallaxSection = () => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent) => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
       const newX = (e.clientX - rect.left - rect.width / 2) / 20;
@@ -132,25 +148,17 @@ const TechParallaxSection = () => {
   
   // Tecnologias com ícones e cores
   const technologies = [
-    { name: 'React', icon: faReact, color: 'from-blue-500 to-cyan-400' },
-    { name: 'Node.js', icon: faNodeJs, color: 'from-green-500 to-green-600' },
-    { name: 'Vue.js', icon: faVuejs, color: 'from-emerald-500 to-teal-600' },
-    { name: 'Angular', icon: faAngular, color: 'from-red-500 to-rose-600' },
-    { name: 'AWS', icon: faAws, color: 'from-orange-400 to-amber-600' },
-    { name: 'GitHub', icon: faGithub, color: 'from-gray-700 to-gray-900' },
-    { name: 'Docker', icon: faDocker, color: 'from-blue-600 to-blue-800' },
-    { name: 'Figma', icon: faFigma, color: 'from-purple-500 to-violet-600' },
+    { name: 'React', icon: null, color: 'from-blue-500 to-cyan-400' },
+    { name: 'Node.js', icon: null, color: 'from-green-500 to-green-600' },
+    { name: 'Vue.js', icon: null, color: 'from-emerald-500 to-teal-600' },
+    { name: 'Angular', icon: null, color: 'from-red-500 to-rose-600' },
+    { name: 'AWS', icon: null, color: 'from-orange-400 to-amber-600' },
+    { name: 'GitHub', icon: null, color: 'from-gray-700 to-gray-900' },
+    { name: 'Docker', icon: null, color: 'from-blue-600 to-blue-800' },
+    { name: 'Figma', icon: null, color: 'from-purple-500 to-violet-600' },
   ];
   
-  // Floating decorative tech icons
-  const floatingIcons = [
-    { icon: faReact, delay: 0, duration: 5, x: '10%', y: '15%', scale: 1.5, pulse: true },
-    { icon: faNodeJs, delay: 0.5, duration: 7, x: '85%', y: '40%', scale: 2.2, pulse: false },
-    { icon: faVuejs, delay: 1.2, duration: 6, x: '25%', y: '75%', scale: 1.8, pulse: true },
-    { icon: faGithub, delay: 2, duration: 8, x: '75%', y: '20%', scale: 1.4, pulse: true },
-    { icon: faDocker, delay: 1.5, duration: 6.5, x: '65%', y: '70%', scale: 2, pulse: false },
-    { icon: faAngular, delay: 0.8, duration: 7.5, x: '15%', y: '60%', scale: 1.2, pulse: true }
-  ];
+  // Simplified decorative elements
   
   // Parallax effect with GSAP
   useEffect(() => {
@@ -208,12 +216,15 @@ const TechParallaxSection = () => {
         <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-primary/20 rounded-full filter blur-[80px]"></div>
         <div className="absolute top-2/3 right-1/4 w-96 h-96 bg-secondary/20 rounded-full filter blur-[100px]"></div>
         
-        {/* Floating technology icons */}
-        {floatingIcons.map((item, index) => (
-          <div key={index} className="floating-icon">
-            <FloatingTechIcon {...item} />
-          </div>
-        ))}
+        {/* Floating decorative elements */}
+        <div className="floating-elements">
+          <FloatingElement delay={0} duration={5} x="10%" y="15%" size={60} color="bg-primary/30" />
+          <FloatingElement delay={0.5} duration={7} x="85%" y="40%" size={80} color="bg-secondary/30" />
+          <FloatingElement delay={1.2} duration={6} x="25%" y="75%" size={70} color="bg-accent/30" />
+          <FloatingElement delay={2} duration={8} x="75%" y="20%" size={50} color="bg-primary/20" />
+          <FloatingElement delay={1.5} duration={6.5} x="65%" y="70%" size={90} color="bg-secondary/20" />
+          <FloatingElement delay={0.8} duration={7.5} x="15%" y="60%" size={40} color="bg-accent/20" />
+        </div>
         
         {/* Particles */}
         {[...Array(15)].map((_, i) => (
