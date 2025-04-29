@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
+import { Link } from 'wouter';
 
 interface FAQProps {
   question: string;
@@ -104,52 +106,61 @@ const FAQSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} id="faq" className="py-20 relative overflow-hidden">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-muted via-primary/5 to-background"></div>
+    <section ref={sectionRef} id="faq" className="py-20 relative bg-white overflow-hidden">
+      {/* Background Gradient - sem animação para não sumir ao rolar */}
+      <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-primary/5 to-background/30"></div>
       
-      {/* Decorative Elements */}
+      {/* Decorative Elements - posições fixas para não causar problemas ao rolar */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-10 left-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 right-10 w-80 h-80 bg-secondary/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+        <div className="fixed-decorative absolute top-10 left-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="fixed-decorative absolute bottom-10 right-10 w-80 h-80 bg-secondary/5 rounded-full blur-3xl"></div>
+        <div className="fixed-decorative absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
+          <motion.span 
+            className="inline-block text-primary font-semibold mb-2 bg-primary/10 px-3 py-1 rounded-full text-sm"
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            Tire suas dúvidas
+          </motion.span>
           <motion.h2 
-            className="faq-title text-3xl md:text-4xl font-bold mb-4"
+            className="faq-title text-3xl md:text-5xl font-bold mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            Perguntas Frequentes
+            Perguntas <span className="text-primary">Frequentes</span>
           </motion.h2>
           <motion.div 
             className="faq-divider w-20 h-1 bg-secondary mx-auto mb-6"
             initial={{ width: 0, opacity: 0 }}
             whileInView={{ width: 80, opacity: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           ></motion.div>
           <motion.p 
             className="faq-description text-muted-foreground max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             Encontre respostas para as perguntas mais comuns sobre criação de sites e soluções digitais.
           </motion.p>
         </div>
         
-        {/* FAQ Accordion */}
+        {/* FAQ Accordion - adicionado higher z-index para aparecer acima de tudo */}
         <motion.div 
-          className="faq-items max-w-3xl mx-auto"
+          className="faq-items max-w-3xl mx-auto relative z-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           <Accordion type="single" collapsible className="w-full space-y-4">
@@ -159,7 +170,7 @@ const FAQSection = () => {
                 className="faq-item"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, amount: 0.1 }}
                 transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
               >
                 <FAQ
@@ -171,7 +182,30 @@ const FAQSection = () => {
             ))}
           </Accordion>
         </motion.div>
+        
+        {/* CTA after FAQs */}
+        <motion.div 
+          className="text-center mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          <p className="text-muted-foreground mb-6">Não encontrou o que procurava?</p>
+          <Link href="/contact">
+            <Button 
+              className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg shadow-md"
+            >
+              Fale Conosco
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Button>
+          </Link>
+        </motion.div>
       </div>
+      
+      {/* Estilo já aplicado via className */}
     </section>
   );
 };
