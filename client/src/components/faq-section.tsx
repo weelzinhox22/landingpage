@@ -105,34 +105,69 @@ const FAQSection = () => {
 
   return (
     <section ref={sectionRef} id="faq" className="py-20 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full gradient-bg"></div>
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-muted via-primary/5 to-background"></div>
+      
+      {/* Decorative Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-10 left-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-10 right-10 w-80 h-80 bg-secondary/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+      </div>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="faq-title text-3xl md:text-4xl font-bold mb-4">Perguntas Frequentes</h2>
-          <div className="faq-divider w-20 h-1 bg-secondary mx-auto mb-6"></div>
-          <p className="faq-description text-muted-foreground max-w-2xl mx-auto">
+          <motion.h2 
+            className="faq-title text-3xl md:text-4xl font-bold mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            Perguntas Frequentes
+          </motion.h2>
+          <motion.div 
+            className="faq-divider w-20 h-1 bg-secondary mx-auto mb-6"
+            initial={{ width: 0, opacity: 0 }}
+            whileInView={{ width: 80, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          ></motion.div>
+          <motion.p 
+            className="faq-description text-muted-foreground max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             Encontre respostas para as perguntas mais comuns sobre criação de sites e soluções digitais.
-          </p>
+          </motion.p>
         </div>
         
         {/* FAQ Accordion */}
         <motion.div 
           className="faq-items max-w-3xl mx-auto"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full space-y-4">
             {faqs.map((faq, index) => (
-              <FAQ
+              <motion.div
                 key={index}
-                question={faq.question}
-                answer={faq.answer}
-                index={`item-${index}`}
-              />
+                className="faq-item"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+              >
+                <FAQ
+                  question={faq.question}
+                  answer={faq.answer}
+                  index={`item-${index}`}
+                />
+              </motion.div>
             ))}
           </Accordion>
         </motion.div>

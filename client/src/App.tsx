@@ -12,6 +12,7 @@ import Portfolio from "@/pages/portfolio";
 import Pricing from "@/pages/pricing";
 import Contact from "@/pages/contact";
 import Login from "@/pages/login";
+import ProjectDetail from "@/pages/project-detail";
 import NotFound from "@/pages/not-found";
 import { useState, useEffect } from "react";
 import Navbar from "./components/navbar";
@@ -32,6 +33,7 @@ function Router() {
         <Route path="/pricing" component={Pricing} />
         <Route path="/contact" component={Contact} />
         <Route path="/login" component={Login} />
+        <Route path="/project/:id" component={ProjectDetail} />
         <Route component={NotFound} />
       </Switch>
     </AnimatePresence>
