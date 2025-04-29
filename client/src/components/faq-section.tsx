@@ -1,6 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
-import gsap from 'gsap';
+import { useRef } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
@@ -13,12 +11,12 @@ interface FAQProps {
 
 const FAQ: React.FC<FAQProps> = ({ question, answer, index }) => {
   return (
-    <AccordionItem value={index} className="mb-4">
-      <AccordionTrigger className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow text-left font-medium">
-        {question}
+    <AccordionItem value={index} className="mb-4 border-none">
+      <AccordionTrigger className="bg-white p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow text-left font-semibold text-gray-800">
+        <span className="faq-question">{question}</span>
       </AccordionTrigger>
-      <AccordionContent className="bg-white mt-1 p-4 rounded-lg">
-        <p className="text-muted-foreground">{answer}</p>
+      <AccordionContent className="bg-white mt-1 p-5 rounded-lg shadow-sm">
+        <p className="text-gray-700 font-normal">{answer}</p>
       </AccordionContent>
     </AccordionItem>
   );
@@ -26,61 +24,6 @@ const FAQ: React.FC<FAQProps> = ({ question, answer, index }) => {
 
 const FAQSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (sectionRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.from(".faq-title", {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            toggleActions: "play none none none"
-          },
-          y: 50,
-          opacity: 0,
-          duration: 0.8
-        });
-
-        gsap.from(".faq-divider", {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            toggleActions: "play none none none"
-          },
-          width: 0,
-          opacity: 0,
-          duration: 0.8,
-          delay: 0.2
-        });
-
-        gsap.from(".faq-description", {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            toggleActions: "play none none none"
-          },
-          y: 20,
-          opacity: 0,
-          duration: 0.8,
-          delay: 0.4
-        });
-
-        gsap.from(".faq-items .faq-item", {
-          scrollTrigger: {
-            trigger: ".faq-description",
-            start: "top 70%",
-            toggleActions: "play none none none"
-          },
-          y: 20,
-          opacity: 0,
-          stagger: 0.1,
-          duration: 0.5
-        });
-      }, sectionRef);
-
-      return () => ctx.revert();
-    }
-  }, []);
 
   const faqs = [
     {
@@ -106,106 +49,65 @@ const FAQSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} id="faq" className="py-20 relative bg-white overflow-hidden">
-      {/* Background Gradient - sem animação para não sumir ao rolar */}
-      <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-primary/5 to-background/30"></div>
+    <section ref={sectionRef} id="faq" className="py-20 relative bg-gradient-to-br from-blue-50 to-slate-50 overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-slate-100"></div>
       
-      {/* Decorative Elements - posições fixas para não causar problemas ao rolar */}
+      {/* Static Decorative Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="fixed-decorative absolute top-10 left-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="fixed-decorative absolute bottom-10 right-10 w-80 h-80 bg-secondary/5 rounded-full blur-3xl"></div>
-        <div className="fixed-decorative absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-20 w-64 h-64 bg-primary/10 rounded-full"></div>
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-secondary/10 rounded-full"></div>
+        <div className="absolute bottom-1/3 left-1/3 w-48 h-48 bg-accent/10 rounded-full"></div>
       </div>
       
+      {/* Main Content with Strong Contrast */}
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16">
-          <motion.span 
-            className="inline-block text-primary font-semibold mb-2 bg-primary/10 px-3 py-1 rounded-full text-sm"
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            Tire suas dúvidas
-          </motion.span>
-          <motion.h2 
-            className="faq-title text-3xl md:text-5xl font-bold mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            Perguntas <span className="text-primary">Frequentes</span>
-          </motion.h2>
-          <motion.div 
-            className="faq-divider w-20 h-1 bg-secondary mx-auto mb-6"
-            initial={{ width: 0, opacity: 0 }}
-            whileInView={{ width: 80, opacity: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          ></motion.div>
-          <motion.p 
-            className="faq-description text-muted-foreground max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            Encontre respostas para as perguntas mais comuns sobre criação de sites e soluções digitais.
-          </motion.p>
-        </div>
+        <div className="bg-white p-8 rounded-2xl shadow-lg mb-10">
+          <div className="text-center mb-16">
+            <div className="inline-block text-primary font-semibold mb-2 bg-primary/10 px-3 py-1 rounded-full text-sm">
+              Tire suas dúvidas
+            </div>
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-gray-900">
+              Perguntas <span className="text-primary">Frequentes</span>
+            </h2>
+            <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
+            <p className="text-gray-700 max-w-2xl mx-auto font-medium">
+              Encontre respostas para as perguntas mais comuns sobre criação de sites e soluções digitais.
+            </p>
+          </div>
         
-        {/* FAQ Accordion - adicionado higher z-index para aparecer acima de tudo */}
-        <motion.div 
-          className="faq-items max-w-3xl mx-auto relative z-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
+          {/* FAQ Accordion - adicionado higher z-index para aparecer acima de tudo */}
           <Accordion type="single" collapsible className="w-full space-y-4">
             {faqs.map((faq, index) => (
-              <motion.div
+              <div
                 key={index}
                 className="faq-item"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
               >
                 <FAQ
                   question={faq.question}
                   answer={faq.answer}
                   index={`item-${index}`}
                 />
-              </motion.div>
+              </div>
             ))}
           </Accordion>
-        </motion.div>
         
-        {/* CTA after FAQs */}
-        <motion.div 
-          className="text-center mt-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-        >
-          <p className="text-muted-foreground mb-6">Não encontrou o que procurava?</p>
-          <Link href="/contact">
-            <Button 
-              className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg shadow-md"
-            >
-              Fale Conosco
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </Button>
-          </Link>
-        </motion.div>
+          {/* CTA after FAQs */}
+          <div className="text-center mt-16">
+            <p className="text-gray-700 mb-6">Não encontrou o que procurava?</p>
+            <Link href="/contact">
+              <Button 
+                className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg shadow-md"
+              >
+                Fale Conosco
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </Button>
+            </Link>
+          </div>
+        </div>
       </div>
-      
-      {/* Estilo já aplicado via className */}
     </section>
   );
 };
