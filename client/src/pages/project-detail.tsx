@@ -22,6 +22,254 @@ interface ServiceProject {
 
 // Define projetos específicos para cada serviço
 const serviceProjects: Record<string, ServiceProject> = {
+  "Website Corporativo": {
+    title: "Website Corporativo",
+    description: "Desenvolvimento de site institucional com design moderno e responsivo, focado em apresentar a empresa de forma profissional e atraente. O projeto inclui otimização para SEO, integração com redes sociais e sistema de gerenciamento de conteúdo.",
+    features: [
+      "Design responsivo para todas as telas",
+      "Otimização para motores de busca (SEO)",
+      "Carregamento rápido e progressivo",
+      "Integração com Google Analytics",
+      "Painel administrativo personalizado"
+    ],
+    technologies: ["React", "Next.js", "TailwindCSS", "Node.js", "GraphQL"],
+    screenshots: [
+      {
+        title: "Página Inicial",
+        description: "Design moderno com seções interativas e call-to-action estratégicos",
+        image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        title: "Página Sobre",
+        description: "Apresentação da empresa com recursos visuais e linha do tempo",
+        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    benefits: [
+      "Maior credibilidade e profissionalismo",
+      "Melhor visibilidade nos motores de busca",
+      "Experiência do usuário otimizada",
+      "Facilidade de manutenção e atualização"
+    ],
+    color: "#3B82F6"
+  },
+  "E-commerce": {
+    title: "E-commerce",
+    description: "Desenvolvimento de loja virtual completa com sistema de pagamento integrado, gestão de estoque, carrinho de compras e área do cliente. Interface intuitiva e otimizada para conversão.",
+    features: [
+      "Sistema de pagamento seguro",
+      "Gestão de estoque em tempo real",
+      "Carrinho de compras persistente",
+      "Área do cliente personalizada",
+      "Sistema de cupons e descontos"
+    ],
+    technologies: ["React", "Next.js", "Stripe", "PostgreSQL", "Redis"],
+    screenshots: [
+      {
+        title: "Vitrine",
+        description: "Layout moderno com destaque para produtos em promoção",
+        image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        title: "Carrinho",
+        description: "Interface intuitiva para finalização de compra",
+        image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    benefits: [
+      "Aumento nas vendas online",
+      "Processo de compra simplificado",
+      "Gestão eficiente do estoque",
+      "Análise detalhada de vendas"
+    ],
+    color: "#10B981"
+  },
+  "Aplicativo Mobile": {
+    title: "Aplicativo Mobile",
+    description: "Desenvolvimento de aplicativo mobile nativo para iOS e Android, com foco em performance e experiência do usuário. Integração com APIs e recursos nativos dos dispositivos.",
+    features: [
+      "Design nativo para iOS e Android",
+      "Notificações push personalizadas",
+      "Modo offline",
+      "Integração com câmera e GPS",
+      "Animações fluidas"
+    ],
+    technologies: ["React Native", "TypeScript", "Firebase", "Redux", "Jest"],
+    screenshots: [
+      {
+        title: "Tela Principal",
+        description: "Interface limpa e intuitiva",
+        image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        title: "Perfil",
+        description: "Área personalizada do usuário",
+        image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    benefits: [
+      "Maior engajamento dos usuários",
+      "Presença nas lojas de aplicativos",
+      "Recursos nativos aproveitados",
+      "Performance otimizada"
+    ],
+    color: "#8B5CF6"
+  },
+  "E-commerce de Moda": {
+    title: "E-commerce de Moda",
+    description: "Desenvolvimento de loja virtual completa com sistema de pagamento integrado, gestão de estoque, carrinho de compras e área do cliente. Interface intuitiva e otimizada para conversão.",
+    features: [
+      "Sistema de pagamento seguro",
+      "Gestão de estoque em tempo real",
+      "Carrinho de compras persistente",
+      "Área do cliente personalizada",
+      "Sistema de cupons e descontos"
+    ],
+    technologies: ["React", "Next.js", "Stripe", "PostgreSQL", "Redis"],
+    screenshots: [
+      {
+        title: "Vitrine",
+        description: "Layout moderno com destaque para produtos em promoção",
+        image: "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        title: "Carrinho",
+        description: "Interface intuitiva para finalização de compra",
+        image: "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    benefits: [
+      "Aumento nas vendas online",
+      "Processo de compra simplificado",
+      "Gestão eficiente do estoque",
+      "Análise detalhada de vendas"
+    ],
+    color: "#10B981"
+  },
+  "Aplicativo de Delivery": {
+    title: "Aplicativo de Delivery",
+    description: "Desenvolvimento de aplicativo mobile nativo para iOS e Android, com foco em performance e experiência do usuário. Integração com APIs e recursos nativos dos dispositivos.",
+    features: [
+      "Design nativo para iOS e Android",
+      "Notificações push personalizadas",
+      "Modo offline",
+      "Integração com câmera e GPS",
+      "Animações fluidas"
+    ],
+    technologies: ["React Native", "TypeScript", "Firebase", "Redux", "Jest"],
+    screenshots: [
+      {
+        title: "Tela Principal",
+        description: "Interface limpa e intuitiva",
+        image: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        title: "Perfil",
+        description: "Área personalizada do usuário",
+        image: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    benefits: [
+      "Maior engajamento dos usuários",
+      "Presença nas lojas de aplicativos",
+      "Recursos nativos aproveitados",
+      "Performance otimizada"
+    ],
+    color: "#8B5CF6"
+  },
+  "Sistema de Gestão": {
+    title: "Sistema de Gestão",
+    description: "Desenvolvimento de software completo para gerenciamento empresarial com módulos personalizados, relatórios avançados e integração com outros sistemas.",
+    features: [
+      "Dashboard personalizado",
+      "Relatórios em tempo real",
+      "Gestão de usuários e permissões",
+      "Integração com APIs externas",
+      "Backup automático"
+    ],
+    technologies: ["React", "Node.js", "PostgreSQL", "Redis", "Docker"],
+    screenshots: [
+      {
+        title: "Dashboard",
+        description: "Visão geral do sistema com métricas importantes",
+        image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        title: "Relatórios",
+        description: "Análise detalhada de dados e métricas",
+        image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    benefits: [
+      "Aumento na produtividade",
+      "Melhor tomada de decisão",
+      "Redução de erros operacionais",
+      "Escalabilidade do negócio"
+    ],
+    color: "#F59E0B"
+  },
+  "Marketplace Regional": {
+    title: "Marketplace Regional",
+    description: "Desenvolvimento de plataforma que conecta vendedores locais a consumidores de forma intuitiva, com sistema de avaliações, chat integrado e gestão de pedidos.",
+    features: [
+      "Cadastro de vendedores",
+      "Sistema de avaliações",
+      "Chat em tempo real",
+      "Gestão de pedidos",
+      "Pagamentos seguros"
+    ],
+    technologies: ["React", "Next.js", "WebSocket", "MongoDB", "AWS"],
+    screenshots: [
+      {
+        title: "Página Principal",
+        description: "Interface moderna com busca avançada",
+        image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        title: "Perfil do Vendedor",
+        description: "Área personalizada para vendedores",
+        image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    benefits: [
+      "Maior alcance para vendedores",
+      "Processo de compra simplificado",
+      "Comunidade ativa",
+      "Crescimento do mercado local"
+    ],
+    color: "#EC4899"
+  },
+  "Landing Page de Conversão": {
+    title: "Landing Page de Conversão",
+    description: "Desenvolvimento de página otimizada para captura de leads com alta taxa de conversão, utilizando técnicas avançadas de UX e A/B testing.",
+    features: [
+      "Design persuasivo",
+      "Formulários otimizados",
+      "A/B testing",
+      "Integração com CRM",
+      "Análise de comportamento"
+    ],
+    technologies: ["React", "TailwindCSS", "Google Analytics", "HubSpot", "Hotjar"],
+    screenshots: [
+      {
+        title: "Hero Section",
+        description: "Design impactante com call-to-action claro",
+        image: "https://images.unsplash.com/photo-1457305237443-44c3d5a30b89?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        title: "Formulário",
+        description: "Formulário otimizado para conversão",
+        image: "https://images.unsplash.com/photo-1457305237443-44c3d5a30b89?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      }
+    ],
+    benefits: [
+      "Aumento na captura de leads",
+      "Melhor qualificação de leads",
+      "Dados de comportamento do usuário",
+      "ROI mensurável"
+    ],
+    color: "#6366F1"
+  },
   "Criação de Sites": {
     title: "Website Responsivo",
     description: "Desenvolvimento de website com design moderno e totalmente responsivo, construído com as mais recentes tecnologias web para garantir desempenho e compatibilidade em todos os dispositivos. O projeto inclui otimização para SEO, integração com redes sociais e sistema de gerenciamento de conteúdo.",
@@ -211,146 +459,21 @@ const serviceProjects: Record<string, ServiceProject> = {
 
 const ProjectDetailPage = () => {
   const [location] = useLocation();
-  const [service, setService] = useState<string | null>(null);
-  const [project, setProject] = useState<ServiceProject | null>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const searchParams = new URLSearchParams(location.split('?')[1]);
+  const serviceName = searchParams.get('service');
   
-  useEffect(() => {
-    // Obter o serviço da query string
-    const params = new URLSearchParams(location.split('?')[1]);
-    const serviceParam = params.get('service');
-    
-    // Verifica se o serviço está em serviceProjects
-    if (serviceParam && serviceProjects[serviceParam]) {
-      setService(serviceParam);
-      setProject(serviceProjects[serviceParam]);
-      document.title = `${serviceParam} | VW Tech`;
-    } 
-    // Verifica se o serviço corresponde a um item de portfólio
-    else if (serviceParam && ['Website Corporativo', 'E-commerce de Moda', 'Aplicativo de Delivery', 
-      'Sistema de Gestão', 'Marketplace Regional', 'Landing Page de Conversão'].includes(serviceParam)) {
-      // Mapeamento dos itens de portfólio para serviços
-      const portfolioToServiceMap: Record<string, string> = {
-        'Website Corporativo': 'Criação de Sites',
-        'E-commerce de Moda': 'Lojas Virtuais',
-        'Aplicativo de Delivery': 'Aplicativos',
-        'Sistema de Gestão': 'Sistemas Personalizados',
-        'Marketplace Regional': 'Lojas Virtuais',
-        'Landing Page de Conversão': 'Marketing Digital'
-      };
-      
-      const mappedService = portfolioToServiceMap[serviceParam];
-      if (mappedService && serviceProjects[mappedService]) {
-        setService(serviceParam);
-        setProject(serviceProjects[mappedService]);
-        document.title = `${serviceParam} | VW Tech`;
-      }
-    } 
-    else {
-      // Fallback para o primeiro serviço se nenhum for encontrado
-      const firstService = Object.keys(serviceProjects)[0];
-      setService(firstService);
-      setProject(serviceProjects[firstService]);
-      document.title = `${firstService} | VW Tech`;
-    }
-  }, [location]);
-
-  // Animations using GSAP
-  useGSAP(() => {
-    // Verifica se as referências e o projeto existem
-    if (headerRef.current && contentRef.current && project) {
-      const tl = gsap.timeline();
-      
-      tl.from('.project-title', { 
-        y: 50, 
-        opacity: 0, 
-        duration: 0.8, 
-        ease: "power3.out"
-      })
-      .from('.project-subtitle', { 
-        y: 30, 
-        opacity: 0, 
-        duration: 0.6, 
-        ease: "power3.out" 
-      }, "-=0.4")
-      .from('.project-header-content', { 
-        y: 20, 
-        opacity: 0, 
-        duration: 0.6, 
-        ease: "power3.out" 
-      }, "-=0.3");
-      
-      gsap.from('.section-title', {
-        scrollTrigger: {
-          trigger: '.section-title',
-          start: 'top 80%',
-          toggleActions: 'play none none none'
-        },
-        y: 30,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.2,
-        ease: "power3.out"
-      });
-      
-      gsap.from('.feature-item', {
-        scrollTrigger: {
-          trigger: '.features-section',
-          start: 'top 75%',
-          toggleActions: 'play none none none'
-        },
-        y: 20,
-        opacity: 0,
-        duration: 0.4,
-        stagger: 0.1,
-        ease: "power3.out"
-      });
-      
-      gsap.from('.tech-item', {
-        scrollTrigger: {
-          trigger: '.tech-section',
-          start: 'top 75%',
-          toggleActions: 'play none none none'
-        },
-        scale: 0.9,
-        opacity: 0,
-        duration: 0.3,
-        stagger: 0.1,
-        ease: "back.out(1.7)"
-      });
-      
-      gsap.from('.screenshot-item', {
-        scrollTrigger: {
-          trigger: '.screenshots-section',
-          start: 'top 70%',
-          toggleActions: 'play none none none'
-        },
-        y: 40,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.2,
-        ease: "power3.out"
-      });
-      
-      gsap.from('.cta-section', {
-        scrollTrigger: {
-          trigger: '.cta-section',
-          start: 'top 80%',
-          toggleActions: 'play none none none'
-        },
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out"
-      });
-    }
-  }, { dependencies: [project] });
+  const project = serviceName ? serviceProjects[serviceName] : null;
 
   if (!project) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4">Projeto não encontrado</h1>
+          <p className="text-gray-600 mb-8">O projeto que você está procurando não existe.</p>
+          <Link href="/">
+            <Button>Voltar para a página inicial</Button>
+          </Link>
+        </div>
       </div>
     );
   }
@@ -358,14 +481,13 @@ const ProjectDetailPage = () => {
   return (
     <>
       <Helmet>
-        <title>{service} | VW Tech</title>
+        <title>{serviceName} | VW Tech</title>
         <meta name="description" content={project.description} />
       </Helmet>
       
       <div className="min-h-screen bg-white">
         {/* Header */}
         <div 
-          ref={headerRef}
           className={`relative ${project.color} text-white overflow-hidden`}
         >
           {/* Decorative elements */}
@@ -384,7 +506,7 @@ const ProjectDetailPage = () => {
               </Link>
               
               <h1 className="project-title text-4xl md:text-6xl font-bold mb-4">
-                {service}
+                {serviceName}
               </h1>
               
               <h2 className="project-subtitle text-xl md:text-2xl font-medium mb-8 text-white/90">
@@ -400,7 +522,7 @@ const ProjectDetailPage = () => {
           </div>
         </div>
         
-        <div ref={contentRef} className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 py-16">
           {/* Principais características */}
           <div className="features-section mb-20">
             <h3 className="section-title text-3xl font-bold mb-8 text-gray-900">

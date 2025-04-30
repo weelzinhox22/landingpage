@@ -1,25 +1,32 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import gsap from 'gsap';
 import { Link } from 'wouter';
+import { Laptop, ShoppingCart, Smartphone, Megaphone, Settings, ArrowRight } from 'lucide-react';
 
 interface ServiceCardProps {
   title: string;
   description: string;
-  icon: string;
+  iconName: keyof typeof icons;
   image: string;
   color: string;
   delay: number;
   index: number;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, image, color, delay, index }) => {
+const icons = {
+  laptop: Laptop,
+  cart: ShoppingCart,
+  mobile: Smartphone,
+  megaphone: Megaphone,
+  settings: Settings,
+};
+
+const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, iconName, image, color, delay, index }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   
-  // Image fallbacks in case the primary image fails
   const fallbackImages = [
     "https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80", 
@@ -35,133 +42,125 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ima
   };
   
   const iconVariants = {
-    initial: { scale: 1 },
-    hover: { scale: 1.2, rotate: 5, transition: { type: "spring", stiffness: 500 } }
+    initial: { scale: 1, rotate: 0 },
+    hover: { scale: 1.15, rotate: 8, transition: { type: "spring", stiffness: 400, damping: 15 } }
   };
   
   const overlayVariants = {
-    initial: { opacity: 0 },
-    hover: { opacity: 1, transition: { duration: 0.3 } }
+    initial: { opacity: 0, backdropFilter: 'blur(0px)' },
+    hover: { 
+      opacity: 1, 
+      backdropFilter: 'blur(4px)',
+      transition: { duration: 0.4, ease: 'easeOut' } 
+    }
   };
   
   const textVariants = {
-    initial: { y: 20, opacity: 0 },
+    initial: { y: 15, opacity: 0 },
     hover: { 
       y: 0, 
       opacity: 1, 
       transition: { 
         duration: 0.3,
-        staggerChildren: 0.1
+        delay: 0.1,
+        staggerChildren: 0.08
       } 
     }
   };
+  
+  const IconComponent = icons[iconName];
 
   return (
     <motion.div 
       ref={cardRef}
-      className="h-full"
+      className="h-full group"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: delay * 0.1 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.5, delay: delay * 0.08 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >
-      <div className="h-full bg-white rounded-xl overflow-hidden shadow-xl transition-all hover:-translate-y-2 duration-300 border border-gray-50">
-        <div className="relative group overflow-hidden">
-          <div className={`absolute inset-0 ${color} opacity-30 z-0`}></div>
+      <div className="h-full bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1.5 duration-300 border border-gray-100/80">
+        <div className="relative overflow-hidden">
+          <div className={`absolute inset-0 ${color} opacity-20 z-0`}></div>
           <img 
             src={imgSrc} 
             alt={title} 
-            className="w-full h-52 object-cover transition-transform duration-700 group-hover:scale-110"
+            className="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-105"
             onError={handleImageError}
           />
+          {/* Overlay Principal */}
           <motion.div 
-            className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"
-            variants={overlayVariants}
+            className="absolute inset-0" // Removido gradient, mix-blend, animate-gradient etc daqui
+            variants={overlayVariants} // Anima opacidade e blur geral
             initial="initial"
             animate={isHovered ? "hover" : "initial"}
           >
+            {/* Gradiente Animado (camada separada) */}
+            <div 
+              className="absolute inset-0 bg-gradient-to-br from-primary/70 via-secondary/50 to-accent/60 animate-gradient-shift opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+              style={{
+                backgroundSize: "250% 250%",
+                backgroundPosition: "0% 0%",
+              }}
+            />
+             {/* Camada Escura para Contraste */}
+             <motion.div 
+               className="absolute inset-0 bg-black transition-opacity duration-300"
+               initial={{ opacity: 0.10 }} // Opacidade inicial baixa
+               animate={{ opacity: isHovered ? 0.50 : 0.10 }} // Opacidade maior no hover
+             />
+            
+            {/* Conteúdo de Texto (sobre as camadas de fundo) */}
             <motion.div 
-              className="absolute bottom-0 left-0 p-4 text-white"
-              variants={textVariants}
-              initial="initial"
-              animate={isHovered ? "hover" : "initial"}
+              className="absolute bottom-0 left-0 p-4 text-white w-full z-10" // Adicionado z-10 para garantir que fique acima
+              variants={textVariants} // Anima o texto (y e opacidade)
+              // initial e animate já controlados pelo pai (overlayVariants)
             >
               <motion.span 
-                className="inline-block mb-2 text-xs font-semibold uppercase tracking-wider bg-white/20 backdrop-blur-sm px-2 py-1 rounded"
-                variants={textVariants}
+                className="inline-block mb-1 text-xs font-bold uppercase tracking-wider bg-black/50 backdrop-blur-sm px-2 py-0.5 rounded-full shadow-sm" // Aumentado bg-black/50 e adicionado shadow
+                variants={textVariants} // Herdando animação com stagger
               >
                 {title.split(' ')[0]}
               </motion.span>
               <motion.p 
-                className="text-sm text-white/90"
-                variants={textVariants}
+                className="text-sm font-medium text-white shadow-sm" // Mantido text-white e adicionado shadow
+                variants={textVariants} // Herdando animação com stagger
               >
-                Clique para descobrir
+                Clique para saber mais
               </motion.p>
             </motion.div>
           </motion.div>
         </div>
-        <div className="p-6">
-          <div className="flex items-center mb-4">
+        <div className="p-5">
+          <div className="flex items-center mb-3">
             <motion.div 
-              className={`w-12 h-12 rounded-lg ${color} flex items-center justify-center text-white mr-4 shadow-md`}
+              className={`w-11 h-11 rounded-lg ${color} flex items-center justify-center text-white mr-3 shadow-md`}
               variants={iconVariants}
               initial="initial"
               animate={isHovered ? "hover" : "initial"}
             >
-              {/* Ícones SVG nativos para todos os serviços */}
-              {icon === 'laptop' && (
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
-                </svg>
-              )}
-              {icon === 'cart' && (
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                </svg>
-              )}
-              {icon === 'mobile' && (
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-                </svg>
-              )}
-              {icon === 'bullhorn' && (
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 0 1-1.44-4.282m3.102.069a18.03 18.03 0 0 1-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 15.75v-3A8.967 8.967 0 0 1 17.214 8c-1.995-.55-4.122-.92-6.332-1.078C10.235 6.315 9.584 6 9 6H7.5C6.172 6 5.008 6.672 4.347 7.73m3.102 9.54a23.89 23.89 0 0 1 5.454 1.31A8.967 8.967 0 0 0 18 15.75v-3a8.967 8.967 0 0 0-.784-3.75l-.729.33-.73-.33" />
-                </svg>
-              )}
-              {icon === 'cogs' && (
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.431l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                </svg>
-              )}
+              {IconComponent && <IconComponent className="w-5 h-5" />}
             </motion.div>
-            <h3 className="font-bold text-xl">{title}</h3>
+            <h3 className="font-semibold text-lg text-gray-800">{title}</h3>
           </div>
-          <p className="text-muted-foreground text-sm mb-6 line-clamp-3">
+          <p className="text-muted-foreground text-sm mb-5 line-clamp-3">
             {description}
           </p>
-          <Link href={`/project-detail?service=${encodeURIComponent(title)}`}>
+          <Link href={`/project-detail?service=${encodeURIComponent(title)}`} className="inline-block">
             <Button 
               variant="ghost" 
-              className={`px-0 hover:bg-transparent text-${color.replace('bg-', '')} hover:text-${color.replace('bg-', '')}/80 group`}
+              className={`px-0 py-1 h-auto hover:bg-transparent text-${color.replace('bg-', '')} hover:text-${color.replace('bg-', '')}/80 group/link flex items-center gap-1.5`}
             >
-              <span>Saiba mais</span>
-              <motion.svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-4 w-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-                initial={{ x: 0 }}
-                animate={isHovered ? { x: 4 } : { x: 0 }}
-                transition={{ duration: 0.2 }}
+              <span className="font-medium text-sm">Saiba mais</span>
+              <motion.div
+                 initial={{ x: 0 }}
+                 animate={isHovered ? { x: 3 } : { x: 0 }}
+                 transition={{ duration: 0.2 }}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </motion.svg>
+                <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover/link:translate-x-0.5" />
+              </motion.div>
             </Button>
           </Link>
         </div>
@@ -175,66 +174,45 @@ const ServicesSection = () => {
   const [activeFilter, setActiveFilter] = useState('Todos');
   const filters = ['Todos', 'Websites', 'E-commerce', 'Aplicativos', 'Marketing'];
 
-  useEffect(() => {
-    if (sectionRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.from(".services-title", {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            toggleActions: "play none none none"
-          },
-          y: 50,
-          opacity: 0,
-          duration: 0.8
-        });
-
-        gsap.from(".services-divider", {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            toggleActions: "play none none none"
-          },
-          width: 0,
-          opacity: 0,
-          duration: 0.8,
-          delay: 0.2
-        });
-
-        gsap.from(".services-description", {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            toggleActions: "play none none none"
-          },
-          y: 20,
-          opacity: 0,
-          duration: 0.8,
-          delay: 0.4
-        });
-
-        gsap.from(".filter-buttons .service-filter", {
-          scrollTrigger: {
-            trigger: ".services-description",
-            start: "top 70%",
-            toggleActions: "play none none none"
-          },
-          y: 20,
-          opacity: 0,
-          stagger: 0.1,
-          duration: 0.5
-        });
-      }, sectionRef);
-
-      return () => ctx.revert();
+  const sectionVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 }
     }
-  }, []);
+  };
+
+  const headerItemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { type: 'spring', stiffness: 100, damping: 12 }
+    }
+  };
+  
+  const filterButtonContainerVariants = {
+     hidden: { opacity: 0 },
+     visible: {
+       opacity: 1,
+       transition: { staggerChildren: 0.08 }
+     }
+  };
+  
+  const filterButtonVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: { type: 'spring', stiffness: 120, damping: 10 }
+    }
+  };
 
   const services = [
     {
       title: "Criação de Sites",
       description: "Websites responsivos e otimizados para mecanismos de busca, garantindo maior visibilidade e conversão.",
-      icon: "laptop",
+      iconName: "laptop",
       image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
       color: "bg-primary",
       category: "Websites"
@@ -242,7 +220,7 @@ const ServicesSection = () => {
     {
       title: "Lojas Virtuais",
       description: "E-commerces completos e integrados com sistemas de pagamento, aumentando suas vendas online.",
-      icon: "cart",
+      iconName: "cart",
       image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
       color: "bg-secondary",
       category: "E-commerce"
@@ -250,7 +228,7 @@ const ServicesSection = () => {
     {
       title: "Aplicativos",
       description: "Desenvolvimento de apps nativos para Android e iOS que oferecem experiências excepcionais.",
-      icon: "mobile",
+      iconName: "mobile",
       image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
       color: "bg-accent",
       category: "Aplicativos"
@@ -258,17 +236,17 @@ const ServicesSection = () => {
     {
       title: "Marketing Digital",
       description: "Estratégias de marketing que aumentam sua presença online e atraem clientes qualificados.",
-      icon: "bullhorn",
+      iconName: "megaphone",
       image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      color: "bg-primary-light",
+      color: "bg-accent",
       category: "Marketing"
     },
     {
       title: "Sistemas Personalizados",
       description: "Soluções sob medida para otimizar processos e melhorar a gestão do seu negócio.",
-      icon: "cogs",
+      iconName: "settings",
       image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      color: "bg-secondary-dark",
+      color: "bg-secondary",
       category: "Websites"
     }
   ];
@@ -278,78 +256,82 @@ const ServicesSection = () => {
     : services.filter(service => service.category === activeFilter);
 
   return (
-    <section ref={sectionRef} id="servicos" className="py-24 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white"></div>
-      
-      {/* Decorative shapes */}
-      <div className="absolute left-0 top-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -left-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/4 right-0 w-64 h-64 bg-secondary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+    <motion.section 
+      ref={sectionRef} 
+      id="servicos" 
+      className="py-20 md:py-28 relative overflow-hidden bg-gradient-to-b from-gray-50 to-white/80"
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+    >
+      <div className="absolute inset-0 -z-10 opacity-50">
+        <svg className="absolute inset-0 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]" aria-hidden="true">
+          <defs>
+            <pattern id="83fd4e5a-9d52-42fc-97b6-718e5d7ee527" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
+              <path d="M100 200V.5M.5 .5H200" fill="none" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" strokeWidth="0" fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)" />
+        </svg>
       </div>
+      <motion.div 
+        className="absolute -top-40 -left-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-slow"
+        style={{ animationDelay: '0.5s' }}
+      />
+      <motion.div 
+        className="absolute -bottom-40 -right-40 w-[30rem] h-[30rem] bg-secondary/5 rounded-full blur-3xl animate-pulse-slow" 
+        style={{ animationDelay: '1s' }}
+      />
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16">
+        <div className="text-center mb-14">
           <motion.span 
-            className="inline-block text-primary font-semibold mb-2 bg-primary/10 px-3 py-1 rounded-full text-sm"
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            className="inline-block text-primary font-semibold mb-3 bg-primary/10 px-3 py-1 rounded-full text-sm"
+            variants={headerItemVariants}
           >
             O que oferecemos
           </motion.span>
           <motion.h2 
-            className="services-title text-3xl md:text-5xl font-bold mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            className="services-title text-4xl md:text-5xl font-bold mb-4"
+             variants={headerItemVariants}
           >
-            Nossos <span className="text-primary">Serviços</span>
+            Nossos <span className="text-primary">Serviços Digitais</span>
           </motion.h2>
           <motion.div 
             className="services-divider w-20 h-1 bg-secondary mx-auto mb-6"
-            initial={{ width: 0, opacity: 0 }}
-            whileInView={{ width: 80, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+             variants={headerItemVariants}
+             initial={{ scaleX: 0, opacity: 0 }}
+             whileInView={{ scaleX: 1, opacity: 1 }}
+             transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+             style={{ transformOrigin: 'center' }}
           ></motion.div>
           <motion.p 
-            className="services-description text-muted-foreground max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            className="services-description text-muted-foreground max-w-2xl mx-auto text-lg"
+             variants={headerItemVariants}
           >
-            Soluções digitais completas para impulsionar o crescimento e transformação do seu negócio, combinando tecnologia avançada com design inspirador.
+            Soluções digitais completas para impulsionar o crescimento e a transformação do seu negócio, combinando tecnologia de ponta com design inspirador.
           </motion.p>
         </div>
         
-        {/* Service Categories */}
         <motion.div 
-          className="filter-buttons flex justify-center mb-10 flex-wrap gap-2"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          className="filter-buttons flex justify-center mb-12 flex-wrap gap-3"
+          variants={filterButtonContainerVariants}
         >
-          {filters.map((filter, index) => (
+          {filters.map((filter) => (
             <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: 0.4 + index * 0.1 }}
+              key={filter}
+              variants={filterButtonVariants}
+              whileHover={{ y: -3 }}
+              whileTap={{ scale: 0.95 }}
             >
               <Button
                 variant={activeFilter === filter ? "default" : "outline"}
-                className={`service-filter px-6 py-2 ${
+                className={`service-filter px-5 py-2 text-sm ${
                   activeFilter === filter 
-                    ? 'bg-primary text-white shadow-md' 
-                    : 'bg-white text-foreground hover:bg-gray-100'
-                } rounded-full font-medium transition-all`}
+                    ? 'bg-primary text-white shadow-md hover:bg-primary/90' 
+                    : 'bg-white text-foreground hover:bg-gray-100 border-gray-300'
+                } rounded-full font-medium transition-all duration-200`}
                 onClick={() => setActiveFilter(filter)}
               >
                 {filter}
@@ -358,30 +340,29 @@ const ServicesSection = () => {
           ))}
         </motion.div>
         
-        {/* Services Carousel */}
         <AnimatePresence mode="wait">
           <motion.div 
             key={activeFilter}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-            className="relative mx-auto max-w-7xl px-4 md:px-8"
+            transition={{ duration: 0.4 }}
+            className="relative mx-auto max-w-7xl px-0 md:px-4"
           >
             <Carousel className="w-full" 
               opts={{
                 align: "start",
-                loop: true,
+                loop: filteredServices.length > 2,
               }}
             >
               <CarouselContent className="-ml-4">
                 {filteredServices.map((service, index) => (
-                  <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                    <div className="p-1">
+                  <CarouselItem key={service.title} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                    <div className="p-1 h-full">
                       <ServiceCard
                         title={service.title}
                         description={service.description}
-                        icon={service.icon}
+                        iconName={service.iconName as keyof typeof icons}
                         image={service.image}
                         color={service.color}
                         delay={index}
@@ -391,63 +372,39 @@ const ServicesSection = () => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <div className="hidden md:block absolute -left-4 top-1/2 transform -translate-y-1/2">
-                <CarouselPrevious className="h-12 w-12 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 shadow-lg" />
-              </div>
-              <div className="hidden md:block absolute -right-4 top-1/2 transform -translate-y-1/2">
-                <CarouselNext className="h-12 w-12 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 shadow-lg" />
-              </div>
+              <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 md:hidden flex gap-4">
+                  <CarouselPrevious className="static translate-y-0 h-10 w-10 rounded-full border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 shadow-md" />
+                  <CarouselNext className="static translate-y-0 h-10 w-10 rounded-full border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 shadow-md" />
+               </div>
+               <div className="hidden md:block absolute -left-4 lg:-left-8 top-1/2 transform -translate-y-1/2">
+                  <CarouselPrevious className="h-11 w-11 rounded-full border border-gray-300 bg-white/80 backdrop-blur-sm text-gray-700 hover:bg-primary hover:text-white hover:border-primary transition-colors duration-300 shadow-lg" />
+               </div>
+               <div className="hidden md:block absolute -right-4 lg:-right-8 top-1/2 transform -translate-y-1/2">
+                  <CarouselNext className="h-11 w-11 rounded-full border border-gray-300 bg-white/80 backdrop-blur-sm text-gray-700 hover:bg-primary hover:text-white hover:border-primary transition-colors duration-300 shadow-lg" />
+               </div>
             </Carousel>
-            
-            {/* Mobile pagination indicators */}
-            <div className="flex justify-center mt-8 gap-2 md:hidden">
-              {[...Array(Math.min(3, filteredServices.length))].map((_, i) => (
-                <div 
-                  key={i} 
-                  className={`w-2 h-2 rounded-full ${i === 0 ? 'bg-primary' : 'bg-gray-300'}`}
-                ></div>
-              ))}
-            </div>
           </motion.div>
         </AnimatePresence>
         
-        {/* View All Services CTA */}
         <motion.div 
-          className="flex justify-center mt-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.6 }}
+          className="flex justify-center mt-20 md:mt-16"
+          variants={headerItemVariants}
         >
+         <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
           <Link href="/services">
             <Button 
+              size="lg"
               variant="outline" 
-              className="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-6 rounded-full text-lg font-medium shadow-md hover:shadow-lg transition-all duration-300"
+              className="border-primary text-primary hover:bg-primary hover:text-white px-8 py-3 rounded-full text-base md:text-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 group flex items-center gap-2"
             >
               Ver Todos os Serviços
-              <motion.svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-5 w-5 ml-2" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-                initial={{ x: 0 }}
-                animate={{ x: [0, 5, 0] }}
-                transition={{ 
-                  duration: 1.5, 
-                  repeat: Infinity, 
-                  repeatType: "loop",
-                  ease: "easeInOut",
-                  times: [0, 0.5, 1]
-                }}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </motion.svg>
+              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
           </Link>
+         </motion.div>
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

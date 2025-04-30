@@ -235,7 +235,7 @@ const AboutSection = () => {
                 transition={{ duration: 0.5 }}
               >
                 <div className="md:w-1/2 md:pr-16 md:text-right mb-6 md:mb-0">
-                  <h4 className="text-xl font-bold mb-2">2018 - Fundação</h4>
+                  <h4 className="text-xl font-bold mb-2">2022 - Fundação</h4>
                   <p className="text-muted-foreground">Vinícius e Wesley iniciam a VW Tech em um pequeno escritório compartilhado, com o primeiro cliente sendo uma startup local de e-commerce.</p>
                 </div>
                 <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white z-10">
@@ -257,7 +257,7 @@ const AboutSection = () => {
                   <span className="font-bold">2</span>
                 </div>
                 <div className="md:w-1/2 md:pl-16 md:text-left mb-6 md:mb-0">
-                  <h4 className="text-xl font-bold mb-2">2020 - Crescimento</h4>
+                  <h4 className="text-xl font-bold mb-2">2023 - Crescimento</h4>
                   <p className="text-muted-foreground">Expansão da equipe para 10 pessoas e mudança para um escritório maior. Alcançamos a marca de 50 projetos entregues.</p>
                 </div>
               </motion.div>
@@ -271,7 +271,7 @@ const AboutSection = () => {
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
                 <div className="md:w-1/2 md:pr-16 md:text-right mb-6 md:mb-0">
-                  <h4 className="text-xl font-bold mb-2">2022 - Expansão</h4>
+                  <h4 className="text-xl font-bold mb-2">2024 - Expansão</h4>
                   <p className="text-muted-foreground">Abertura de um segundo escritório e início de operações internacionais com clientes na América Latina.</p>
                 </div>
                 <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white z-10">
@@ -293,7 +293,7 @@ const AboutSection = () => {
                   <span className="font-bold">4</span>
                 </div>
                 <div className="md:w-1/2 md:pl-16 md:text-left mb-6 md:mb-0">
-                  <h4 className="text-xl font-bold mb-2">2024 - Hoje</h4>
+                  <h4 className="text-xl font-bold mb-2">2025 - Hoje</h4>
                   <p className="text-muted-foreground">Equipe de 25 especialistas, mais de 200 projetos concluídos e reconhecimento como uma das empresas mais inovadoras do setor de tecnologia.</p>
                 </div>
               </motion.div>

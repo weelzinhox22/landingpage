@@ -58,61 +58,61 @@ const PortfolioItem: React.FC<PortfolioItemProps> = ({
   };
 
   return (
-    <motion.div 
-      ref={cardRef}
-      className="portfolio-item group cursor-pointer transform-gpu"
-      style={{
-        transformStyle: "preserve-3d",
-        perspective: "1000px",
-        rotateX, 
-        rotateY,
-      }}
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="relative overflow-hidden rounded-xl shadow-2xl border border-white/10 h-full">
-        <div className="bg-gradient-to-br from-black/30 to-primary/10 absolute inset-0 opacity-50 z-10"></div>
-        <img 
-          src={imgSrc}
-          alt={title} 
-          className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
-          onError={handleImageError}
-        />
-        <motion.div 
-          className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-0 group-hover:opacity-90 transition-opacity duration-500 flex flex-col justify-end z-20"
-          initial={{ opacity: 0 }}
-          whileHover={{ opacity: 1 }}
-        >
-          <div className="p-6 text-white transform-gpu" style={{ transform: "translateZ(40px)" }}>
-            <motion.span 
-              className="text-xs font-semibold uppercase tracking-wider bg-primary/80 text-white px-2 py-1 rounded mb-3 inline-block"
-              initial={{ x: -20, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.1 }}
-            >
-              {category}
-            </motion.span>
-            <motion.h3 
-              className="font-bold text-xl mb-2"
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              {title}
-            </motion.h3>
-            <motion.p 
-              className="text-sm text-gray-300 mb-4"
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              {description}
-            </motion.p>
-            <Link href={`/project-detail?service=${encodeURIComponent(title)}`}>
+    <Link href={`/project-detail?service=${encodeURIComponent(title)}`}>
+      <motion.div 
+        ref={cardRef}
+        className="portfolio-item group cursor-pointer transform-gpu"
+        style={{
+          transformStyle: "preserve-3d",
+          perspective: "1000px",
+          rotateX, 
+          rotateY,
+        }}
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="relative overflow-hidden rounded-xl shadow-2xl border border-white/10 h-full">
+          <div className="bg-gradient-to-br from-black/30 to-primary/10 absolute inset-0 opacity-50 z-10"></div>
+          <img 
+            src={imgSrc}
+            alt={title} 
+            className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
+            onError={handleImageError}
+          />
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-0 group-hover:opacity-90 transition-opacity duration-500 flex flex-col justify-end z-20"
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+          >
+            <div className="p-6 text-white transform-gpu" style={{ transform: "translateZ(40px)" }}>
+              <motion.span 
+                className="text-xs font-semibold uppercase tracking-wider bg-primary/80 text-white px-2 py-1 rounded mb-3 inline-block"
+                initial={{ x: -20, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                {category}
+              </motion.span>
+              <motion.h3 
+                className="font-bold text-xl mb-2"
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                {title}
+              </motion.h3>
+              <motion.p 
+                className="text-sm text-gray-300 mb-4"
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                {description}
+              </motion.p>
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
@@ -129,11 +129,11 @@ const PortfolioItem: React.FC<PortfolioItemProps> = ({
                   </svg>
                 </Button>
               </motion.div>
-            </Link>
-          </div>
-        </motion.div>
-      </div>
-    </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+    </Link>
   );
 };
 
