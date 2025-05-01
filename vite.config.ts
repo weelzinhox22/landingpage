@@ -4,7 +4,6 @@ import { fileURLToPath, URL } from "node:url";
 import tailwindcss from "tailwindcss";
 import { resolve, dirname } from "path";
 import { createRequire } from "module";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 const require = createRequire(import.meta.url);
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -12,15 +11,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   plugins: [
     react(),
-    runtimeErrorOverlay(),
-    ...(process.env.NODE_ENV !== "production" &&
-    process.env.REPL_ID !== undefined
-      ? [
-          await import("@replit/vite-plugin-cartographer").then((m) =>
-            m.cartographer(),
-          ),
-        ]
-      : []),
   ],
   resolve: {
     alias: {

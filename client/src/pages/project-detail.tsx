@@ -690,8 +690,8 @@ const ProjectDetailPage = () => {
             right: cursorPosition.x / 8
           }}
         />
-      </div>
-      
+          </div>
+          
       <div className="container mx-auto px-4 py-32" ref={projectRef}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
@@ -752,33 +752,33 @@ const ProjectDetailPage = () => {
               >
                 Resultados
               </motion.button>
-            </div>
           </div>
-          
+        </div>
+        
           {/* Overview Section */}
           {activeTab === "overview" && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div>
                 <h2 className="text-2xl font-bold mb-6 text-foreground">Funcionalidades Principais</h2>
                 <ul className="features-list space-y-4">
-                  {project.features.map((feature, index) => (
+              {project.features.map((feature, index) => (
                     <motion.li 
-                      key={index}
+                  key={index} 
                       className="feature-item flex items-start"
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
-                    >
+                >
                       <div className="rounded-full p-1 bg-primary/10 mr-3 mt-1 flex-shrink-0">
                         <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
                       <span>{feature}</span>
                     </motion.li>
                   ))}
                 </ul>
-              </div>
+                  </div>
               
               <div>
                 <h2 className="text-2xl font-bold mb-6 text-foreground">Resultados & Benefícios</h2>
@@ -795,10 +795,10 @@ const ProjectDetailPage = () => {
                         <svg className="w-4 h-4 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                         </svg>
-                      </div>
+                </div>
                       <span>{benefit}</span>
                     </motion.li>
-                  ))}
+              ))}
                 </ul>
               </div>
             </div>
@@ -877,9 +877,9 @@ const ProjectDetailPage = () => {
               <h2 className="text-2xl font-bold mb-8 text-foreground">Stack Tecnológica</h2>
               
               <div className="tech-stack grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {project.technologies.map((tech, index) => (
+              {project.technologies.map((tech, index) => (
                   <motion.div
-                    key={index}
+                  key={index} 
                     className="tech-item bg-background rounded-lg p-4 border border-input text-center hover:border-primary/50 transition-colors"
                     whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0, 0, 0, 0.2)" }}
                     initial={{ opacity: 0, y: 20 }}
@@ -912,10 +912,10 @@ const ProjectDetailPage = () => {
                       <div className="absolute -left-10 w-5 h-5 rounded-full bg-primary border-4 border-background"></div>
                       <h3 className="text-xl font-bold mb-2">{step.title}</h3>
                       <p className="text-muted-foreground">{step.description}</p>
-                    </div>
-                  ))}
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
             </div>
           )}
           
