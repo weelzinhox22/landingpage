@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,13 +11,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 
 const ContactSection = () => {
   const { toast } = useToast();
   const sectionRef = useRef<HTMLElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -27,70 +30,130 @@ const ContactSection = () => {
     message: ''
   });
 
-  useEffect(() => {
-    if (sectionRef.current) {
-      const ctx = gsap.context(() => {
-        gsap.from(".contact-title", {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            toggleActions: "play none none none"
-          },
-          y: 50,
-          opacity: 0,
-          duration: 0.8
-        });
+  // Register ScrollTrigger plugin
+  gsap.registerPlugin(ScrollTrigger);
 
-        gsap.from(".contact-divider", {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            toggleActions: "play none none none"
-          },
-          width: 0,
-          opacity: 0,
-          duration: 0.8,
-          delay: 0.2
-        });
+  useGSAP(() => {
+    // Section title animations
+    gsap.from(".contact-title", {
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 70%",
+        toggleActions: "play none none none"
+      },
+      y: 50,
+      opacity: 0,
+      duration: 0.8
+    });
 
-        gsap.from(".contact-description", {
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 70%",
-            toggleActions: "play none none none"
-          },
-          y: 20,
-          opacity: 0,
-          duration: 0.8,
-          delay: 0.4
-        });
+    gsap.from(".contact-divider", {
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 70%",
+        toggleActions: "play none none none"
+      },
+      width: 0,
+      opacity: 0,
+      duration: 0.8,
+      delay: 0.2
+    });
 
-        gsap.from(".contact-form", {
-          scrollTrigger: {
-            trigger: ".contact-description",
-            start: "top 70%",
-            toggleActions: "play none none none"
-          },
-          y: 50,
-          opacity: 0,
-          duration: 0.8
-        });
+    gsap.from(".contact-description", {
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 70%",
+        toggleActions: "play none none none"
+      },
+      y: 20,
+      opacity: 0,
+      duration: 0.8,
+      delay: 0.4
+    });
 
-        gsap.from(".contact-info", {
-          scrollTrigger: {
-            trigger: ".contact-description",
-            start: "top 70%",
-            toggleActions: "play none none none"
-          },
-          x: 50,
-          opacity: 0,
-          duration: 0.8,
-          delay: 0.3
-        });
-      }, sectionRef);
+    // Form field staggered animation
+    gsap.from(".form-field", {
+      scrollTrigger: {
+        trigger: formRef.current,
+        start: "top 80%",
+        toggleActions: "play none none none"
+      },
+      y: 30,
+      opacity: 0,
+      stagger: 0.1,
+      duration: 0.6
+    });
 
-      return () => ctx.revert();
-    }
+    // Form button animation
+    gsap.from(".form-button", {
+      scrollTrigger: {
+        trigger: ".form-field:last-child",
+        start: "top 90%",
+        toggleActions: "play none none none"
+      },
+      scale: 0.9,
+      opacity: 0,
+      duration: 0.5,
+      delay: 0.4
+    });
+
+    // Contact info section animations
+    gsap.from(".contact-info", {
+      scrollTrigger: {
+        trigger: ".contact-info-wrapper",
+        start: "top 80%",
+        toggleActions: "play none none none"
+      },
+      x: 50,
+      opacity: 0,
+      duration: 0.8
+    });
+
+    // Contact items staggered animation
+    gsap.from(".contact-item", {
+      scrollTrigger: {
+        trigger: ".contact-info",
+        start: "top 80%",
+        toggleActions: "play none none none"
+      },
+      x: 30,
+      opacity: 0,
+      stagger: 0.15,
+      duration: 0.5,
+      delay: 0.3
+    });
+    
+    // Social media icons animation
+    gsap.from(".social-icon", {
+      scrollTrigger: {
+        trigger: ".social-media-container",
+        start: "top 90%",
+        toggleActions: "play none none none"
+      },
+      y: 20,
+      opacity: 0,
+      stagger: 0.1,
+      duration: 0.4,
+      ease: "back.out(1.5)"
+    });
+    
+    // Floating decorative elements
+    gsap.to(".contact-float-1", {
+      y: -30,
+      duration: 2.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+    
+    gsap.to(".contact-float-2", {
+      y: -20,
+      x: 15,
+      duration: 3,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      delay: 0.5
+    });
   }, []);
 
   const handleChange = (
@@ -166,13 +229,13 @@ const ContactSection = () => {
   ];
 
   return (
-    <section ref={sectionRef} id="contato" className="relative py-24 overflow-hidden">
+    <section ref={sectionRef} id="contact" className="relative py-24 overflow-hidden">
       {/* Background styling */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/50 to-primary/5"></div>
       
       {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/5 rounded-bl-full blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-1/4 h-1/4 bg-secondary/5 rounded-tr-full blur-3xl"></div>
+      <div className="contact-float-1 absolute top-0 right-0 w-1/3 h-1/3 bg-primary/5 rounded-bl-full blur-3xl"></div>
+      <div className="contact-float-2 absolute bottom-0 left-0 w-1/4 h-1/4 bg-secondary/5 rounded-tr-full blur-3xl"></div>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
@@ -221,151 +284,114 @@ const ContactSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="contact-form bg-white p-8 md:p-10 rounded-xl shadow-xl border border-gray-100 relative overflow-hidden">
-              {/* Elementos decorativos para o formulário */}
-              <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/5 rounded-full blur-2xl"></div>
-              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-secondary/5 rounded-full blur-2xl"></div>
+            <motion.div 
+              className="contact-form bg-white p-8 md:p-10 rounded-xl shadow-xl relative overflow-hidden"
+              whileHover={{ 
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)",
+                y: -5,
+                transition: { duration: 0.3 }
+              }}
+            >
+              {/* Form Background Pattern */}
+              <div className="absolute inset-0 opacity-5">
+                <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <circle cx="10" cy="10" r="1.5" fill="#5000ca" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#dots)" />
+                </svg>
+              </div>
               
               <div className="relative z-10">
-                <h3 className="text-2xl font-bold mb-2 text-foreground">Envie uma mensagem</h3>
-                <p className="text-muted-foreground mb-6">Estamos prontos para transformar sua visão em realidade.</p>
-              
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="name" className="text-sm font-medium">Nome completo</Label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                          <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                      </div>
+                <h3 className="text-2xl font-bold mb-8">Envie sua mensagem</h3>
+                
+                <form ref={formRef} onSubmit={handleSubmit}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div className="form-field">
+                      <Label htmlFor="name" className="block mb-2">Nome completo</Label>
                       <Input
                         id="name"
                         name="name"
+                        placeholder="Seu nome"
                         value={formData.name}
                         onChange={handleChange}
-                        className="pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
-                        placeholder="Seu nome completo"
                         required
+                        className="w-full rounded-lg border-gray-200 transition-colors focus:border-primary"
                       />
                     </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-sm font-medium">E-mail</Label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                          <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg>
-                      </div>
+                    
+                    <div className="form-field">
+                      <Label htmlFor="email" className="block mb-2">E-mail</Label>
                       <Input
-                        type="email"
                         id="email"
                         name="email"
+                        type="email"
+                        placeholder="seu@email.com"
                         value={formData.email}
                         onChange={handleChange}
-                        className="pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
-                        placeholder="seu.email@exemplo.com"
                         required
-                      />
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-sm font-medium">Telefone</Label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                        </svg>
-                      </div>
-                      <Input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className="pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
-                        placeholder="(00) 00000-0000"
-                        required
+                        className="w-full rounded-lg border-gray-200 transition-colors focus:border-primary"
                       />
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="service" className="text-sm font-medium">Serviço de Interesse</Label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                        </svg>
-                      </div>
-                      <Select onValueChange={handleSelectChange} value={formData.service}>
-                        <SelectTrigger className="pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
-                          <SelectValue placeholder="Selecione o serviço" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div className="form-field">
+                      <Label htmlFor="phone" className="block mb-2">Telefone</Label>
+                      <Input
+                        id="phone"
+                        name="phone"
+                        placeholder="(00) 00000-0000"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className="w-full rounded-lg border-gray-200 transition-colors focus:border-primary"
+                      />
+                    </div>
+                    
+                    <div className="form-field">
+                      <Label htmlFor="service" className="block mb-2">Serviço de interesse</Label>
+                      <Select value={formData.service} onValueChange={handleSelectChange}>
+                        <SelectTrigger className="w-full rounded-lg border-gray-200 transition-colors focus:border-primary">
+                          <SelectValue placeholder="Selecione um serviço" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="website">Criação de Site</SelectItem>
                           <SelectItem value="ecommerce">Loja Virtual</SelectItem>
-                          <SelectItem value="app">Aplicativo Mobile</SelectItem>
+                          <SelectItem value="app">Aplicativo</SelectItem>
                           <SelectItem value="marketing">Marketing Digital</SelectItem>
-                          <SelectItem value="system">Sistema Personalizado</SelectItem>
-                          <SelectItem value="other">Outro Serviço</SelectItem>
+                          <SelectItem value="consultoria">Consultoria</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="message" className="text-sm font-medium">Sua mensagem</Label>
-                  <div className="relative">
+                  
+                  <div className="mb-6 form-field">
+                    <Label htmlFor="message" className="block mb-2">Mensagem</Label>
                     <Textarea
                       id="message"
                       name="message"
+                      placeholder="Descreva seu projeto ou dúvida..."
                       value={formData.message}
                       onChange={handleChange}
-                      rows={4}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
-                      placeholder="Descreva seu projeto ou necessidade em detalhes..."
                       required
+                      className="w-full rounded-lg border-gray-200 transition-colors focus:border-primary h-32"
                     />
                   </div>
-                </div>
-                
-                <div className="pt-2">
-                  <Button 
-                    type="submit" 
-                    disabled={isSubmitting}
-                    className="w-full py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-all shadow-lg"
-                  >
-                    {isSubmitting ? (
-                      <span className="flex items-center justify-center">
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Enviando...
-                      </span>
-                    ) : (
-                      <span className="flex items-center justify-center">
-                        Enviar Mensagem
-                        <svg className="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                          <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"></path>
-                        </svg>
-                      </span>
-                    )}
-                  </Button>
-                </div>
-              </form>
+                  
+                  <div className="form-field">
+                    <Button 
+                      type="submit" 
+                      disabled={isSubmitting}
+                      className="form-button bg-primary hover:bg-primary/90 text-white rounded-lg py-3 px-6 shadow-lg shadow-primary/30 transition-all hover:shadow-xl hover:shadow-primary/40"
+                    >
+                      {isSubmitting ? 'Enviando...' : 'Enviar Mensagem'}
+                    </Button>
+                  </div>
+                </form>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
           
           {/* Contact Info */}
@@ -376,7 +402,14 @@ const ContactSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <div className="contact-info bg-gradient-to-br from-primary to-secondary p-8 md:p-10 rounded-xl text-white h-full shadow-xl overflow-hidden relative">
+            <motion.div 
+              className="contact-info bg-gradient-to-br from-primary to-secondary p-8 md:p-10 rounded-xl text-white h-full shadow-xl overflow-hidden relative"
+              whileHover={{ 
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+                y: -5,
+                transition: { duration: 0.3 }
+              }}
+            >
               {/* Background pattern for info box */}
               <div className="absolute inset-0 opacity-10">
                 <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
@@ -396,11 +429,12 @@ const ContactSection = () => {
                   {contactInfo.map((info, index) => (
                     <motion.div 
                       key={index} 
-                      className="flex items-start"
+                      className="flex items-start contact-item"
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                      whileHover={{ x: 5, transition: { duration: 0.2 } }}
                     >
                       <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white mr-4 flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -421,14 +455,14 @@ const ContactSection = () => {
                   ))}
                 </div>
                 
-                <div className="mt-12 pt-8 border-t border-white/20">
+                <div className="social-media-container mt-12 pt-8 border-t border-white/20">
                   <h4 className="font-bold mb-4 text-white/90">Nossas Redes Sociais</h4>
                   <div className="flex space-x-4">
                     {socialMedia.map((social, index) => (
                       <motion.a 
                         key={index} 
                         href={social.url} 
-                        className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 transition-colors"
+                        className="social-icon w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 transition-colors"
                         target="_blank"
                         rel="noopener noreferrer"
                         initial={{ opacity: 0, y: 10 }}
@@ -437,9 +471,9 @@ const ContactSection = () => {
                         transition={{ duration: 0.3, delay: 0.8 + index * 0.1 }}
                         whileHover={{ y: -3, transition: { duration: 0.2 } }}
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                          {social.icon === "facebook-f" && <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />}
-                          {social.icon === "twitter" && <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />}
+                        <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          {social.icon === "facebook-f" && <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />}
+                          {social.icon === "twitter" && <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />}
                           {social.icon === "instagram" && <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />}
                           {social.icon === "linkedin-in" && <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />}
                         </svg>
@@ -448,7 +482,7 @@ const ContactSection = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

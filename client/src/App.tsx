@@ -15,7 +15,6 @@ import Login from "@/pages/login";
 import ProjectDetail from "@/pages/project-detail";
 import NotFound from "@/pages/not-found";
 import { useState, useEffect } from "react";
-import Navbar from "./components/navbar";
 import Footer from "./components/footer";
 import BackToTop from "./components/back-to-top";
 import LoginModal from "./components/login-modal";
@@ -56,7 +55,6 @@ function App() {
       <TooltipProvider>
         <Toaster />
         <div className="flex flex-col min-h-screen">
-          <Navbar onLoginClick={() => setShowLoginModal(true)} />
           <main className="flex-grow">
             <Router />
           </main>

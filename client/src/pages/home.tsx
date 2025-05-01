@@ -9,6 +9,7 @@ import FAQSection from '@/components/faq-section';
 import CTASection from '@/components/cta-section';
 import ContactSection from '@/components/contact-section';
 import TechParallaxSection from '@/components/tech-parallax-section';
+import TopNav from '@/components/top-nav';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -31,6 +32,7 @@ const HomePage = () => {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
       </Helmet>
       
+      <TopNav />
       <HeroSection />
       <AboutSection />
       <ServicesSection />

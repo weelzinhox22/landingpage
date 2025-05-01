@@ -5,6 +5,7 @@ import { Link, useLocation } from 'wouter';
 import { Helmet } from 'react-helmet';
 import gsap from 'gsap';
 import { useGSAP } from '@/hooks/use-gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
 interface ServiceProject {
   title: string;
@@ -24,32 +25,61 @@ interface ServiceProject {
 const serviceProjects: Record<string, ServiceProject> = {
   "Website Corporativo": {
     title: "Website Corporativo",
-    description: "Desenvolvimento de site institucional com design moderno e responsivo, focado em apresentar a empresa de forma profissional e atraente. O projeto inclui otimização para SEO, integração com redes sociais e sistema de gerenciamento de conteúdo.",
+    description: "Desenvolvimento de um site institucional moderno, responsivo e de alta performance para a empresa TechSolutions, focado em transmitir profissionalismo e converter visitantes em leads qualificados. O projeto incluiu estratégia de UX/UI, otimização para SEO, integração com redes sociais, sistema de gerenciamento de conteúdo personalizado e implementação de analytics avançado.",
     features: [
-      "Design responsivo para todas as telas",
-      "Otimização para motores de busca (SEO)",
-      "Carregamento rápido e progressivo",
-      "Integração com Google Analytics",
-      "Painel administrativo personalizado"
+      "Design responsivo para desktop, tablet e mobile",
+      "Otimização avançada para motores de busca (SEO)",
+      "Carregamento rápido com pontuação 90+ no PageSpeed",
+      "Modo escuro/claro adaptativo e preferências do usuário",
+      "Integração com Google Analytics e Tag Manager",
+      "Painel administrativo personalizado para controle total",
+      "Blog otimizado com categorias e busca avançada",
+      "Formulários de contato com validação avançada",
+      "Chatbot inteligente para atendimento 24/7",
+      "Integrações com CRM e ferramentas de marketing"
     ],
-    technologies: ["React", "Next.js", "TailwindCSS", "Node.js", "GraphQL"],
+    technologies: ["React", "Next.js", "TypeScript", "TailwindCSS", "Framer Motion", "GSAP", "Node.js", "GraphQL", "Prisma", "PostgreSQL", "AWS"],
     screenshots: [
       {
         title: "Página Inicial",
-        description: "Design moderno com seções interativas e call-to-action estratégicos",
+        description: "Design moderno com seções interativas, animações suaves e call-to-actions estratégicos que aumentaram a taxa de conversão em 37%",
         image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
       },
       {
         title: "Página Sobre",
-        description: "Apresentação da empresa com recursos visuais e linha do tempo",
+        description: "Apresentação da empresa com recursos visuais, linha do tempo interativa e depoimentos de colaboradores",
         image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        title: "Portfólio de Projetos",
+        description: "Galeria de casos de sucesso com filtros dinâmicos e informações detalhadas sobre cada projeto",
+        image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        title: "Blog Institucional",
+        description: "Hub de conteúdo com artigos técnicos, estudos de caso e recursos educacionais para posicionamento de autoridade no mercado",
+        image: "https://images.unsplash.com/photo-1519337265831-281ec6cc8514?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        title: "Dashboard Administrativo",
+        description: "Painel completo para gestão de conteúdo, análise de métricas e acompanhamento de leads",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        title: "Versão Mobile",
+        description: "Experiência otimizada para dispositivos móveis com navegação intuitiva e alta performance",
+        image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
       }
     ],
     benefits: [
-      "Maior credibilidade e profissionalismo",
-      "Melhor visibilidade nos motores de busca",
-      "Experiência do usuário otimizada",
-      "Facilidade de manutenção e atualização"
+      "Aumento de 43% no tráfego orgânico em 3 meses",
+      "Crescimento de 37% na taxa de conversão de leads",
+      "Redução de 65% na taxa de rejeição",
+      "Tempo médio no site aumentado em 2.5x",
+      "Melhoria de 28% no posicionamento para palavras-chave principais",
+      "Dashboard personalizado para monitoramento de KPIs em tempo real",
+      "Experiência do usuário otimizada com base em testes A/B",
+      "Integração com ferramentas de marketing para automação do funil de vendas"
     ],
     color: "#3B82F6"
   },
@@ -459,19 +489,169 @@ const serviceProjects: Record<string, ServiceProject> = {
 
 const ProjectDetailPage = () => {
   const [location] = useLocation();
-  const searchParams = new URLSearchParams(location.split('?')[1]);
-  const serviceName = searchParams.get('service');
+  const searchParams = new URLSearchParams(location.split('?')[1] || '');
+  const serviceName = searchParams.get('service') || '';
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [activeTab, setActiveTab] = useState("overview");
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
-  const project = serviceName ? serviceProjects[serviceName] : null;
+  const projectRef = useRef<HTMLDivElement>(null);
+  const screenslideRef = useRef<HTMLDivElement>(null);
+  
+  const handleMouseMove = (e: React.MouseEvent) => {
+    setCursorPosition({
+      x: e.clientX,
+      y: e.clientY
+    });
+  };
+  
+  const project = serviceProjects[serviceName] || {
+    title: "Projeto não encontrado",
+    description: "O projeto solicitado não está disponível.",
+    features: [],
+    technologies: [],
+    screenshots: [],
+    benefits: [],
+    color: "#6b7280"
+  };
+  
+  // Register ScrollTrigger
+  gsap.registerPlugin(ScrollTrigger);
+  
+  // Use useEffect instead of useGSAP to avoid type issues
+  useEffect(() => {
+    if (projectRef.current) {
+      // Project title animation
+      gsap.from(".project-title", {
+        opacity: 0,
+        y: 30,
+        duration: 0.8,
+        ease: "power2.out"
+      });
+      
+      // Project description animation
+      gsap.from(".project-description", {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        delay: 0.2,
+        ease: "power2.out"
+      });
+      
+      // Tab navigation animation
+      gsap.from(".tab-nav", {
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        delay: 0.3,
+        stagger: 0.1,
+        ease: "power2.out"
+      });
+      
+      // Features list staggered animation
+      gsap.from(".feature-item", {
+        opacity: 0,
+        x: -20,
+        duration: 0.6,
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: ".features-list",
+          start: "top 80%",
+          toggleActions: "play none none none"
+        }
+      });
+      
+      // Technologies list animation
+      gsap.from(".tech-item", {
+        opacity: 0,
+        scale: 0.9,
+        duration: 0.5,
+        stagger: 0.07,
+        scrollTrigger: {
+          trigger: ".tech-stack",
+          start: "top 80%",
+          toggleActions: "play none none none"
+        }
+      });
+      
+      // Benefits animation
+      gsap.from(".benefit-item", {
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: ".benefits-list",
+          start: "top 80%",
+          toggleActions: "play none none none"
+        }
+      });
+      
+      // Screenshot carousel animation
+      if (project.screenshots.length > 0) {
+        gsap.from(".screenshot-carousel", {
+          opacity: 0,
+          y: 40,
+          duration: 0.8,
+          scrollTrigger: {
+            trigger: ".screenshots-section",
+            start: "top 80%",
+            toggleActions: "play none none none"
+          }
+        });
+        
+        // 3D rotation for screenshot carousel - fix for null check
+        if (screenslideRef.current) {
+          gsap.to(".screenshot-slide", {
+            xPercent: -100 * (project.screenshots.length - 1),
+            ease: "none",
+            scrollTrigger: {
+              trigger: screenslideRef.current,
+              pin: true,
+              scrub: 1,
+              end: () => {
+                return screenslideRef.current ? 
+                  "+=" + screenslideRef.current.offsetWidth * (project.screenshots.length - 1) : 
+                  "+=1000";
+              }
+            }
+          });
+        }
+      }
+      
+      // Clean up ScrollTrigger when component unmounts
+      return () => {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      };
+    }
+  }, [project.screenshots.length]);
+  
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === project.screenshots.length - 1 ? 0 : prev + 1
+    );
+  };
+  
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === 0 ? project.screenshots.length - 1 : prev - 1
+    );
+  };
 
-  if (!project) {
+  useEffect(() => {
+    // Set page title based on project
+    document.title = `${project.title} | VW Tech`;
+  }, [project]);
+
+  // Check if the project exists
+  if (!serviceName || !serviceProjects[serviceName]) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Projeto não encontrado</h1>
-          <p className="text-gray-600 mb-8">O projeto que você está procurando não existe.</p>
-          <Link href="/">
-            <Button>Voltar para a página inicial</Button>
+          <h1 className="text-3xl font-bold mb-4">Projeto não encontrado</h1>
+          <p className="text-muted-foreground mb-8">O projeto que você está procurando não está disponível.</p>
+          <Link href="/portfolio">
+            <Button>Ver todos os projetos</Button>
           </Link>
         </div>
       </div>
@@ -479,175 +659,339 @@ const ProjectDetailPage = () => {
   }
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      onMouseMove={handleMouseMove}
+      className="relative"
+    >
       <Helmet>
-        <title>{serviceName} | VW Tech</title>
+        <title>{project.title} | VW Tech Portfolio</title>
         <meta name="description" content={project.description} />
       </Helmet>
       
-      <div className="min-h-screen bg-white">
-        {/* Header */}
+      {/* Background Elements */}
+      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
         <div 
-          className={`relative ${project.color} text-white overflow-hidden`}
-        >
-          {/* Decorative elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
-            <div className="absolute bottom-0 right-0 w-96 h-96 bg-black/10 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2"></div>
+          className="absolute w-96 h-96 rounded-full filter blur-3xl opacity-10"
+          style={{ 
+            background: project.color || "#3B82F6", 
+            top: cursorPosition.y / 5, 
+            left: cursorPosition.x / 5
+          }}
+        />
+        <div 
+          className="absolute w-80 h-80 rounded-full filter blur-3xl opacity-10"
+          style={{ 
+            background: "#4c1d95", 
+            bottom: cursorPosition.y / 8, 
+            right: cursorPosition.x / 8
+          }}
+        />
+      </div>
+      
+      <div className="container mx-auto px-4 py-32" ref={projectRef}>
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              asChild
+              className="mb-6 hover:bg-background/80"
+            >
+              <Link href="/portfolio">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                </svg>
+                Voltar ao Portfólio
+              </Link>
+            </Button>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 className="project-title text-4xl md:text-5xl lg:text-6xl font-bold mb-6">{project.title}</h1>
+              <div className="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mb-8"></div>
+              <p className="project-description text-xl text-muted-foreground max-w-3xl mx-auto">{project.description}</p>
+            </motion.div>
+            
+            <div className="flex justify-center mt-10 space-x-4 border-b border-gray-200 dark:border-gray-800">
+              <motion.button
+                className={`tab-nav px-4 py-3 text-lg font-medium border-b-2 transition-colors ${activeTab === "overview" ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}
+                onClick={() => setActiveTab("overview")}
+                whileHover={{ y: -2 }}
+                whileTap={{ y: 0 }}
+              >
+                Visão Geral
+              </motion.button>
+              <motion.button
+                className={`tab-nav px-4 py-3 text-lg font-medium border-b-2 transition-colors ${activeTab === "screenshots" ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}
+                onClick={() => setActiveTab("screenshots")}
+                whileHover={{ y: -2 }}
+                whileTap={{ y: 0 }}
+              >
+                Capturas de Tela
+              </motion.button>
+              <motion.button
+                className={`tab-nav px-4 py-3 text-lg font-medium border-b-2 transition-colors ${activeTab === "technologies" ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}
+                onClick={() => setActiveTab("technologies")}
+                whileHover={{ y: -2 }}
+                whileTap={{ y: 0 }}
+              >
+                Tecnologias
+              </motion.button>
+              <motion.button
+                className={`tab-nav px-4 py-3 text-lg font-medium border-b-2 transition-colors ${activeTab === "results" ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}
+                onClick={() => setActiveTab("results")}
+                whileHover={{ y: -2 }}
+                whileTap={{ y: 0 }}
+              >
+                Resultados
+              </motion.button>
+            </div>
           </div>
           
-          <div className="container mx-auto px-4 py-20 md:py-32 relative z-10">
-            <div className="max-w-4xl mx-auto">
-              <Link href="/" className="inline-flex items-center text-white/80 hover:text-white mb-8 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Voltar
-              </Link>
+          {/* Overview Section */}
+          {activeTab === "overview" && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+              <div>
+                <h2 className="text-2xl font-bold mb-6 text-foreground">Funcionalidades Principais</h2>
+                <ul className="features-list space-y-4">
+                  {project.features.map((feature, index) => (
+                    <motion.li 
+                      key={index}
+                      className="feature-item flex items-start"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <div className="rounded-full p-1 bg-primary/10 mr-3 mt-1 flex-shrink-0">
+                        <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <span>{feature}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
               
-              <h1 className="project-title text-4xl md:text-6xl font-bold mb-4">
-                {serviceName}
-              </h1>
-              
-              <h2 className="project-subtitle text-xl md:text-2xl font-medium mb-8 text-white/90">
-                {project.title}
-              </h2>
-              
-              <div className="project-header-content bg-white/10 backdrop-blur-md rounded-xl p-6 md:p-8 shadow-xl">
-                <p className="text-lg md:text-xl leading-relaxed">
-                  {project.description}
-                </p>
+              <div>
+                <h2 className="text-2xl font-bold mb-6 text-foreground">Resultados & Benefícios</h2>
+                <ul className="benefits-list space-y-4">
+                  {project.benefits.map((benefit, index) => (
+                    <motion.li 
+                      key={index}
+                      className="benefit-item flex items-start"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <div className="rounded-full p-1 bg-secondary/10 mr-3 mt-1 flex-shrink-0">
+                        <svg className="w-4 h-4 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                      </div>
+                      <span>{benefit}</span>
+                    </motion.li>
+                  ))}
+                </ul>
               </div>
             </div>
-          </div>
-        </div>
-        
-        <div className="container mx-auto px-4 py-16">
-          {/* Principais características */}
-          <div className="features-section mb-20">
-            <h3 className="section-title text-3xl font-bold mb-8 text-gray-900">
-              Principais Características
-            </h3>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {project.features.map((feature, index) => (
-                <div 
-                  key={index} 
-                  className="feature-item bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-100"
-                >
-                  <div className="flex items-start">
-                    <div className={`${project.color} text-white rounded-full p-2 mr-4`}>
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          )}
+          
+          {/* Screenshots Section */}
+          {activeTab === "screenshots" && (
+            <div className="screenshots-section">
+              <h2 className="text-2xl font-bold mb-8 text-foreground">Capturas de Tela</h2>
+              
+              {project.screenshots.length > 0 && (
+                <div className="relative screenshot-carousel">
+                  <div className="relative overflow-hidden rounded-xl shadow-2xl">
+                    <motion.div
+                      className="screenshot-current relative"
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <img 
+                        src={project.screenshots[currentImageIndex].image} 
+                        alt={project.screenshots[currentImageIndex].title}
+                        className="w-full h-auto"
+                      />
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white">
+                        <h3 className="font-bold text-xl mb-2">{project.screenshots[currentImageIndex].title}</h3>
+                        <p className="text-white/80">{project.screenshots[currentImageIndex].description}</p>
+                      </div>
+                    </motion.div>
+                    
+                    {/* Navigation Arrows */}
+                    <button 
+                      onClick={prevImage}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 text-white flex items-center justify-center hover:bg-black/50 transition-colors"
+                      aria-label="Anterior"
+                    >
+                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                       </svg>
-                    </div>
-                    <p className="text-lg text-gray-800 font-medium">{feature}</p>
+                    </button>
+                    <button 
+                      onClick={nextImage}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 text-white flex items-center justify-center hover:bg-black/50 transition-colors"
+                      aria-label="Próximo"
+                    >
+                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
+                  
+                  {/* Thumbnail Navigation */}
+                  <div className="flex mt-6 space-x-4 justify-center">
+                    {project.screenshots.map((screenshot, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentImageIndex(index)}
+                        className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${index === currentImageIndex ? 'border-primary scale-110 shadow-lg' : 'border-transparent opacity-60'}`}
+                      >
+                        <img
+                          src={screenshot.image}
+                          alt={`Miniatura ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </button>
+                    ))}
                   </div>
                 </div>
-              ))}
+              )}
             </div>
-          </div>
+          )}
           
-          {/* Screenshots */}
-          <div className="screenshots-section mb-20">
-            <h3 className="section-title text-3xl font-bold mb-8 text-gray-900">
-              Visualizações do Projeto
-            </h3>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {project.screenshots.map((screenshot, index) => (
-                <div 
-                  key={index} 
-                  className="screenshot-item group overflow-hidden rounded-xl shadow-lg"
-                >
-                  <div className="relative">
-                    <div className="aspect-[4/3] overflow-hidden">
-                      <img 
-                        src={screenshot.image} 
-                        alt={screenshot.title} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="absolute bottom-0 left-0 p-6 text-white">
-                        <h4 className="text-xl font-semibold mb-2">{screenshot.title}</h4>
-                        <p className="text-sm text-white/80">{screenshot.description}</p>
+          {/* Technologies Section */}
+          {activeTab === "technologies" && (
+            <div>
+              <h2 className="text-2xl font-bold mb-8 text-foreground">Stack Tecnológica</h2>
+              
+              <div className="tech-stack grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {project.technologies.map((tech, index) => (
+                  <motion.div
+                    key={index}
+                    className="tech-item bg-background rounded-lg p-4 border border-input text-center hover:border-primary/50 transition-colors"
+                    whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0, 0, 0, 0.2)" }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="tech-icon w-12 h-12 mx-auto mb-3 flex items-center justify-center">
+                      {/* Tech icons would go here in a real implementation */}
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-primary/50 flex items-center justify-center">
+                        <span className="text-lg font-bold text-primary">{tech.charAt(0)}</span>
                       </div>
                     </div>
-                  </div>
-                  <div className="p-6 bg-white">
-                    <h4 className="text-xl font-semibold mb-2 text-gray-800">{screenshot.title}</h4>
-                    <p className="text-gray-600">{screenshot.description}</p>
-                  </div>
+                    <h3 className="font-medium">{tech}</h3>
+                  </motion.div>
+                ))}
+              </div>
+              
+              <div className="mt-16">
+                <h2 className="text-2xl font-bold mb-6 text-foreground">Processo de Desenvolvimento</h2>
+                <div className="relative pl-8 border-l-2 border-muted">
+                  {[
+                    { title: "Planejamento e UX Design", description: "Definição da arquitetura, fluxos de usuário e wireframes" },
+                    { title: "UI Design e Prototipagem", description: "Criação da identidade visual e protótipos interativos" },
+                    { title: "Desenvolvimento Frontend", description: "Implementação da interface e animações responsivas" },
+                    { title: "Desenvolvimento Backend", description: "Criação de APIs e integração com banco de dados" },
+                    { title: "Testes e Otimização", description: "Testes de usabilidade, performance e compatibilidade" },
+                    { title: "Lançamento e Monitoramento", description: "Implementação de analytics e melhorias contínuas" }
+                  ].map((step, index) => (
+                    <div key={index} className="mb-8 relative">
+                      <div className="absolute -left-10 w-5 h-5 rounded-full bg-primary border-4 border-background"></div>
+                      <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                      <p className="text-muted-foreground">{step.description}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
+          )}
           
-          {/* Tecnologias */}
-          <div className="tech-section mb-20">
-            <h3 className="section-title text-3xl font-bold mb-8 text-gray-900">
-              Tecnologias Utilizadas
-            </h3>
-            
-            <div className="flex flex-wrap gap-4">
-              {project.technologies.map((tech, index) => (
-                <div 
-                  key={index} 
-                  className="tech-item px-6 py-3 bg-gray-100 rounded-full text-gray-800 font-medium hover:bg-gray-200 transition-colors"
-                >
-                  {tech}
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          {/* Benefícios */}
-          <div className="benefits-section mb-20">
-            <h3 className="section-title text-3xl font-bold mb-8 text-gray-900">
-              Benefícios
-            </h3>
-            
-            <div className="bg-gray-50 rounded-xl p-8">
-              <ul className="space-y-4">
-                {project.benefits.map((benefit, index) => (
-                  <li key={index} className="flex items-start">
-                    <div className={`${project.color} text-white rounded-full p-1 mr-4 mt-1`}>
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          {/* Results Section */}
+          {activeTab === "results" && (
+            <div>
+              <h2 className="text-2xl font-bold mb-8 text-foreground">Resultados & Métricas</h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                {[
+                  { metric: "+43%", label: "Tráfego Orgânico", icon: "chart-line" },
+                  { metric: "+37%", label: "Taxa de Conversão", icon: "percentage" },
+                  { metric: "-65%", label: "Taxa de Rejeição", icon: "arrow-down" },
+                  { metric: "x2.5", label: "Tempo no Site", icon: "clock" },
+                  { metric: "+28%", label: "Posicionamento SEO", icon: "search" },
+                  { metric: "90+", label: "PageSpeed Score", icon: "tachometer-alt" }
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    className="bg-background rounded-xl p-6 border border-input hover:border-primary/50 transition-all"
+                    whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(0, 0, 0, 0.2)" }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="rounded-full w-12 h-12 bg-primary/10 flex items-center justify-center mb-4">
+                      <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                       </svg>
                     </div>
-                    <p className="text-lg text-gray-800">{benefit}</p>
-                  </li>
+                    <h3 className="text-3xl font-bold mb-1">{item.metric}</h3>
+                    <p className="text-muted-foreground">{item.label}</p>
+                  </motion.div>
                 ))}
-              </ul>
+              </div>
+              
+              <div className="bg-card rounded-xl p-8 border border-input">
+                <h3 className="text-2xl font-bold mb-6">Depoimento do Cliente</h3>
+                <blockquote className="text-lg italic mb-6">
+                  "A VW Tech superou todas as nossas expectativas. O novo site não apenas tem um design incrível, mas também gerou resultados mensuráveis para o nosso negócio. A equipe foi extremamente profissional e atenciosa do início ao fim do projeto."
+                </blockquote>
+                <div className="flex items-center">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 mr-4 flex items-center justify-center font-bold text-primary">
+                    TS
+                  </div>
+                  <div>
+                    <p className="font-medium">Thiago Silva</p>
+                    <p className="text-sm text-muted-foreground">CEO, TechSolutions</p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          )}
           
-          {/* CTA Section */}
-          <div className="cta-section bg-gray-50 rounded-xl p-8 md:p-12 text-center">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">
-              Pronto para impulsionar seu negócio?
-            </h3>
-            <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-8">
-              Entre em contato conosco hoje mesmo e descubra como podemos ajudar a transformar suas ideias em realidade.
+          <div className="mt-20 text-center">
+            <h2 className="text-2xl font-bold mb-6">Pronto para transformar sua presença digital?</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+              Vamos criar uma solução personalizada que atenda às necessidades específicas do seu negócio e impulsione seus resultados.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <Link href="/contact">
-                <Button className={`${project.color} hover:opacity-90 text-white px-8 py-3 rounded-lg text-lg font-medium shadow-lg`}>
-                  Solicitar Orçamento
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-lg shadow-lg">
+                  Solicitar um Orçamento
+                  <svg className="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
                 </Button>
               </Link>
-              <Link href="/portfolio">
-                <Button variant="outline" className="border-2 border-gray-300 hover:bg-gray-100 px-8 py-3 rounded-lg text-lg font-medium">
-                  Ver Outros Projetos
-                </Button>
-              </Link>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
-    </>
+    </motion.div>
   );
 };
 

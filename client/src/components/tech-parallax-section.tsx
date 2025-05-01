@@ -1,5 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
 // Componente de card de tecnologia simplificado (sem efeito de flip)
 const TechCard = ({ 
@@ -46,6 +49,96 @@ const TechCard = ({
 const TechParallaxSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   
+  // Register ScrollTrigger plugin
+  gsap.registerPlugin(ScrollTrigger);
+  
+  useGSAP(() => {
+    // Title animations
+    gsap.from(".tech-title", {
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 70%",
+        toggleActions: "play none none none"
+      }
+    });
+    
+    gsap.from(".tech-badge", {
+      opacity: 0,
+      y: -20,
+      duration: 0.6,
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 70%",
+        toggleActions: "play none none none"
+      }
+    });
+    
+    gsap.from(".tech-divider", {
+      width: 0,
+      opacity: 0,
+      duration: 0.8,
+      delay: 0.2,
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 70%",
+        toggleActions: "play none none none"
+      }
+    });
+    
+    gsap.from(".tech-description", {
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      delay: 0.3,
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 70%",
+        toggleActions: "play none none none"
+      }
+    });
+    
+    // Card grid staggered animation
+    gsap.from(".tech-card-container", {
+      opacity: 0,
+      y: 50,
+      stagger: 0.1,
+      duration: 0.8,
+      scrollTrigger: {
+        trigger: ".tech-grid",
+        start: "top 80%", 
+        toggleActions: "play none none none"
+      }
+    });
+    
+    // Features section animation
+    gsap.from(".feature-section", {
+      opacity: 0,
+      y: 80,
+      duration: 1,
+      scrollTrigger: {
+        trigger: ".tech-grid",
+        start: "center 70%",
+        toggleActions: "play none none none"
+      }
+    });
+    
+    gsap.from(".feature-card", {
+      opacity: 0,
+      y: 40,
+      stagger: 0.2,
+      duration: 0.8,
+      delay: 0.5,
+      scrollTrigger: {
+        trigger: ".feature-section",
+        start: "top 80%",
+        toggleActions: "play none none none"
+      }
+    });
+  }, []);
+  
   // Tecnologias com cores e descrições
   const technologies = [
     { 
@@ -90,9 +183,34 @@ const TechParallaxSection = () => {
     },
   ];
   
+  const features = [
+    {
+      title: "Desempenho Excepcional", 
+      description: "Nossas soluções garantem velocidade e resposta instantânea, melhorando a experiência do usuário.",
+      delay: 0.1,
+      icon: "⚡",
+      color: "from-cyan-500 to-blue-600"
+    },
+    {
+      title: "Escalabilidade Garantida", 
+      description: "Arquitetura que suporta crescimento, de startups a grandes empresas.",
+      delay: 0.3,
+      icon: "📈",
+      color: "from-green-500 to-emerald-600"
+    },
+    {
+      title: "Segurança Avançada", 
+      description: "Implementamos as melhores práticas de segurança para proteger seus dados e usuários.",
+      delay: 0.5,
+      icon: "🔒",
+      color: "from-purple-500 to-indigo-600"
+    }
+  ];
+  
   return (
     <section 
       ref={sectionRef}
+      id="tech"
       className="relative py-28 overflow-hidden bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white"
     >
       {/* Background simples */}
@@ -109,7 +227,7 @@ const TechParallaxSection = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-6xl mx-auto text-center mb-16">
           <motion.div
-            className="inline-block py-2 px-4 bg-primary/20 backdrop-blur-sm rounded-full text-sm font-medium mb-4 border border-primary/30"
+            className="tech-badge inline-block py-2 px-4 bg-primary/20 backdrop-blur-sm rounded-full text-sm font-medium mb-4 border border-primary/30"
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -119,7 +237,7 @@ const TechParallaxSection = () => {
           </motion.div>
           
           <motion.h2 
-            className="text-4xl md:text-6xl font-bold mb-6 text-white leading-tight"
+            className="tech-title text-4xl md:text-6xl font-bold mb-6 text-white leading-tight"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -132,7 +250,7 @@ const TechParallaxSection = () => {
           </motion.h2>
           
           <motion.div 
-            className="h-1 w-20 bg-gradient-to-r from-primary to-secondary mx-auto mb-8 rounded-full"
+            className="tech-divider h-1 w-20 bg-gradient-to-r from-primary to-secondary mx-auto mb-8 rounded-full"
             initial={{ width: 0 }}
             whileInView={{ width: 80 }}
             viewport={{ once: true }}
@@ -140,7 +258,7 @@ const TechParallaxSection = () => {
           ></motion.div>
           
           <motion.p 
-            className="text-lg md:text-xl text-gray-300 mb-16 max-w-3xl mx-auto"
+            className="tech-description text-lg md:text-xl text-gray-300 mb-16 max-w-3xl mx-auto"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -152,7 +270,7 @@ const TechParallaxSection = () => {
         </div>
         
         {/* Tech cards grid - sem efeitos 3D ou interações complexas */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8 relative z-10">
+        <div className="tech-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8 relative z-10">
           {technologies.map((tech, index) => (
             <TechCard 
               key={index}
@@ -167,7 +285,7 @@ const TechParallaxSection = () => {
         
         {/* Features section - Estilizado */}
         <motion.div 
-          className="mt-24 bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-primary/30 rounded-2xl p-8 md:p-12 relative overflow-hidden shadow-2xl"
+          className="feature-section mt-24 bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-primary/30 rounded-2xl p-8 md:p-12 relative overflow-hidden shadow-2xl"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -192,29 +310,7 @@ const TechParallaxSection = () => {
             
             {/* Feature Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                {
-                  title: "Desempenho Excepcional", 
-                  description: "Nossas soluções garantem velocidade e resposta instantânea, melhorando a experiência do usuário.",
-                  delay: 0.1,
-                  icon: "⚡",
-                  color: "from-cyan-500 to-blue-600"
-                },
-                {
-                  title: "Escalabilidade Garantida", 
-                  description: "Arquitetura que suporta crescimento, de startups a grandes empresas.",
-                  delay: 0.3,
-                  icon: "📈",
-                  color: "from-green-500 to-emerald-600"
-                },
-                {
-                  title: "Segurança Avançada", 
-                  description: "Implementamos as melhores práticas de segurança para proteger seus dados e usuários.",
-                  delay: 0.5,
-                  icon: "🔒",
-                  color: "from-purple-500 to-indigo-600"
-                },
-              ].map((item, i) => (
+              {features.map((item, i) => (
                 <motion.div 
                   key={i}
                   className="feature-card group"

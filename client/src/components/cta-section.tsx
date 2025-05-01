@@ -89,7 +89,7 @@ const CTASection = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-white/80 text-white hover:bg-white/10 hover:border-white transition-all shadow-lg hover:shadow-xl px-8 py-3 text-base md:text-lg font-semibold rounded-full w-full sm:w-auto flex items-center gap-2 group"
+                className="bg-transparent border-white/80 text-white hover:bg-white/10 hover:border-white transition-all shadow-lg hover:shadow-xl px-8 py-3 text-base md:text-lg font-semibold rounded-full w-full sm:w-auto flex items-center gap-2 group"
               >
                 Ver mais projetos 
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

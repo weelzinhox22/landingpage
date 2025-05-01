@@ -2,134 +2,97 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './ui/logo';
-import MobileMenu from './mobile-menu';
+import MobileMenu from '@/components/mobile-menu';
 import { Button } from '@/components/ui/button';
 import { useMobile } from '@/hooks/use-mobile';
+import { useActiveSection, SectionId } from '@/hooks/use-active-section';
 
 interface NavbarProps {
   onLoginClick: () => void;
 }
+
+// Item de navegação
+type NavItem = {
+  id: SectionId;
+  href: string;
+  fragment: string;
+  label: string;
+};
+
+// Lista de itens de navegação
+const NAV_ITEMS: NavItem[] = [
+  { id: 'home', href: '/', fragment: '#home', label: 'Home' },
+  { id: 'sobre', href: '/about', fragment: '#sobre', label: 'Quem Somos' },
+  { id: 'servicos', href: '/services', fragment: '#servicos', label: 'Serviços' },
+  { id: 'portfolio', href: '/portfolio', fragment: '#portfolio', label: 'Portfólio' },
+  { id: 'planos', href: '/pricing', fragment: '#planos', label: 'Planos' },
+  { id: 'contato', href: '/contact', fragment: '#contato', label: 'Contato' },
+];
 
 const Navbar: React.FC<NavbarProps> = ({ onLoginClick }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const isMobile = useMobile();
   const [location] = useLocation();
+  const activeSection = useActiveSection();
 
+  // Efeito para detectar scroll e atualizar visual da navbar
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 10);
     };
-
-    window.addEventListener('scroll', handleScroll);
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Verificação inicial
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'Quem Somos' },
-    { href: '/services', label: 'Serviços' },
-    { href: '/portfolio', label: 'Portfólio' },
-    { href: '/pricing', label: 'Planos' },
-    { href: '/contact', label: 'Contato' }
-  ];
-
-  const isActive = (path: string) => {
-    return location === path;
+  // Determina se um item está ativo com base na rota ou seção
+  const isActive = (id: SectionId): boolean => {
+    // Caso especial e forçado para o item "contato"
+    if (id === 'contato') {
+      // Só está ativo se estiver na página de contato específica
+      if (location === '/contact') {
+        return true;
+      }
+      // Na página inicial, precisa ser explícito na checagem
+      if (location === '/') {
+        return activeSection === 'contato' && window.scrollY > window.innerHeight;
+      }
+      // Em todas as outras páginas, sempre inativo
+      return false;
+    }
+    
+    // Para os outros itens, lógica normal
+    // Se estamos na home, usa activeSection para determinar baseado no scroll
+    if (location === '/') {
+      return activeSection === id;
+    }
+    
+    // Para outras páginas, compara com a rota atual
+    const item = NAV_ITEMS.find(item => item.id === id);
+    if (!item) return false;
+    
+    return location === item.href;
   };
 
-  return (
-    <header className={`fixed top-0 left-0 right-0 z-50 ${isScrolled ? 'bg-white bg-opacity-95 backdrop-blur-md shadow-sm' : 'bg-white bg-opacity-80 backdrop-blur-sm'} transition-all duration-300`}>
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex justify-between items-center">
-          {/* Logo */}
-          <Link href="/">
-            <a className="flex items-center">
-              <Logo />
-            </a>
-          </Link>
+  // Manipula clique em links de navegação para scroll suave na home
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, fragment: string) => {
+    if (location === '/' && fragment) {
+      e.preventDefault();
+      const element = document.querySelector(fragment);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        if (showMobileMenu) {
+          setShowMobileMenu(false);
+        }
+      }
+    }
+  };
 
-          {/* Desktop Navigation */}
-          {!isMobile && (
-            <nav className="hidden md:flex space-x-6">
-              {navItems.map((item) => (
-                <Link key={item.href} href={item.href}>
-                  <a className={`font-medium transition-colors ${
-                    isActive(item.href) 
-                      ? 'text-primary'
-                      : 'text-foreground hover:text-primary'
-                  }`}>
-                    {item.label}
-                  </a>
-                </Link>
-              ))}
-            </nav>
-          )}
-
-          {/* Login and Menu Button */}
-          <div className="flex items-center space-x-3">
-            {!isMobile && (
-              <Button 
-                variant="outline" 
-                className="hidden md:block px-4 py-2 text-primary border-primary hover:bg-primary hover:text-white transition-all"
-                onClick={onLoginClick}
-              >
-                Login
-              </Button>
-            )}
-            {isMobile && (
-              <Button
-                variant="ghost"
-                className="md:hidden text-foreground hover:text-primary focus:outline-none p-0"
-                onClick={() => setShowMobileMenu(!showMobileMenu)}
-              >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  width="24" 
-                  height="24" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  className="text-2xl"
-                >
-                  {showMobileMenu ? (
-                    <>
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </>
-                  ) : (
-                    <>
-                      <line x1="3" y1="12" x2="21" y2="12"></line>
-                      <line x1="3" y1="6" x2="21" y2="6"></line>
-                      <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </>
-                  )}
-                </svg>
-              </Button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {showMobileMenu && (
-          <MobileMenu 
-            navItems={navItems} 
-            onLoginClick={onLoginClick} 
-            onClose={() => setShowMobileMenu(false)}
-          />
-        )}
-      </AnimatePresence>
-    </header>
-  );
+  // Return null instead of rendering the header to hide it completely
+  return null;
 };
 
-export default Navbar;
+export default Navbar; 
