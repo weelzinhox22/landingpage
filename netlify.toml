@@ -1,7 +1,6 @@
 [build]
-  command = "npm run build"
+  command = "npm run netlify:build"
   publish = "dist"
-  base = "/"
 
 [[redirects]]
   from = "/*"
@@ -9,8 +8,8 @@
   status = 200
 
 [build.environment]
-  NODE_VERSION = "20.11.0"
-  NPM_VERSION = "10.2.4"
+  NODE_VERSION = "20"
+  NPM_VERSION = "10"
 
 [dev]
   command = "npm run dev"

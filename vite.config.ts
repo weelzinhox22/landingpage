@@ -36,7 +36,7 @@ export default defineConfig({
   },
   root: resolve(__dirname, "client"),
   build: {
-    outDir: "dist",
+    outDir: resolve(__dirname, "dist"),
     minify: "esbuild",
     rollupOptions: {
       input: {
