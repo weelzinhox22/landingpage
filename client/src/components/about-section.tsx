@@ -222,77 +222,101 @@ const AboutSection = () => {
           
           <div className="relative">
             {/* Timeline central line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary via-secondary to-accent"></div>
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary via-secondary to-accent z-0"></div>
             
             {/* Timeline events */}
             <div className="relative z-10">
-              {/* 2018 - Founding */}
+              {/* 2022 - Founding */}
               <motion.div 
-                className="mb-16 md:mb-24 flex flex-col md:flex-row items-center"
+                className="mb-20 md:mb-24 flex flex-col md:flex-row items-center"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
               >
-                <div className="md:w-1/2 md:pr-16 md:text-right mb-6 md:mb-0">
+                <div className="md:w-1/2 md:pr-16 md:text-right md:mb-0 hidden md:block">
                   <h4 className="text-xl font-bold mb-2">2022 - Fundação</h4>
                   <p className="text-muted-foreground">Vinícius e Wesley iniciam a VW Tech em um pequeno escritório compartilhado, com o primeiro cliente sendo uma startup local de e-commerce.</p>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white z-10">
+                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white z-20 relative">
                   <span className="font-bold">1</span>
                 </div>
                 <div className="md:w-1/2 md:pl-16 hidden md:block"></div>
-              </motion.div>
-              
-              {/* 2020 - Growth */}
-              <motion.div 
-                className="mb-16 md:mb-24 flex flex-col md:flex-row items-center"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-              >
-                <div className="md:w-1/2 md:pr-16 hidden md:block"></div>
-                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-white z-10">
-                  <span className="font-bold">2</span>
-                </div>
-                <div className="md:w-1/2 md:pl-16 md:text-left mb-6 md:mb-0">
-                  <h4 className="text-xl font-bold mb-2">2023 - Crescimento</h4>
-                  <p className="text-muted-foreground">Expansão da equipe para 10 pessoas e mudança para um escritório maior. Alcançamos a marca de 50 projetos entregues.</p>
+                
+                {/* Mobile only text content */}
+                <div className="md:hidden w-full text-center mt-4 px-4 py-3 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm">
+                  <h4 className="text-xl font-bold mb-2">2022 - Fundação</h4>
+                  <p className="text-muted-foreground">Vinícius e Wesley iniciam a VW Tech em um pequeno escritório compartilhado, com o primeiro cliente sendo uma startup local de e-commerce.</p>
                 </div>
               </motion.div>
               
-              {/* 2022 - Expansion */}
+              {/* 2023 - Growth */}
               <motion.div 
-                className="mb-16 md:mb-24 flex flex-col md:flex-row items-center"
+                className="mb-20 md:mb-24 flex flex-col md:flex-row items-center"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <div className="md:w-1/2 md:pr-16 md:text-right mb-6 md:mb-0">
+                <div className="md:w-1/2 md:pr-16 hidden md:block"></div>
+                <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-white z-20 relative">
+                  <span className="font-bold">2</span>
+                </div>
+                <div className="md:w-1/2 md:pl-16 md:text-left md:mb-0 hidden md:block">
+                  <h4 className="text-xl font-bold mb-2">2023 - Crescimento</h4>
+                  <p className="text-muted-foreground">Expansão da equipe para 10 pessoas e mudança para um escritório maior. Alcançamos a marca de 50 projetos entregues.</p>
+                </div>
+                
+                {/* Mobile only text content */}
+                <div className="md:hidden w-full text-center mt-4 px-4 py-3 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm">
+                  <h4 className="text-xl font-bold mb-2">2023 - Crescimento</h4>
+                  <p className="text-muted-foreground">Expansão da equipe para 10 pessoas e mudança para um escritório maior. Alcançamos a marca de 50 projetos entregues.</p>
+                </div>
+              </motion.div>
+              
+              {/* 2024 - Expansion */}
+              <motion.div 
+                className="mb-20 md:mb-0 flex flex-col md:flex-row items-center"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                <div className="md:w-1/2 md:pr-16 md:text-right md:mb-0 hidden md:block">
                   <h4 className="text-xl font-bold mb-2">2024 - Expansão</h4>
                   <p className="text-muted-foreground">Abertura de um segundo escritório e início de operações internacionais com clientes na América Latina.</p>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white z-10">
+                <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white z-20 relative">
                   <span className="font-bold">3</span>
                 </div>
                 <div className="md:w-1/2 md:pl-16 hidden md:block"></div>
+                
+                {/* Mobile only text content */}
+                <div className="md:hidden w-full text-center mt-4 px-4 py-3 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm">
+                  <h4 className="text-xl font-bold mb-2">2024 - Expansão</h4>
+                  <p className="text-muted-foreground">Abertura de um segundo escritório e início de operações internacionais com clientes na América Latina.</p>
+                </div>
               </motion.div>
               
-              {/* 2024 - Today */}
+              {/* 2025 - Today */}
               <motion.div 
                 className="flex flex-col md:flex-row items-center"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
               >
                 <div className="md:w-1/2 md:pr-16 hidden md:block"></div>
-                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white z-10">
+                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white z-20 relative">
                   <span className="font-bold">4</span>
                 </div>
-                <div className="md:w-1/2 md:pl-16 md:text-left mb-6 md:mb-0">
+                <div className="md:w-1/2 md:pl-16 md:text-left md:mb-0 hidden md:block">
+                  <h4 className="text-xl font-bold mb-2">2025 - Hoje</h4>
+                  <p className="text-muted-foreground">Equipe de 25 especialistas, mais de 200 projetos concluídos e reconhecimento como uma das empresas mais inovadoras do setor de tecnologia.</p>
+                </div>
+                
+                {/* Mobile only text content */}
+                <div className="md:hidden w-full text-center mt-4 px-4 py-3 bg-white/90 backdrop-blur-sm rounded-lg shadow-sm">
                   <h4 className="text-xl font-bold mb-2">2025 - Hoje</h4>
                   <p className="text-muted-foreground">Equipe de 25 especialistas, mais de 200 projetos concluídos e reconhecimento como uma das empresas mais inovadoras do setor de tecnologia.</p>
                 </div>

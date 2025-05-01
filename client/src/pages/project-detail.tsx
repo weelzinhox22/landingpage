@@ -875,7 +875,7 @@ const ProjectDetailPage = () => {
           {activeTab === "technologies" && (
             <div>
               <h2 className="text-2xl font-bold mb-8 text-foreground">Stack Tecnológica</h2>
-              
+            
               <div className="tech-stack grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {project.technologies.map((tech, index) => (
                   <motion.div
@@ -923,7 +923,7 @@ const ProjectDetailPage = () => {
           {activeTab === "results" && (
             <div>
               <h2 className="text-2xl font-bold mb-8 text-foreground">Resultados & Métricas</h2>
-              
+            
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                 {[
                   { metric: "+43%", label: "Tráfego Orgânico", icon: "chart-line" },

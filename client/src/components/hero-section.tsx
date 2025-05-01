@@ -112,9 +112,9 @@ const HeroSection = () => {
       
       {/* Animated Shapes */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="hero-shape-1 absolute w-40 h-40 rounded-full bg-primary/20 backdrop-blur-md top-[15%] right-[10%] animate-pulse-slow"></div>
-        <div className="hero-shape-2 absolute w-64 h-64 rounded-full bg-secondary/20 backdrop-blur-md bottom-[20%] left-[5%] animate-pulse-slow"></div>
-        <div className="hero-shape-3 absolute w-72 h-72 bg-accent/10 backdrop-blur-md rounded-full -top-20 -right-20"></div>
+        <div className="hero-shape-1 absolute w-32 sm:w-40 h-32 sm:h-40 rounded-full bg-primary/20 backdrop-blur-md top-[15%] right-[10%] animate-pulse-slow hidden sm:block"></div>
+        <div className="hero-shape-2 absolute w-40 sm:w-64 h-40 sm:h-64 rounded-full bg-secondary/20 backdrop-blur-md bottom-[20%] left-[5%] animate-pulse-slow hidden sm:block"></div>
+        <div className="hero-shape-3 absolute w-52 sm:w-72 h-52 sm:h-72 bg-accent/10 backdrop-blur-md rounded-full -top-20 -right-20 hidden sm:block"></div>
         
         {/* Floating Code Fragments */}
         <div className="code-fragment-1 absolute top-[30%] right-[25%] opacity-30 z-10 hidden md:block">
@@ -136,35 +136,35 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 z-20 relative">
         <div className="flex flex-col md:flex-row items-center justify-between">
           {/* Hero Content - com posicionamento absoluto para garantir que sempre apareça */}
-          <div className="md:w-1/2 mb-12 md:mb-0 z-30 relative">
-            <div className="bg-gradient-to-br from-slate-900/80 to-slate-900/90 backdrop-blur-xl p-8 md:p-10 rounded-2xl border border-slate-700/50 shadow-[0_0_45px_-15px_rgba(124,58,237,0.25)]">
+          <div className="w-full md:w-1/2 mb-12 md:mb-0 z-30 relative">
+            <div className="bg-gradient-to-br from-slate-900/80 to-slate-900/90 backdrop-blur-xl p-6 md:p-10 rounded-2xl border border-slate-700/50 shadow-[0_0_45px_-15px_rgba(124,58,237,0.25)]">
               {/* Conteúdo com design moderno e estável */}
               <div className="relative">
                 {/* Badge de destaque */}
-                <div className="inline-block py-1 px-3 bg-primary/20 backdrop-blur-sm rounded-full text-sm font-medium mb-6 text-primary border border-primary/30">
+                <div className="inline-block py-1 px-3 bg-primary/20 backdrop-blur-sm rounded-full text-sm font-medium mb-4 text-primary border border-primary/30">
                   SOLUÇÕES INOVADORAS
                 </div>
                 
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight text-white">
                   Transforme seu <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-purple-400 to-secondary">Negócio Digital</span> com Tecnologia de Ponta
                 </h1>
                 
-                <div className="h-1 w-20 bg-gradient-to-r from-primary to-secondary rounded-full mb-8"></div>
+                <div className="h-1 w-20 bg-gradient-to-r from-primary to-secondary rounded-full mb-4 md:mb-8"></div>
                 
-                <p className="text-lg md:text-xl text-gray-300 mb-10 max-w-xl">
+                <p className="text-base md:text-lg lg:text-xl text-gray-300 mb-6 md:mb-10 max-w-xl">
                   Desenvolvemos soluções digitais customizadas que impulsionam resultados reais para sua empresa, com foco em performance e experiência do usuário.
                 </p>
                 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/contact">
-                    <Button className="px-6 py-6 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-xl font-semibold shadow-lg text-base transition-all">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link href="/contact" className="w-full sm:w-auto">
+                    <Button className="w-full sm:w-auto px-4 sm:px-6 py-4 sm:py-6 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white rounded-xl font-semibold shadow-lg text-sm sm:text-base transition-all">
                       Solicitar Orçamento
                     </Button>
                   </Link>
-                  <Link href="/services">
-                    <Button className="px-6 py-6 border-2 border-primary bg-transparent text-primary rounded-xl font-semibold hover:bg-primary/10 transition-all backdrop-blur-sm flex items-center text-base">
+                  <Link href="/services" className="w-full sm:w-auto">
+                    <Button className="w-full sm:w-auto px-4 sm:px-6 py-4 sm:py-6 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-xl font-semibold transition-all flex items-center justify-center text-sm sm:text-base shadow-lg">
                       Nossos Serviços
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                       </svg>
                     </Button>
@@ -179,10 +179,10 @@ const HeroSection = () => {
           </div>
           
           {/* Hero 3D Device Mockup */}
-          <div ref={containerRef} className="md:w-1/2 flex justify-center perspective-[1200px]">
+          <div ref={containerRef} className="md:w-1/2 w-full flex justify-center perspective-[1200px] mt-8 md:mt-0">
             <motion.div 
               ref={imageRef}
-              className="relative"
+              className="relative w-[80%] sm:w-full"
               style={{
                 rotateX: !isMobile ? rotateX : 0,
                 rotateY: !isMobile ? rotateY : 0,
@@ -197,7 +197,7 @@ const HeroSection = () => {
               {/* Device Frame */}
               <div className="relative transform-gpu" style={{ transform: 'translateZ(20px)' }}>
                 {/* Moldura do dispositivo */}
-                <div className="relative rounded-xl overflow-hidden shadow-2xl max-w-full md:max-w-md lg:max-w-lg border-[12px] border-gray-900 bg-gray-800">
+                <div className="relative rounded-xl overflow-hidden shadow-2xl max-w-full border-[8px] sm:border-[12px] border-gray-900 bg-gray-800">
                   {/* Tela */}
                   <div className="aspect-[9/16] w-full relative overflow-hidden">
                     {/* Gradiente na tela para efeito visual */}
@@ -239,7 +239,7 @@ const HeroSection = () => {
                 
                 {/* 3D Floating Elements - Mais modernos e relacionados a tecnologia */}
                 <motion.div 
-                  className="absolute -bottom-6 -right-6 w-24 h-24 bg-secondary rounded-xl shadow-2xl flex items-center justify-center z-30"
+                  className="absolute -bottom-4 sm:-bottom-6 -right-4 sm:-right-6 w-16 sm:w-24 h-16 sm:h-24 bg-secondary rounded-xl shadow-2xl flex items-center justify-center z-30"
                   initial={{ scale: 0, rotate: -20 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ duration: 0.7, delay: 0.8, type: "spring", stiffness: 200 }}
@@ -250,7 +250,7 @@ const HeroSection = () => {
                     <div className="bg-white/20 w-3/4 h-3 rounded-full mb-2"></div>
                     <div className="bg-white/20 w-1/2 h-3 rounded-full"></div>
                     <div className="absolute right-2 bottom-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 sm:h-8 w-6 sm:w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                       </svg>
                     </div>
@@ -258,7 +258,7 @@ const HeroSection = () => {
                 </motion.div>
                 
                 <motion.div 
-                  className="absolute -top-8 -left-8 w-20 h-20 bg-primary rounded-xl shadow-2xl overflow-hidden z-30"
+                  className="absolute -top-4 sm:-top-8 -left-4 sm:-left-8 w-16 sm:w-20 h-16 sm:h-20 bg-primary rounded-xl shadow-2xl overflow-hidden z-30"
                   initial={{ scale: 0, rotate: 20 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ duration: 0.7, delay: 1.2, type: "spring", stiffness: 200 }}
@@ -266,35 +266,35 @@ const HeroSection = () => {
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-accent"></div>
                   <div className="relative z-10 h-full w-full flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 sm:h-10 w-8 sm:w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   </div>
                 </motion.div>
                 
                 <motion.div 
-                  className="absolute top-1/3 -right-10 w-16 h-16 bg-accent/80 backdrop-blur-sm rounded-full shadow-2xl flex items-center justify-center z-20 overflow-hidden"
+                  className="absolute top-1/3 -right-6 sm:-right-10 w-12 sm:w-16 h-12 sm:h-16 bg-accent/80 backdrop-blur-sm rounded-full shadow-2xl flex items-center justify-center z-20 overflow-hidden hidden sm:flex"
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.7, delay: 1.5, type: "spring", stiffness: 150 }}
                   style={{ transform: 'translateZ(30px)' }}
                 >
                   <div className="relative z-10 flex items-center justify-center w-full h-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 sm:h-8 w-6 sm:w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                     </svg>
                   </div>
                 </motion.div>
                 
                 <motion.div 
-                  className="absolute -bottom-10 left-8 w-14 h-14 bg-white/10 backdrop-blur-md rounded-full shadow-xl flex items-center justify-center z-20 p-1"
+                  className="absolute -bottom-6 sm:-bottom-10 left-4 sm:left-8 w-10 sm:w-14 h-10 sm:h-14 bg-white/10 backdrop-blur-md rounded-full shadow-xl flex items-center justify-center z-20 p-1 hidden sm:flex"
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 0.9 }}
                   transition={{ duration: 0.7, delay: 1.8, type: "spring", stiffness: 150 }}
                   style={{ transform: 'translateZ(35px)' }}
                 >
                   <div className="bg-gradient-to-br from-blue-400 to-purple-500 rounded-full w-full h-full flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 sm:h-7 w-5 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
                   </div>
@@ -346,6 +346,12 @@ const HeroSection = () => {
         .transform-gpu {
           transform: translateZ(0);
           will-change: transform;
+        }
+
+        @media (max-width: 640px) {
+          .perspective-[1200px] {
+            perspective: 800px;
+          }
         }
         `
       }} />
